@@ -1,0 +1,96 @@
+﻿@model Product
+@inject NewKarma.Repository.UOW.IUnitOfWork unit
+@{
+    ViewData["Title"] = "ProductById";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@**@
+<section class="project_details">
+    <div class="jumbotron" style="background-image:url(/img/imgUpload/Product/@Model.Img); height:500px; background-repeat:no-repeat;
+           background-size:cover;
+           background-blend-mode:luminosity;" >
+    <img class="text-center" src="~/img/imgUpload/Product/@Model.Img" alt="@Model.Title" style=" box-shadow:0px 0px 20px 10px white;" height="280">
+    <div class="col-lg-3 col-sm-4 card " style="left: 100px; position: absolute;">
+        <div class="project_details_widget card-body">
+            <div class="single_project_details_widget ">
+                <span class="ti-car"></span>
+                <h5>مناسب برای</h5>
+                <table class="table table-striped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>نام خوردو</th>
+                            <th>مدل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.cars)
+                        {
+                            <tr>
+                                <td>@item.CarTitle </td>
+                                <td>@item.CarModel</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (Model.Situation)
+            {
+                <div class="single_project_details_widget">
+                    <span class="ti-check-box"></span>
+                    <h5>وضعیت</h5>
+                    <p class="text-success font-weight-bold">موجود در انبار</p>
+                </div>
+            }
+            else
+            {
+                <div class="single_project_details_widget">
+                    <span class="ti-close"></span>
+                    <h5>وضعیت</h5>
+                    <p class="text-danger font-weight-bold">در انبار موجود نیست</p>
+                </div>
+            }
+            <div class="single_project_details_widget">
+                <span class="ti-bag"></span>
+                <h5>برند</h5>
+                <p class="text-info font-weight-bold">@ViewBag.Brand</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="project_details_content">
+                    <h3>@Model.Title</h3>
+                    <p>
+                        @Model.Description
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h4>قطعات مشابه</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(a => a.CatIDFK == Model.CatIDFK, includes: s => s.Brand))
+                        {
+                            <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
+                                <div class="col-sm-6  col-lg-4 col-xl-4 mb-3">
+                                    <div class="blog_item_img">
+                                        <img id="prodimg" class="card-img rounded-0" src="~/img/imgUpload/Product/@item.Img" alt="@item.Title" height="200">
+                                        <a class="blog_item_date btn_4" style="left:33%" asp-controller="Home" asp-action="ProdByBrand" asp-route-id="@item.Brand.BrandId">@item.Brand.Title</a>
+                                    </div>
+                                    <div class="blog_details">
+                                        <h2 class="text-center"> @item.Title</h2>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

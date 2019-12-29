@@ -1,0 +1,190 @@
+﻿@inject NewKarma.Tools.ConvertDate convertDate
+@inject NewKarma.Areas.Identity.Data.IApplicationUserManager myuserManager
+@inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> _UserManager
+@inject Microsoft.AspNetCore.Identity.SignInManager<NewKarma.Areas.Identity.Data.ApplicationUser> signManager
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>KarmaYadak Admin</title>
+    <link rel="stylesheet" href="~/Admin/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/Admin/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/Admin/css/styles.css">
+    <link rel="stylesheet" href="~/Admin/css/jquery.bonsai.css">
+    <link href="~/Admin/select2/dist/css/select2.css" rel="stylesheet" />
+    <link href="~/Admin/css/bootstrap-fileinput.css" rel="stylesheet" />
+    <link href="~/Admin/css/TreeView.css" rel="stylesheet" />
+    <link href="~/Admin/css/comboTreePlugin.css" rel="stylesheet" />
+    <script src="~/Admin/vendor/jquery/jquery.min.js"></script>
+</head>
+<body class="sidebar-fixed header-fixed">
+    <div class="page-wrapper">
+        <nav class="navbar page-header">
+            <div>
+                <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="~/img/logo.png" alt="logo" height="45">
+                    پنل مدیریت کارما یدک
+                </a>
+                <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <span>@convertDate.ConvertMiladiToShamsi(DateTime.Now, "dddd d MMMM yyyy")</span>
+                </li>
+                <li class="nav-item dropdown">
+
+                    @{
+                        if (signManager.IsSignedIn(User))
+                        {
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="/images/avatar-1.png" class="avatar avatar-sm" alt="logo">
+                                <span class="small ml-1 d-md-down-none">
+
+                                    @await myuserManager.GetFullName(User)
+
+                                    @*@signManager.IsSignedIn(User) ? @await myuserManager.GetFullName(User)*@
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-header">حساب کاربری</div>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fa fa-user"></i> پروفایل
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fa fa-lock"></i>
+                                </a>
+                                <form asp-area="Area" asp-controller="Account" asp-action="Logout">
+                                    <button type="submit" value="Logout">
+                                    </button>
+                                </form>
+                            </div>
+                        }
+
+                    }
+                </li>
+
+            </ul>
+        </nav>
+        <div class="main-container">
+            <div class="sidebar">
+                <nav class="sidebar-nav">
+                    <ul class="nav">
+                        <li class="nav-title">پنل مدیریت</li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="Dashbord" asp-action="Index" class="nav-link">
+                                <i class="icon icon-speedometer"></i> داشبورد
+                            </a>
+                        </li>
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-book-open"></i> مدیریت قطعات <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
+                                        <i class="icon icon-target"></i> مشاهده قطعات
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="nav-link">
+                                        <i class="icon icon-target"></i> افزودن قطعه جدید
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-user"></i>مدیریت دسته بندی <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
+                                        <i class="icon icon-target"></i> مشاهده دسته بندی
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a hasp-area="Admin" asp-controller="Category" asp-action="Create" class="nav-link">
+                                        <i class="icon icon-target"></i> افزودن دسته بندی جدید
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-user"></i> مدیریت برند <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="nav-link">
+                                        <i class="icon icon-target"></i> مشاهده برند ها
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="nav-link">
+                                        <i class="icon icon-target"></i> افزودن برند جدید
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-list"></i> مدیریت خودرو ها <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="nav-link">
+                                        <i class="icon icon-target"></i> مدیریت خودرو ها
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Create" class="nav-link">
+                                        <i class="icon icon-target"></i> افزودن خودرو ها
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Admin/vendor/popper.js/popper.min.js"></script>
+    <script src="~/Admin/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Admin/vendor/chart.js/chart.min.js"></script>
+    <script src="~/Admin/js/carbon.js"></script>
+    <script src="~/Admin/js/demo.js"></script>
+
+    <script src="~/Admin/select2/dist/js/select2.min.js"></script>
+    <script src="~/Admin/select2/dist/js/select2.full.js"></script>
+    <script src="~/Admin/js/bootstrap-fileinput.js"></script>
+    <script src="~/Admin/js/TreeView.js"></script>
+    <script src="~/Admin/js/comboTreePlugin.js"></script>
+    <script src="~/Admin/js/icontains.js"></script>
+
+    <script>
+
+        // for select2
+        $(".select2").select2({
+            placeholder: "انتخاب کنید"
+        });
+
+        // for TreeView
+        $('.demo1').bonsai();
+
+    </script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+ <div class="card ">
+    <div class="card-header">
+        <i class="fa fa-object-group"></i>
+        <h3 class="box-title">حذف قطعه</h3>
+    </div>
+    <div class="card-body">
+        <h3>آیا میخواهید این قطعه را حذف نمایید؟</h3>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Img)
+                </dt>
+                <dd>
+                    <img src="~/img/imgUpload/Product/@Html.DisplayFor(model => model.Img)"/>
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+            <form asp-area="Admin" asp-action="Delete">
+                <input type="hidden" asp-for="ProductId" />
+                <input type="submit" value="حذف" class="btn btn-danger" />
+                <a asp-action="Index" class="btn btn-primary ">انصراف</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+

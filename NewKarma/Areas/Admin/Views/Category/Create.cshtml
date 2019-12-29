@@ -1,0 +1,72 @@
+﻿@model VmCategory
+@inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> thisUserManagerk
+@{
+    ViewData["Title"] = "افزودن دسته بندی";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                @ViewData["Title"]
+            </div>
+            <form asp-area="Admin" asp-controller="Category" asp-action="Create" enctype="multipart/form-data" method="post">
+                <input hidden asp-for="UserIDFK" value="@thisUserManagerk.GetUserId(User)" />
+                <div asp-validation-summary="All"></div>
+                <div class="row card-body mb-3">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>عنوان</label>
+                                    <input asp-for="Title" type="text" class="form-control validate">
+                                    <span asp-validation-for="Title"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label>توضیحات</label>
+                                    <textarea asp-for="Description" class="form-control validate" rows="3"></textarea>
+                                    <span asp-validation-for="Description"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mx-auto">
+                                    <div class="custom-file mt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-12 text-center">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new thumbnail" style="height: 200px;">
+                                                            <img src="/img/No_Image_Available.jpg" class="card-img-top" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                                                        <div>
+                                                            <span class="btn default btn-file mb-3">
+                                                                <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                                <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                                <input type="file" name="image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                                            </span>
+                                                            <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                                        </div>
+                                                        <span asp-validation-for="Icon" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-info float-right">افزودن </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,45 @@
+﻿@model VmCar
+@inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> thisUserManagerk
+@{
+    ViewData["Title"] = "افزودن دسته بندی";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                @ViewData["Title"]
+            </div>
+            <form asp-area="Admin" asp-controller="Cars" asp-action="Create" enctype="multipart/form-data" method="post">
+                <input hidden asp-for="UserIDFK" value="@thisUserManagerk.GetUserId(User)" />
+                <div asp-validation-summary="All"></div>
+                <div class="row card-body mb-3">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>عنوان خودرو</label>
+                                    <input asp-for="CarTitle" type="text" class="form-control validate">
+                                    <span asp-validation-for="CarTitle"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label>مدل خودرو</label>
+                                    <textarea asp-for="CarModel" class="form-control validate" rows="3"></textarea>
+                                    <span asp-validation-for="CarModel"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-info float-right">افزودن </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

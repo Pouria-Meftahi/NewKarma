@@ -1,0 +1,121 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<Product>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper*,ReflectionIT.Mvc.Paging
+@inject NewKarma.Repository.UOW.IUnitOfWork unit
+@inject NewKarma.Tools.ConvertDate convertDate
+@{
+    ViewData["Title"] = "ProductByCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="blog_area section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+            <div class="row blog_left_sidebar">
+                @foreach (var item in Model)
+                {
+                    <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
+                        <article class="col-md-6 blog_item">
+                            <div class="blog_item_img">
+                                <img id="prodimg" class="card-img rounded-0" src="~/img/imgUpload/Product/@item.Img" alt="@item.Title" />
+                                <a asp-controller="Home" asp-action="ProductByCategory" asp-route-catId="@item.BrandIDFK" class="blog_item_date btn_4" id="BrandBtn">@item.Brand.Title</a>
+                            </div>
+                            <div class="blog_details">
+                                <a class="d-inline-block" href="#">
+                                    <h2>@item.Title</h2>
+                                </a>
+                                <p>
+                                    @{
+                                        var desc = item.Description.Length > 100 ? item.Description.Substring(0, 100) + " ..." : item.Description;
+                                    }
+                                    @desc
+                                </p>
+                            </div>
+                        </article>
+                    </a>
+                }
+            </div>
+            <nav class="blog-pagination justify-content-center d-flex">
+                @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+            </nav>
+        </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <form action="#">
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="جستجو با کلمات کلیدی" onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'جسنجو با کلمات کلیدی'" data-cf-modified-6cf4986cd25099c523115474-="">
+                                    <div class="input-group-append">
+                                        <button class="btn" type="button"><i class="ti-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button rounded-0 primary-bg text-white w-100 btn_4" type="submit">بگرد</button>
+                        </form>
+                    </aside>
+                    <aside class="single_sidebar_widget post_category_widget">
+                        <h4 class="widget_title">دسته بندی</h4>
+                        <ul class="list cat-list">
+                            @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
+                            {
+                                <li>
+                                    <a asp-controller="Home" asp-action="ProductByCategory" asp-route-CatId="@item.CatId" class="d-flex blog_item_date rounded-0 primary-bg btn_4">
+                                        <p>@item.Title</p>
+                                    </a>
+                                    <img class="img-Admin" src="~/img/imgUpload/Category/@item.Icon" />
+                                </li>
+                            }
+                            <li>
+                        </ul>
+                    </aside>
+                    <aside class="single_sidebar_widget popular_post_widget" dir="ltr">
+                        <h3 class="widget_title">آخرین مطالب بلاگ</h3>
+                        <div class="media post_item">
+                            <img src="img/post/post_1.png" alt="post">
+                            <div class="media-body">
+                                <a href="#">
+                                    <h3>تست ایمنی سمند ال ایکس...</h3>
+                                </a>
+                                <p>خرداد ۱۲, ۱۳۹۷</p>
+                            </div>
+                        </div>
+                        <div class="media post_item">
+                            <img src="img/post/post_2.png" alt="post">
+                            <div class="media-body">
+                                <a href="#">
+                                    <h3>دنا توربو پلاس </h3>
+                                </a>
+                                <p>۲ ساعت پیش</p>
+                            </div>
+                        </div>
+
+                    </aside>
+                    <aside class="single_sidebar_widget tag_cloud_widget">
+                        <h4 class="widget_title">برچسب ها</h4>
+                        <ul class="list">
+                            <li>
+                                <a href="#">پراید</a>
+                            </li>
+                            <li>
+                                <a href="#">پژو</a>
+                            </li>
+                            <li>
+                                <a href="#">رانا</a>
+                            </li>
+                            <li>
+                                <a href="#">دنا</a>
+                            </li>
+                            <li>
+                                <a href="#">برلیانس</a>
+                            </li>
+                            <li>
+                                <a href="#">تیبا</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

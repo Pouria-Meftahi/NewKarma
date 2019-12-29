@@ -1,0 +1,78 @@
+﻿@inject IEnumerable<Category> cat
+@inject IEnumerable<Product> prod
+@inject NewKarma.Repository.UOW.IUnitOfWork unit
+@inject CatRepo repoCat
+@inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> _UserManager
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+<div class="container mt-5">
+    <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-productsAdmin">
+                <h2 class="tm-block-title">محصولات</h2>
+                <div class="tm-product-table-container">
+                    <table class="table table-hover tm-table-small tm-product-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">CATEGORY</th>
+                                <th scope="col">PRODUCT NAME</th>
+                                <th scope="col">Situation</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: a => a.OrderByDescending(b => b.CreatedDate), includes: a => a.Category))
+                            {
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="tm-product-name">
+                                        @item.Title
+                                    </td>
+                                    <td dir="rtl">
+                                        @{
+                                            string desc = item.Description.Length >= 200 ? item.Description.Substring(0, 200) + "..." : item.Description;
+                                        }
+                                        @desc
+                                    </td>
+                                    <td>@item.Situation</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table container -->
+                <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-product-categories">
+                <h2 class="tm-block-title">دسته بندی</h2>
+                <div class="tm-product-table-container">
+                    <table class="table tm-table-small tm-product-table">
+                        <tbody>
+                            @foreach (var item in unit.BaseRepo<Category>().FindAll())
+                            {
+                                <tr>
+                                    <td class="tm-product-name">@item.Title</td>
+                                    <td class="text-center">
+                                        <i class="CatImageAdmin">
+                                            <img src="~/img/imgUpload/Category/@item.Icon" />
+                                        </i>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table container -->
+                <a class="btn btn-primary btn-block text-uppercase mb-3" asp-area="Admin" asp-controller="Category" asp-action="Create">
+                    Add new category
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+@*<p class="text-white mt-5 mb-5">Welcome back, <b>@_UserManager.GetUserName(User)</b></p>*@
