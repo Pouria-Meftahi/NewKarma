@@ -15,13 +15,27 @@ $('.owl-carousel').owlCarousel({
     loop: true,
     singleItem: false,
     autoplay:true,
-
-    // Most important owl features
-    // itemsDesktop: [1199, 4],
-    // itemsDesktopSmall: [980, 3],
-    // itemsTablet: [768, 2],
-    // itemsTabletSmall: false,
-    // itemsMobile: [479, 1],
+    responsiveClass: true,
+    responsive: {
+        0: {
+            items: 1,
+            nav: false
+        },
+        479: {
+            items: 2,
+            nav: false
+        },
+        960: {
+            items:3,
+            nav: true
+        }
+        
+    },
+     itemsDesktop: [1199, 4],
+     itemsDesktopSmall: [980, 3],
+     itemsTablet: [768, 2],
+     itemsTabletSmall: false,
+     itemsMobile: [479, 1],
     //Basic Speeds
     
     // slideSpeed: 200,

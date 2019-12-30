@@ -57,17 +57,20 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">همکاری با کارما یدک</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <form asp-controller="" asp-action="/" method="post">
+
+                                    </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn_3_5 btn-right">ارسال</button>
+                                    <button type="button" class="btn btn_3_5" data-dismiss="modal">بستن</button>
+
                                 </div>
                             </div>
                         </div>
@@ -85,25 +88,30 @@
     <div class="hero-app-6 custom-animation3"><img src="img/animate_icon/icon_7.png" alt=""></div>
 </section>
 
-<section class="service_part section_padding gray_bg" dir="ltr">
+<section class="service_part gray_bg" dir="ltr">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <!-- <div class="col-sm-12 col-lg-8 col-xl-4">
+                 <div class="col-sm-12 col-lg-12">
                   <div class="single_service_text">
-                    <h2>We Provide Best Services</h2>
+                    <h2>آخرین قطعات</h2>
                     <p>Male bring land dominion over can't yielding. His order moveth under of dry brought him is.
                       Multiply which firmament deep make. Male bring land. Dominion over can't yielding. His
                       moveth under of dry brought him is. Multiply which firmament deep make.</p>
-                    <a href="#" class="btn_2">Load More</a>
+                    <a href="#" class="btn_2 center">قطعات</a>
                   </div>
-                </div> -->
+                </div> 
                 <div class="owl-carousel">
-                    @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
+                    @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(orderBy:d=>d.OrderBy(date => date.CreatedDate),includes:a=>a.Category))
                     {
+                        //.Result.OrderBy(a => a.CreatedDate).Take(5)
                         <div class="item">
                             <div class="single_service_part">
-                                <span><i><img src="~/img/imgUpload/Category/@item.Icon" /></i></span>
+                                <span style="width:250px; height:140px; background-size:cover; background-position:center; background-image:url('/img/imgUpload/Product/@item.Img')">
+                                    <i>
+                                        <img src="~/img/imgUpload/Category/@item.Category.Icon" />
+                                    </i>
+                                </span>
                                 <h4>@item.Title</h4>
                                 <p dir="rtl">
                                     @{
@@ -111,7 +119,7 @@
                                     }
                                     @desc
                                 </p>
-                                <a asp-controller="Home" asp-action="ProductByCategory" asp-route-CatId="@item.CatId" class="btn_3">مشاهده قطعات <i class="ti-arrow-right"></i></a>
+                                <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId" class="btn_3">مشاهده قطعه <i class="ti-arrow-right"></i></a>
                             </div>
                         </div>
                     }

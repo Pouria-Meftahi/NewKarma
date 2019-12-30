@@ -765,7 +765,11 @@ ul {
 .dropdown:hover .dropdown-menu {
     transform: scale(1)
 }
-
+.btn-right{
+    position:absolute !important;
+    right:0 !important;
+    margin-right:15px !important;
+}
 .btn_1 {
     display: inline-block;
     padding: 14px 40px;
@@ -894,6 +898,30 @@ ul {
     padding-left: 30px;
     margin-top: 35px;
     font-family: poppins, sans-serif
+}
+.btn_3_5 {
+    position: relative;
+    font-weight: 500;
+    color: #2f373d;
+    display: inline-block;
+    z-index: 9;
+    -webkit-transition: .6s;
+    transition: .8s;
+    line-height: 46px;
+    font-family: poppins, sans-serif
+}
+.btn_3_5:after {
+    height: 48px;
+    width: 61px;
+    background-color: #e3f1da;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+    z-index: -1;
+    -webkit-transition: .6s;
+    transition: .8s
 }
 
     .btn_3:after {
@@ -1463,9 +1491,13 @@ ul {
         padding: 8px 15px;
         border-radius: 5px
     }
-    #prodimg {
-        height: 203px !important;
-    }
+#prodimg {
+    height: 203px !important;
+    width:100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat:no-repeat;
+}
     @media(min-width:768px) {
         .blog_item_img .blog_item_date {
         bottom: -20px;
@@ -2205,7 +2237,11 @@ ul {
 /*.main_menu .navbar {
     padding: 28px 0
 }*/
-
+.nav-icon:hover {
+    background-color: dimgray;
+    height:50px;
+    width:50px;
+}
 .main_menu .main-menu-item {
     text-align: right !important;
     justify-content: center
@@ -2277,7 +2313,7 @@ ul {
     }
 
     .main_menu .main-menu-item {
-        text-align: left !important
+        text-align: right !important
     }
 
         .main_menu .main-menu-item .nav-item {
@@ -2740,6 +2776,9 @@ ul {
     }
 }
 
+.single_service_text {
+    text-align: center;
+}
 .service_part .single_service_text h2 {
     font-size: 45px;
     color: #2f373d;
@@ -2747,7 +2786,6 @@ ul {
     margin-bottom: 20px;
     margin-top: 50px
 }
-
 @media(max-width:576px) {
     .service_part .single_service_text h2 {
         margin-top: 0;
@@ -2878,52 +2916,22 @@ ul {
     width: 60px;
     height: 60px;
     z-index: -1;
-    background-color: #e3f1da
+    background-image: linear-gradient(90deg, #feb47b, #ff7e5f);
 }
 
-.owl-item .single_service_part span i {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    border-radius: 5px;
-    background-image: -moz-linear-gradient(131deg, #00b09b 0%, #96c93d 100%);
-    background-image: -webkit-linear-gradient(131deg, #00b09b 0%, #96c93d 100%);
-    background-image: -ms-linear-gradient(131deg, #00b09b 0%, #96c93d 100%);
-    box-shadow: 0 12px 20px 0 rgba(53, 185, 122, .2);
-}
 
-.single_service_part .style_icon:after {
+    .owl-item .single_service_part span i img {
+        left: 0;
+        bottom: 0;
+        position: absolute;
+        width: 50px;
+        margin: -10px -25px;
+    }
+}
+    .single_service_part .style_icon:after {
     background-color: #f6ece5
 }
 
-.owl-item + .owl-item .single_service_part span i {
-    background-image: -moz-linear-gradient(131deg, #ff7e5f 0%, #feb47b 99%);
-    background-image: -webkit-linear-gradient(131deg, #ff7e5f 0%, #feb47b 99%);
-    background-image: -ms-linear-gradient(131deg, #ff7e5f 0%, #feb47b 99%);
-    box-shadow: 0 12px 20px 0 rgba(255, 126, 95, .2);
-}
-
-.owl-item + .owl-item + .owl-item .single_service_part span i {
-    background-image: -moz-linear-gradient(131deg, #0061b0 0%, #a13dc9 99%);
-    background-image: -webkit-linear-gradient(131deg, #0061b0 0%, #a13dc9 99%);
-    background-image: -ms-linear-gradient(131deg, #0061b0 0%, #a13dc9 99%);
-    box-shadow: 0 12px 20px 0 rgba(119, 95, 255, 0.2);
-}
-
-/*.service_part .single_service_part .style_icon i {
-    background-image: -moz-linear-gradient(131deg, #ff7e5f 0%, #feb47b 99%);
-    background-image: -webkit-linear-gradient(131deg, #ff7e5f 0%, #feb47b 99%);
-    background-image: -ms-linear-gradient(131deg, #ff7e5f 0%, #feb47b 99%);
-    box-shadow: 0 12px 20px 0 rgba(255, 126, 95, .2)
-}
-.service_part .single_service_part .style_icon_2 i {
-    background-image: -moz-linear-gradient(131deg, #0061b0 0%, #a13dc9 99%);
-    background-image: -webkit-linear-gradient(131deg, #0061b0 0%, #a13dc9 99%);
-    background-image: -ms-linear-gradient(131deg, #0061b0 0%, #a13dc9 99%);
-    box-shadow: 0 12px 20px 0 rgba(119, 95, 255, 0.2)
-}*/
 
 .service_part .single_service_part h4 {
     font-weight: 600;
@@ -2953,6 +2961,7 @@ ul {
 .service_part .single_service_part p {
     color: #7f7f7f;
     line-height: 1.8;
+    min-height: 140px;
     font-size: 15px
 }
 

@@ -76,7 +76,7 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpGet, DisplayName("ویرایش دسته بندی"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
-        public async Task<IActionResult> Edit(int catId, VmCategory model)
+        public async Task<IActionResult> Edit(int catId, Category model)
         {
             if (catId == null)
             {
@@ -92,9 +92,9 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int catId, VmCategory model, IFormFile image)
+        public async Task<IActionResult> Edit(int catId, Category model, IFormFile image)
         {
-            if (catId != model.CatID)
+            if (catId != model.CatId)
             {
                 return NotFound();
             }
@@ -102,13 +102,13 @@ namespace NewKarma.Areas.Admin.Controllers
             {
                 try
                 {
-                    Category categoryOld = _unit.BaseRepo<Category>().FindByIdAsync(model.CatID).Result;
+                    Category categoryOld = _unit.BaseRepo<Category>().FindByIdAsync(model.CatId).Result;
                     if (categoryOld != null)
                     {
                         categoryOld.Title = model.Title;
                         categoryOld.Description = model.Description;
                         categoryOld.UserIDFK = model.UserIDFK;
-                        var oldImage = _unit.BaseRepo<Category>().FindByIdAsync(model.CatID).Result.Icon;
+                        var oldImage = _unit.BaseRepo<Category>().FindByIdAsync(model.CatId).Result.Icon;
                         var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\imgUpload\\Category", oldImage);
                         if (System.IO.File.Exists(oldPath))
                         {

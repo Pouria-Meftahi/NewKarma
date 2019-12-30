@@ -3,7 +3,7 @@
 @inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> _UserManager
 @inject Microsoft.AspNetCore.Identity.SignInManager<NewKarma.Areas.Identity.Data.ApplicationUser> signManager
 <!doctype html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -47,10 +47,7 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="/images/avatar-1.png" class="avatar avatar-sm" alt="logo">
                                 <span class="small ml-1 d-md-down-none">
-
                                     @await myuserManager.GetFullName(User)
-
-                                    @*@signManager.IsSignedIn(User) ? @await myuserManager.GetFullName(User)*@
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -58,103 +55,20 @@
                                 <a href="#" class="dropdown-item">
                                     <i class="fa fa-user"></i> پروفایل
                                 </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fa fa-lock"></i>
-                                </a>
-                                <form asp-area="Area" asp-controller="Account" asp-action="Logout">
-                                    <button type="submit" value="Logout">
+                                <form asp-area="" asp-controller="Account" asp-action="Logout">
+                                    <button type="submit" value="Logout" class="dropdown-item">
+                                        <i class="fa fa-lock"></i> خروج
                                     </button>
                                 </form>
                             </div>
                         }
-
                     }
                 </li>
 
             </ul>
         </nav>
         <div class="main-container">
-            <div class="sidebar">
-                <nav class="sidebar-nav">
-                    <ul class="nav">
-                        <li class="nav-title">پنل مدیریت</li>
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Dashbord" asp-action="Index" class="nav-link">
-                                <i class="icon icon-speedometer"></i> داشبورد
-                            </a>
-                        </li>
-                        <li class="nav-item nav-dropdown">
-                            <a href="#" class="nav-link nav-dropdown-toggle">
-                                <i class="icon icon-book-open"></i> مدیریت قطعات <i class="fa fa-caret-left"></i>
-                            </a>
-                            <ul class="nav-dropdown-items">
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
-                                        <i class="icon icon-target"></i> مشاهده قطعات
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="nav-link">
-                                        <i class="icon icon-target"></i> افزودن قطعه جدید
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item nav-dropdown">
-                            <a href="#" class="nav-link nav-dropdown-toggle">
-                                <i class="icon icon-user"></i>مدیریت دسته بندی <i class="fa fa-caret-left"></i>
-                            </a>
-                            <ul class="nav-dropdown-items">
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
-                                        <i class="icon icon-target"></i> مشاهده دسته بندی
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a hasp-area="Admin" asp-controller="Category" asp-action="Create" class="nav-link">
-                                        <i class="icon icon-target"></i> افزودن دسته بندی جدید
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item nav-dropdown">
-                            <a href="#" class="nav-link nav-dropdown-toggle">
-                                <i class="icon icon-user"></i> مدیریت برند <i class="fa fa-caret-left"></i>
-                            </a>
-                            <ul class="nav-dropdown-items">
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="nav-link">
-                                        <i class="icon icon-target"></i> مشاهده برند ها
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="nav-link">
-                                        <i class="icon icon-target"></i> افزودن برند جدید
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item nav-dropdown">
-                            <a href="#" class="nav-link nav-dropdown-toggle">
-                                <i class="icon icon-list"></i> مدیریت خودرو ها <i class="fa fa-caret-left"></i>
-                            </a>
-                            <ul class="nav-dropdown-items">
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="nav-link">
-                                        <i class="icon icon-target"></i> مدیریت خودرو ها
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Create" class="nav-link">
-                                        <i class="icon icon-target"></i> افزودن خودرو ها
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <partial name="_SideBar" />
             <div class="content">
                 @RenderBody()
             </div>

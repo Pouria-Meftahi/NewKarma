@@ -1,37 +1,41 @@
 ﻿@model NewKarma.Models.View.VmAccount.LoginViewModel
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+    //Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+    Layout = null;
 }
-<div class="container tm-mt-big tm-mb-big">
-    <div class="row">
-        <div class="col-12 mx-auto tm-login-col">
+<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.0.0/css/bootstrap.min.css" integrity="sha384-P4uhUIGk/q1gaD/NdgkBIl3a6QywJjlsFJFk7SPRdruoGddvRVSwv5qFnvZ73cpz" crossorigin="anonymous">
+<link rel="stylesheet" href="~/Admin/css/styles.css">
+
+<div class="container h-100 tm-mt-big tm-mb-big card col-12">
+    <div class="row h-100 align-items-center">
+        <div class="col-4 offset-4 tm-login-col card-body">
             <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h2 class="tm-block-title mb-4">Welcome to Dashboard, Login</h2>
+                        <h4 class="tm-block-title mb-4">سلام! به داشبرد کارما یدک خوش آمدید، ورود</h4>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
                         <form asp-controller="Account" asp-action="Login" class="tm-login-form">
                             <div class="form-group">
-                                <label for="username">Username</label>
+                                <label for="username">نام کاربری</label>
                                 <input asp-for="UserName" type="text" class="form-control validate" id="username" value="" required />
                                 <span asp-validation-for="UserName"></span>
                             </div>
                             <div class="form-group mt-3">
-                                <label for="password">Password</label>
+                                <label for="password">رمز عبور</label>
                                 <input asp-for="Password" type="password" class="form-control validate" id="password" required />
                                 <span asp-validation-for="Password"></span>
                             </div>
                             <div class="form-group mt-4">
                                 <button type="submit" class="btn btn-primary btn-block text-uppercase">
-                                    Login
+                                    ورود
                                 </button>
                             </div>
                             <button class="mt-5 btn btn-primary btn-block text-uppercase">
-                                Forgot your password?
+                                رمز خود را فراموش کرده اید؟
                             </button>
                         </form>
                     </div>

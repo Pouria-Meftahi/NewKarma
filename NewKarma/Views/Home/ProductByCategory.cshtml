@@ -11,34 +11,31 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mb-5 mb-lg-0">
-            <div class="row blog_left_sidebar">
-                @foreach (var item in Model)
-                {
-                    <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
-                        <article class="col-md-6 blog_item">
-                            <div class="blog_item_img">
-                                <img id="prodimg" class="card-img rounded-0" src="~/img/imgUpload/Product/@item.Img" alt="@item.Title" />
-                                <a asp-controller="Home" asp-action="ProductByCategory" asp-route-catId="@item.BrandIDFK" class="blog_item_date btn_4" id="BrandBtn">@item.Brand.Title</a>
-                            </div>
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="#">
-                                    <h2>@item.Title</h2>
-                                </a>
-                                <p>
-                                    @{
-                                        var desc = item.Description.Length > 100 ? item.Description.Substring(0, 100) + " ..." : item.Description;
-                                    }
-                                    @desc
-                                </p>
-                            </div>
-                        </article>
-                    </a>
-                }
+                <div class="row blog_left_sidebar">
+                    @foreach (var item in Model)
+                    {
+                        <a class="col-md-6 padding-0px" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
+                            <article class="blog_item">
+                                <div id="prodimg" class="blog_item_img" style="background-image:url('/img/imgUpload/Product/@item.Img')">
+                                    <span href="/Home/ProductByBrand?brandId=@item.BrandIDFK" class="blog_item_date btn_4" id="BrandBtn">@item.Brand.Title</span>
+                                </div>
+                                <div class="blog_details">
+                                    <h2 class="d-inline-block">@item.Title</h2>
+                                    <p>
+                                        @{
+                                            var desc = item.Description.Length > 100 ? item.Description.Substring(0, 100) + " ..." : item.Description;
+                                        }
+                                        @desc
+                                    </p>
+                                </div>
+                            </article>
+                        </a>
+                    }
+                </div>
+                <nav class="blog-pagination justify-content-center d-flex">
+                    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+                </nav>
             </div>
-            <nav class="blog-pagination justify-content-center d-flex">
-                @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
-            </nav>
-        </div>
             <div class="col-lg-4">
                 <div class="blog_right_sidebar">
                     <aside class="single_sidebar_widget search_widget">

@@ -69,7 +69,7 @@ namespace NewKarma.Controllers
         public IActionResult ProductById(int? ProductId)
         {
             var prodById = _unit.BaseRepo<Product>().FindByConditionAsync(a => a.ProductId == ProductId, includes: b => b.Brand).Result.FirstOrDefault();
-            var carId = _context.RlCarModelProducts.Where(a => a.ProductId == prodById.ProductId).Select(a=>a.CarId);
+            var carId = _context.RlCarModelProducts.Where(a => a.ProductId == prodById.ProductId).Select(a => a.CarId);
             ViewBag.cars = _context.Cars.Where(a => carId.Contains(a.CarId));
             ViewBag.Brand = _context.Brands.Where(b => b.BrandId == prodById.BrandIDFK).SingleOrDefault().Title;
             return View(prodById);

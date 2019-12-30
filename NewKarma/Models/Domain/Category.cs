@@ -14,7 +14,7 @@ namespace NewKarma.Models.Domain
         public int CatId { get; set; }
         [Required, Display(Name = "Title")]
         public string Title { get; set; }
-        [Required, Display(Name = "Icon")]
+        [Display(Name = "Icon")]
         public string Icon { get; set; }
         [Required, Display(Name = "Description")]
         public string Description { get; set; }
