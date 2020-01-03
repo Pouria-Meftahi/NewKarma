@@ -10,7 +10,7 @@
             <div class="card-header bg-light">
                 @ViewData["Title"]
             </div>
-            <form asp-area="Admin" asp-controller="Cars" asp-action="Create" enctype="multipart/form-data" method="post">
+            <form asp-area="Admin" asp-controller="Cars" asp-action="Create" enctype="multipart/form-data" method="post" onsubmit="return validationForm()">
                 <input hidden asp-for="UserIDFK" value="@thisUserManagerk.GetUserId(User)" />
                 <div asp-validation-summary="All"></div>
                 <div class="row card-body mb-3">
@@ -20,12 +20,12 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label>عنوان خودرو</label>
-                                    <input asp-for="CarTitle" type="text" class="form-control validate">
+                                    <input asp-for="CarTitle" type="text" id="carTitle" class="form-control validate">
                                     <span asp-validation-for="CarTitle"></span>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label>مدل خودرو</label>
-                                    <textarea asp-for="CarModel" class="form-control validate" rows="3"></textarea>
+                                    <textarea asp-for="CarModel" id="carModel" class="form-control validate" rows="3"></textarea>
                                     <span asp-validation-for="CarModel"></span>
                                 </div>
                             </div>
@@ -40,6 +40,52 @@
     </div>
 </div>
 
+<script>
+    function validationForm() {
+        var carTitle = $('#carTitle').val();
+        var carModel = $('#carModel').val();
+        if (carTitle == "") {
+            $('#carTitle').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا نام خودرو را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+        if (carModel == "") {
+            $('#carModel').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا مدل خودرو را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+    }
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

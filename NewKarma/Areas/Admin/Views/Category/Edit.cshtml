@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 <div class="container-fluid">
-    <form asp-area="Admin" asp-controller="Category" asp-action="Edit">
+    <form asp-area="Admin" asp-controller="Category" asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="return validationForm()">
         @if (ViewBag.MsgConfirm != null)
         {
             <div class="alert alert-success alert-dismissable">
@@ -14,7 +14,6 @@
                 </button>
             </div>
         }
-
         @if (ViewBag.MsgFailed != null)
         {
             <div class="alert alert-danger alert-dismissable">
@@ -59,26 +58,24 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-light">
-                        ویرایش اطلاعات دسته 
+                        ویرایش اطلاعات دسته
                     </div>
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
                                 <input type="hidden" asp-for="CatId" />
-                                @*<input type="hidden" asp-for="RecentIsPublish" />*@
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" asp-for="Title"></label>
-                                        <input asp-for="Title" class="form-control" placeholder="عنوان قطعه">
-                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                        <label class="form-control-label" >عنوان</label>
+                                        <input asp-for="Title" id="title" class="form-control" placeholder="عنوان قطعه">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Description" class="form-control-label"> </label>
-                                            <textarea asp-for="Description" rows="5" class="form-control"></textarea>
-                                        </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label"> توضیحات</label>
+                                        <textarea asp-for="Description" id="description" rows="5" class="form-control"></textarea>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -91,7 +88,55 @@
         </div>
     </form>
 </div>
+<script>
+    function validationForm() {
+        var titie = $('#title').val();
+        var description = $('#description').val();
 
+        if (titie == "") {
+            $('#title').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا  عنوان را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+        
+        if (description == "") {
+            $('#description').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا  عنوان را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+        
+    }
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

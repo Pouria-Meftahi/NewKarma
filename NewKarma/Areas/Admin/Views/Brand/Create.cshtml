@@ -10,7 +10,7 @@
             <div class="card-header bg-light">
                 @ViewData["Title"]
             </div>
-            <form asp-area="Admin" asp-controller="Category" asp-action="Create" enctype="multipart/form-data" method="post">
+            <form asp-area="Admin" asp-controller="Category" asp-action="Create" enctype="multipart/form-data" method="post" onsubmit="return validationForm()">
                 <input hidden asp-for="UserIDFK" value="@thisUserManagerk.GetUserId(User)" />
                 <div asp-validation-summary="All"></div>
                 <div class="row card-body mb-3">
@@ -20,7 +20,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label>عنوان</label>
-                                    <input asp-for="Title" type="text" class="form-control validate">
+                                    <input asp-for="Title" type="text" id="brandTitle" class="form-control validate">
                                     <span asp-validation-for="Title"></span>
                                 </div>
                             </div>
@@ -35,6 +35,31 @@
     </div>
 </div>
 
+<script>
+    function validationForm() {
+        var brandTitle = $('#brandTitle').val();
+        if (brandTitle == "") {
+            $('#brandTitle').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا نام برند را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+    }
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

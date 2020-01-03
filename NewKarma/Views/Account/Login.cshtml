@@ -5,7 +5,10 @@
     Layout = null;
 }
 <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.0.0/css/bootstrap.min.css" integrity="sha384-P4uhUIGk/q1gaD/NdgkBIl3a6QywJjlsFJFk7SPRdruoGddvRVSwv5qFnvZ73cpz" crossorigin="anonymous">
+<link href="~/Admin/css/jquery-confirm.min.css" rel="stylesheet" />
+
 <link rel="stylesheet" href="~/Admin/css/styles.css">
+
 
 <div class="container h-100 tm-mt-big tm-mb-big card col-12">
     <div class="row h-100 align-items-center">
@@ -18,17 +21,25 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-                        <form asp-controller="Account" asp-action="Login" class="tm-login-form">
+                        <form asp-controller="Account" asp-action="Login" class="tm-login-form" onsubmit="return validationForm()">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
                                 <label for="username">نام کاربری</label>
-                                <input asp-for="UserName" type="text" class="form-control validate" id="username" value="" required />
-                                <span asp-validation-for="UserName"></span>
+                                <input asp-for="UserName" type="text" class="form-control validate" id="username" value="" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="password">رمز عبور</label>
-                                <input asp-for="Password" type="password" class="form-control validate" id="password" required />
+                                <input asp-for="Password" type="password" class="form-control validate" id="password" />
                                 <span asp-validation-for="Password"></span>
                             </div>
+                            @*<div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input asp-for="RememberMe" /> &nbsp; &nbsp;  @Html.DisplayNameFor(model => model.RememberMe)
+                                    </label>
+                                </div>
+                            </div>*@
                             <div class="form-group mt-4">
                                 <button type="submit" class="btn btn-primary btn-block text-uppercase">
                                     ورود
@@ -44,3 +55,59 @@
         </div>
     </div>
 </div>
+
+<script>
+    function validationForm() {
+        var user = $('#username').val();
+        var pass = $('#password').val();
+        if (user == "") {
+            $('#username').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: "لطفا نام کاربری را وارد کنید",
+                rtl: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+        if (pass == "") {
+            $('#password').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: "لطفا رمز عبور را وارد کنید",
+                rtl: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+    }
+</script>
+<script src="~/Admin/vendor/jquery/jquery.min.js"></script>
+<script src="~/Admin/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/Admin/js/jquery-confirm.min.js"></script>
+<script src="~/Admin/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/Admin/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

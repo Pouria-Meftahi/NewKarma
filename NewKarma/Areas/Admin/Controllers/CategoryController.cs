@@ -109,15 +109,15 @@ namespace NewKarma.Areas.Admin.Controllers
                         categoryOld.Description = model.Description;
                         categoryOld.UserIDFK = model.UserIDFK;
                         var oldImage = _unit.BaseRepo<Category>().FindByIdAsync(model.CatId).Result.Icon;
-                        var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\imgUpload\\Category", oldImage);
+                        var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", oldImage);
                         if (System.IO.File.Exists(oldPath))
                         {
-                            System.IO.File.Delete(oldPath);
                             if (image != null && image.Length > 0)
                             {
+                                System.IO.File.Delete(oldPath);
                                 //Todo:Resize Image And Even Set 
                                 var newImage = Path.GetFileName(image.FileName);
-                                var newPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\imgUpload\\Category", newImage);
+                                var newPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", newImage);
                                 using (var fileStream = new FileStream(newPath, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
@@ -131,7 +131,7 @@ namespace NewKarma.Areas.Admin.Controllers
                             {
                                 //Todo:Resize Image
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\imgUpload\\Category", fileName);
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", fileName);
                                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
@@ -182,6 +182,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
             else
             {
+                //Todo:Delete Image Of This Category From DataBase Of File Server
                 _unit.BaseRepo<Category>().Delete(category);
                 await _unit.Commit();
                 return RedirectToAction(nameof(Index));

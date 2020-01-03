@@ -85,7 +85,7 @@ namespace NewKarma.Controllers
         {
             return View();
         }
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -122,18 +122,22 @@ namespace NewKarma.Controllers
                         if (result.IsLockedOut)
                         {
                             ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد.");
-                            return View();
+                            return View(model);
                         }
-                        if (result.IsNotAllowed)
+                        else
                         {
                             ModelState.AddModelError(string.Empty, "حساب کاربری شما فعال نمی باشد به ایمیل خود مراجعه کنید.");
-                            return View();
+                            return View(model);
                         }
                     }
                 }
-                ModelState.AddModelError(string.Empty, "نام کاربری یا کلمه عبور شما صحیح نمی باشد.");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "نام کاربری یا کلمه عبور اشتباه می باشد");
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
         #endregion
         [HttpPost, ValidateAntiForgeryToken]
