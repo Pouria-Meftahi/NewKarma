@@ -65,51 +65,39 @@
                             <li>
                         </ul>
                     </aside>
-                    @*<aside class="single_sidebar_widget popular_post_widget" dir="ltr">
-                            <h3 class="widget_title">آخرین مطالب بلاگ</h3>
-                            <div class="media post_item">
-                                <img src="img/post/post_1.png" alt="post">
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h3>تست ایمنی سمند ال ایکس...</h3>
-                                    </a>
-                                    <p>خرداد ۱۲, ۱۳۹۷</p>
-                                </div>
+                    <aside class="single_sidebar_widget popular_post_widget" dir="ltr">
+                        <h3 class="widget_title">آخرین مطالب بلاگ</h3>
+                        <div class="media post_item">
+                            <img src="img/post/post_1.png" alt="post">
+                            <div class="media-body">
+                                <a href="#">
+                                    <h3>تست ایمنی سمند ال ایکس...</h3>
+                                </a>
+                                <p>خرداد ۱۲, ۱۳۹۷</p>
                             </div>
-                            <div class="media post_item">
-                                <img src="img/post/post_2.png" alt="post">
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h3>دنا توربو پلاس </h3>
-                                    </a>
-                                    <p>۲ ساعت پیش</p>
-                                </div>
+                        </div>
+                        <div class="media post_item">
+                            <img src="img/post/post_2.png" alt="post">
+                            <div class="media-body">
+                                <a href="#">
+                                    <h3>دنا توربو پلاس </h3>
+                                </a>
+                                <p>۲ ساعت پیش</p>
                             </div>
+                        </div>
 
-                        </aside>
-                        <aside class="single_sidebar_widget tag_cloud_widget">
-                            <h4 class="widget_title">برچسب ها</h4>
-                            <ul class="list">
+                    </aside>
+                    <aside class="single_sidebar_widget tag_cloud_widget">
+                        <h4 class="widget_title">خودرو ها</h4>
+                        <ul class="list">
+                            @foreach (var item in await unit.BaseRepo<Car>().FindAllAsync())
+                            {
                                 <li>
-                                    <a href="#">پراید</a>
+                                    <a asp-controller="Home" asp-action="ProductByCar" asp-route-CarId="@item.CarId">@item.CarTitle @item.CarModel</a>
                                 </li>
-                                <li>
-                                    <a href="#">پژو</a>
-                                </li>
-                                <li>
-                                    <a href="#">رانا</a>
-                                </li>
-                                <li>
-                                    <a href="#">دنا</a>
-                                </li>
-                                <li>
-                                    <a href="#">برلیانس</a>
-                                </li>
-                                <li>
-                                    <a href="#">تیبا</a>
-                                </li>
-                            </ul>
-                        </aside>*@
+                            }
+                        </ul>
+                    </aside>
                 </div>
             </div>
         </div>

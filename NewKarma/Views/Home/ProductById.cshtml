@@ -74,7 +74,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(a => a.CatIDFK == Model.CatIDFK, includes: s => s.Brand))
+                        @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(a=>a.CatIDFK == Model.CatIDFK, includes: s => s.Brand))
                         {
                             <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
                                 <div class="col-sm-6  col-lg-4 col-xl-4 mb-3">

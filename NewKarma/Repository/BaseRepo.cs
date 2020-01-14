@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using NewKarma.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,12 @@ namespace NewKarma.Repository
         //Using Expression for Using Linq
         //Func==Delegate00
 
-        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> FindByConditionAsync(
+            Expression<Func<T, bool>> filter = null,
+            //Expression<Func<T, bool>> dist = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            params Expression<Func<T, object>>[] includes
+            )
         {
             IQueryable<T> query = dbSet;
             foreach (var item in includes)
@@ -39,6 +45,10 @@ namespace NewKarma.Repository
             {
                 query = orderBy(query);
             }
+            //if (dist != null)
+            //{
+            //    query = query.GroupBy(keySelector: dist);
+            //}
             return await query.ToListAsync();
         }
 
@@ -49,6 +59,6 @@ namespace NewKarma.Repository
         public void UpdateRange(IEnumerable<T> entities) => dbSet.UpdateRange(entities);
         public void DeleteRange(IEnumerable<T> entities) => dbSet.RemoveRange(entities);
 
-       
+
     }
 }

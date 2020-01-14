@@ -1617,7 +1617,10 @@ ul {
         font-size: 14px;
         color: #999
     }
-
+.blog_right_sidebar .post_category_widget .cat-list {
+    overflow-y:scroll;
+    height:400px;
+}
 .blog_right_sidebar .post_category_widget .cat-list li {
     border-bottom: 1px solid #f0e9ff;
     transition: all .3s ease 0s;
