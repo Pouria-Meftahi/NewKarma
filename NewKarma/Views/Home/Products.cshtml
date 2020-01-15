@@ -11,6 +11,7 @@
         <div class="row">
             <div class="col-lg-8 mb-5 mb-lg-0">
                 <div class="row blog_left_sidebar">
+                    <h3>@ViewBag.Message</h3>
                     @foreach (var item in Model)
                     {
                         <a class="col-md-6 padding-0px" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
@@ -38,16 +39,26 @@
             <div class="col-lg-4">
                 <div class="blog_right_sidebar">
                     <aside class="single_sidebar_widget search_widget">
-                        <form action="#">
+                        <form asp-controller="Home" asp-action="Products">
                             <div class="form-group">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="جستجو با کلمات کلیدی" onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'جسنجو با کلمات کلیدی'" data-cf-modified-6cf4986cd25099c523115474-="">
+                                    @*onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'جسنجو با کلمات کلیدی'" data-cf-modified-6cf4986cd25099c523115474-=""*@
+                                    <input type="text" class="form-control" name="title" placeholder="جستجو با کلمات کلیدی">
                                     <div class="input-group-append">
                                         <button class="btn" type="button"><i class="ti-search"></i></button>
                                     </div>
                                 </div>
                             </div>
-                            <button class="button rounded-0 primary-bg text-white w-100 btn_4" type="submit">بگرد</button>
+                            @{
+                                if (ViewBag.Search != "")
+                                {
+                                    <a class="button rounded-0 bg-success text-white w-100 " style="color:white !important;" href="/Home/Products">بازگشت به لیست قطعات</a>
+                                }
+                                else
+                                {
+                                    <button class="button rounded-0 primary-bg text-white w-100 btn_4" type="submit">بگرد</button>
+                                }
+                            }
                         </form>
                     </aside>
                     <aside class="single_sidebar_widget post_category_widget">

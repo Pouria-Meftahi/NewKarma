@@ -26,11 +26,7 @@ namespace NewKarma.Repository
         //Func==Delegate00
 
         public async Task<IEnumerable<T>> FindByConditionAsync(
-            Expression<Func<T, bool>> filter = null,
-            //Expression<Func<T, bool>> dist = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            params Expression<Func<T, object>>[] includes
-            )
+                    Expression<Func<T, bool>> filter = null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = dbSet;
             foreach (var item in includes)
@@ -45,10 +41,6 @@ namespace NewKarma.Repository
             {
                 query = orderBy(query);
             }
-            //if (dist != null)
-            //{
-            //    query = query.GroupBy(keySelector: dist);
-            //}
             return await query.ToListAsync();
         }
 

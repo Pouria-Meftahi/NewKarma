@@ -42,15 +42,22 @@ namespace NewKarma.Controllers
         }
 
         [ActionName("Products")]
-        public async Task<IActionResult> Products(int page = 1, int row = 4)
+        public async Task<IActionResult> Products(int page = 1, int row = 6,string title = "")
         {
-            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(includes: a => a.Brand);
+            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter:s=>s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
             var PagingModel = PagingList.Create(await Products, row, page);
             PagingModel.Action = "Products";
             PagingModel.RouteValue = new RouteValueDictionary
             {
-                {"row",row }
+                {"row",row },
+                {"title",title }
+
             };
+            ViewBag.Search = title;
+            if (Products.Result.Count()==0)
+            {
+                ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
+            }
             return View(PagingModel ?? null);
         }
         [ActionName("ProductByCategory")]

@@ -1,4 +1,5 @@
 ﻿@model Product
+@inject NewKarma.Tools.ConvertDate Convert
 @inject NewKarma.Repository.UOW.IUnitOfWork unit
 @{
     ViewData["Title"] = "ProductById";
@@ -6,91 +7,103 @@
 }
 @**@
 <section class="project_details">
-    <div class="jumbotron" style="background-image:url(/img/imgUpload/Product/@Model.Img); height:500px; background-repeat:no-repeat;
+    <div class="jumbotron" style="background-image:url(/img/imgUpload/Product/@Model.Img);
+           height:500px;
+           border-radius:unset;
+           background-repeat:no-repeat;
            background-size:cover;
-           background-blend-mode:luminosity;" >
-    <img class="text-center float-left" src="~/img/imgUpload/Product/@Model.Img" alt="@Model.Title" style=" box-shadow:0px 0px 20px 10px white;" height="280">
-    <div class="col-lg-3 col-sm-4 card float-right" style="left: 100px; position: absolute;">
-        <div class="project_details_widget card-body">
-            <div class="single_project_details_widget ">
-                <span class="ti-car"></span>
-                <h5>مناسب برای</h5>
-                <table class="table table-striped">
-                    <thead class="thead-inverse">
-                        <tr>
-                            <th>نام خوردو</th>
-                            <th>مدل</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.cars)
-                        {
+           background-blend-mode:luminosity;">
+        <img class="text-center float-left" src="~/img/imgUpload/Product/@Model.Img" alt="@Model.Title"
+             style=" box-shadow:0px 0px 20px 10px white; height:280px; top: 130px; position: absolute; padding: 25px; background-color:white;">
+        <div style="    background-color: white;
+                        bottom:-50px;
+                        position:absolute;
+                        padding: 40px;
+                        margin: 40px;
+                        width: 750px;">
+            <h2 class="float-left text-center">@Model.Title</h2>
+            <p class="float-left">@Model.Description</p>
+        </div>
+        <div class="col-lg-3 col-sm-4 card float-right" style="left: 100px; top:100px; height:530px; border-radius:unset; border:none; position: absolute;">
+            <div class="project_details_widget card-body">
+                <div class="single_project_details_widget">
+                    <span class="ti-car"></span>
+                    <h5>مناسب برای</h5>
+                    <table class="table table-striped">
+                        <thead class="thead-inverse">
                             <tr>
-                                <td>@item.CarTitle </td>
-                                <td>@item.CarModel</td>
+                                <th>نام خوردو</th>
+                                <th>مدل</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            @if (Model.Situation)
-            {
-                <div class="single_project_details_widget">
-                    <span class="ti-check-box"></span>
-                    <h5>وضعیت</h5>
-                    <p class="text-success font-weight-bold">موجود در انبار</p>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.cars)
+                            {
+                                <tr>
+                                    <td>@item.CarTitle </td>
+                                    <td>@item.CarModel</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-            }
-            else
-            {
+                @if (Model.Situation)
+                {
+                    <div class="single_project_details_widget">
+                        <span class="ti-check-box"></span>
+                        <h5>وضعیت</h5>
+                        <p class="text-success font-weight-bold">موجود در انبار</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="single_project_details_widget">
+                        <span class="ti-close"></span>
+                        <h5>وضعیت</h5>
+                        <p class="text-danger font-weight-bold">در انبار موجود نیست</p>
+                    </div>
+                }
                 <div class="single_project_details_widget">
-                    <span class="ti-close"></span>
-                    <h5>وضعیت</h5>
-                    <p class="text-danger font-weight-bold">در انبار موجود نیست</p>
+                    <span class="ti-bag"></span>
+                    <h5>برند</h5>
+                    <p class="text-info font-weight-bold">@ViewBag.Brand</p>
                 </div>
-            }
-            <div class="single_project_details_widget">
-                <span class="ti-bag"></span>
-                <h5>برند</h5>
-                <p class="text-info font-weight-bold">@ViewBag.Brand</p>
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="project_details_content">
-                    <h3>@Model.Title</h3>
-                    <p>
-                        @Model.Description
-                    </p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h4>قطعات مشابه</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(a=>a.CatIDFK == Model.CatIDFK, includes: s => s.Brand))
-                        {
-                            <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
-                                <div class="col-sm-6  col-lg-4 col-xl-4 mb-3">
-                                    <div class="blog_item_img">
-                                        <img id="prodimg" class="card-img rounded-0" src="~/img/imgUpload/Product/@item.Img" alt="@item.Title" height="200">
-                                        <a class="blog_item_date btn_4" style="left:33%" asp-controller="Home" asp-action="ProdByBrand" asp-route-id="@item.Brand.BrandId">@item.Brand.Title</a>
-                                    </div>
-                                    <div class="blog_details">
-                                        <h2 class="text-center"> @item.Title</h2>
-                                    </div>
-                                </div>
-                            </a>
-                        }
+    <section class="blog_part section_padding" dir="ltr">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6">
+                    <div class="section_tittle text-center">
+                        <h2>قطعات مشابه</h2>
+                        <p>مطالبی جذاب از سراسر جهان درباره قطعات یدکی خودرو</p>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter: a => a.CatIDFK == Model.CatIDFK && a.ProductId != Model.ProductId, includes: i => i.Brand).Result.Take(3))
+                {
+                    <div class="col-sm-6 col-lg-4 col-xl-4 ">
+                        <div class="single-home-blog">
+                            <div class="card">
+                                <img src="~/img/imgUpload/Product/@item.Img" class="card-img-top" alt="blog">
+                                <div class="card-body">
+                                    <span>@item.Title</span>
+                                    <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
+                                        @{var desc = item.Description.Length >= 50 ? item.Description.Substring(0, 50) + "..." : item.Description;}
+                                        <h5 class="card-title">@desc</h5>
+                                    </a>
+                                    <ul>
+                                        <li> <span class="ti-dashboard"></span>@item.Brand.Title</li>
+                                        <li> <span class="ti-time"></span>@Convert.ConvertMiladiToShamsi((DateTime)item.CreatedDate, "yyyy/MM/dd")</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+    </section>
 </section>

@@ -1,4 +1,4 @@
-﻿using MD.PersianDateTime.Core;
+﻿using MD.PersianDateTime.Standard;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -56,7 +56,7 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpGet, DisplayName("ویرایش خودرو"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {

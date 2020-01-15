@@ -76,7 +76,7 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpGet, DisplayName("ویرایش دسته بندی"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
-        public async Task<IActionResult> Edit(int catId, Category model)
+        public async Task<IActionResult> Edit(int? catId, Category model)
         {
             if (catId == null)
             {

@@ -51,7 +51,6 @@
                     <button type="button" class="btn btn_2 controls" data-toggle="modal" data-target="#exampleModal">
                         شروع همکاری
                     </button>
-
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -64,22 +63,16 @@
                                 </div>
                                 <div class="modal-body">
                                     <form asp-controller="" asp-action="/" method="post">
-
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn_3_5 btn-right">ارسال</button>
                                     <button type="button" class="btn btn_3_5" data-dismiss="modal">بستن</button>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -92,19 +85,20 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                 <div class="col-sm-12 col-lg-12">
-                  <div class="single_service_text">
-                    <h2>آخرین قطعات</h2>
-                    <p>Male bring land dominion over can't yielding. His order moveth under of dry brought him is.
-                      Multiply which firmament deep make. Male bring land. Dominion over can't yielding. His
-                      moveth under of dry brought him is. Multiply which firmament deep make.</p>
-                    <a href="#" class="btn_2 center">قطعات</a>
-                  </div>
-                </div> 
+                <div class="col-sm-12 col-lg-12">
+                    <div class="single_service_text">
+                        <h2>آخرین قطعات</h2>
+                        <p>
+                            Male bring land dominion over can't yielding. His order moveth under of dry brought him is.
+                            Multiply which firmament deep make. Male bring land. Dominion over can't yielding. His
+                            moveth under of dry brought him is. Multiply which firmament deep make.
+                        </p>
+                        <a href="#" class="btn_2 center">قطعات</a>
+                    </div>
+                </div>
                 <div class="owl-carousel">
-                    @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(orderBy:d=>d.OrderBy(date => date.CreatedDate),includes:a=>a.Category))
+                    @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category) )
                     {
-                        //.Result.OrderBy(a => a.CreatedDate).Take(5)
                         <div class="item">
                             <div class="single_service_part">
                                 <span style="width:250px; height:140px; background-size:cover; background-position:center; background-image:url('/img/imgUpload/Product/@item.Img')">
