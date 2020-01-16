@@ -24,9 +24,7 @@ namespace NewKarma.Repository
         //TODO:Impelement Eger Loding 4 Murtual Product↓
         //Using Expression for Using Linq
         //Func==Delegate00
-
-        public async Task<IEnumerable<T>> FindByConditionAsync(
-                    Expression<Func<T, bool>> filter = null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> filter = null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = dbSet;
             foreach (var item in includes)
@@ -43,14 +41,11 @@ namespace NewKarma.Repository
             }
             return await query.ToListAsync();
         }
-
         public async Task Create(T entity) => await dbSet.AddAsync(entity);
         public void Update(T entity) => dbSet.Update(entity);
         public void Delete(T entity) => dbSet.Remove(entity);
         public async Task CreateRange(IEnumerable<T> entities) => await dbSet.AddRangeAsync(entities);
         public void UpdateRange(IEnumerable<T> entities) => dbSet.UpdateRange(entities);
         public void DeleteRange(IEnumerable<T> entities) => dbSet.RemoveRange(entities);
-
-
     }
 }

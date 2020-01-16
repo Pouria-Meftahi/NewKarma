@@ -12,26 +12,20 @@ using NewKarma.Repository.UOW;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace NewKarma.Controllers
 {
     public class HomeController : Controller
     {
-        public int CurrentPage { get; set; }
-        public string Link { get; set; }
-        public int Next { get; set; }
-        public int StartPage { get; set; }
-        public int EndPage { get; set; }
-
         private readonly AppDbContext _context;
         private readonly IUnitOfWork _unit;
-
         public HomeController(IUnitOfWork unit, AppDbContext context)
         {
             _context = context;
             _unit = unit;
         }
-
         public IActionResult Index(string id)
         {
             if (id != null)
@@ -42,9 +36,9 @@ namespace NewKarma.Controllers
         }
 
         [ActionName("Products")]
-        public async Task<IActionResult> Products(int page = 1, int row = 6,string title = "")
+        public async Task<IActionResult> Products(int page = 1, int row = 6, string title = "")
         {
-            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter:s=>s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
+            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
             var PagingModel = PagingList.Create(await Products, row, page);
             PagingModel.Action = "Products";
             PagingModel.RouteValue = new RouteValueDictionary
@@ -54,7 +48,7 @@ namespace NewKarma.Controllers
 
             };
             ViewBag.Search = title;
-            if (Products.Result.Count()==0)
+            if (Products.Result.Count() == 0)
             {
                 ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
             }
@@ -82,6 +76,33 @@ namespace NewKarma.Controllers
             return View(prodById);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> WorkWithUs(VmProduct model, IFormFile image)
+        {
+            if (ModelState.IsValid)
+            {
+                if (image != null && image.Length > 0)
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\ourClient", fileName);
+                    using (var fileStream = new FileStream(filePath, mode: FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+                    Product product = new Product()
+                    {
+                        Title = model.Title,
+                        Description = model.Description,
+                        Img = fileName,
+                        RlCarModelProduct = model.CarIDFK.Select(a => new RlCarModelProduct { CarId = a }).ToList(),
+                    };
+                }
+
+
+            }
+
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -95,6 +116,7 @@ namespace NewKarma.Controllers
 
             return View();
         }
+
 
         public IActionResult Privacy()
         {

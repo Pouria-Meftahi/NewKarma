@@ -60,6 +60,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="wwwroot\img\imgUpload\ourClient\" />
     <Folder Include="wwwroot\img\product\" />
   </ItemGroup>
 

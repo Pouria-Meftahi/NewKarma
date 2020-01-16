@@ -1,4 +1,7 @@
-﻿@inject NewKarma.Repository.UOW.IUnitOfWork unit
+﻿@model VmProduct
+@inject NewKarma.Repository.UOW.IUnitOfWork unit
+@inject NewKarma.Tools.ConvertDate ConvertDate
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -62,12 +65,64 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form asp-controller="" asp-action="/" method="post">
+                                    <form asp-controller="Home" asp-action="WorkWithUs" method="post" enctype="multipart/form-data">
+                                        <span asp-validation-for="All"></span>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="form-control" asp-for="Title" placeholder="قطعه">
+                                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select asp-for="CarIDFK" asp-items="ViewBag.CarId" class="select2 js-states form-control" multiple="multiple">
+                                                            <option value="">خودرو</option>
+                                                        </select>
+                                                        <span asp-validation-for="CarIDFK" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <textarea asp-for="Description" class="form-control" rows="6" cols="3" placeholder="توضیحات"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card">
+                                                    <div class="card-header bg-light">
+                                                        تصویر قطعه
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-group">
+                                                            <div class="text-center">
+                                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                    <div class="fileinput-new thumbnail" style="height: 200px;">
+                                                                        <img src="/img/No_Image_Available.jpg" class="card-img-top" />
+                                                                    </div>
+                                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                                                                    <div>
+                                                                        <span class="btn default btn-file">
+                                                                            <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                                            <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                                            <input type="file" name="image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                                                        </span>
+                                                                        <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn_3_5 btn-right">ارسال</button>
-                                    <button type="button" class="btn btn_3_5" data-dismiss="modal">بستن</button>
+                                    <button type="button" class="btn btn_3_5 " data-dismiss="modal">بستن</button>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +152,7 @@
                     </div>
                 </div>
                 <div class="owl-carousel">
-                    @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category) )
+                    @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category))
                     {
                         <div class="item">
                             <div class="single_service_part">
@@ -227,26 +282,30 @@
     <div class="hero-app-4 custom-animation2"><img src="img/animate_icon/icon_8.png" alt=""></div>
     <div class="hero-app-8 custom-animation3"><img src="img/animate_icon/icon_9.png" alt=""></div>
 </section>
-
-@*<section class="blog_part section_padding" dir="ltr">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-6">
-                    <div class="section_tittle text-center">
-                        <h2>آخرین مطالب بلاگ</h2>
-                        <p>مطالبی جذاب از سراسر جهان درباره قطعات یدکی خودرو</p>
-                    </div>
+<section class="blog_part section_padding" dir="ltr">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="section_tittle text-center">
+                    <h2>آخرین مطالب بلاگ</h2>
+                    <p>مطالبی جذاب از سراسر جهان درباره قطعات یدکی خودرو</p>
                 </div>
             </div>
-            <div class="row">
+        </div>
+        <div class="row">
+            @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(orderBy: a => a.OrderBy(b => b.CreatedDate)).Result.Take(3))
+            {
                 <div class="col-sm-6 col-lg-4 col-xl-4 ">
                     <div class="single-home-blog">
                         <div class="card">
-                            <img src="img/blog/blog_3.png" class="card-img-top" alt="blog">
+                            <img src="~/img/imgUpload/Product/@item.Img" class="card-img-top" alt="blog">
                             <div class="card-body">
-                                <a href="blog.html">قطعات بدنه</a> | <span> مرداد ۲۳, ۱۳۹۸</span>
+                                <a href="blog.html">@item.Title</a> | <span> @ConvertDate.ConvertMiladiToShamsi((DateTime)item.CreatedDate, "yyyy/MM/dd")</span>
                                 <a href="blog.html">
-                                    <h5 class="card-title">تامین ۶۰٪ از قطعات جدید مورد نیاز برای پلتفرم امسال ایران خودرو</h5>
+                                    <h5 class="card-title">
+                                        @{ var desc = item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description; }
+                                        @desc
+                                    </h5>
                                 </a>
                                 <ul>
                                     <li> <span class="ti-comments"></span>4 کامنت</li>
@@ -256,43 +315,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-4 col-xl-4">
-                    <div class="single-home-blog">
-                        <div class="card">
-                            <img src="img/blog/blog_1.png" class="card-img-top" alt="blog">
-                            <div class="card-body">
-                                <a href="blog.html">قطعات برقی</a> | <span> تیر ۱۵, ۱۳۹۸</span>
-                                <a href="blog.html">
-                                    <h5 class="card-title">نمونه اولیه سیستم هدایت خودکار سایپا</h5>
-                                </a>
-                                <ul>
-                                    <li> <span class="ti-comments"></span>12 کامنت</li>
-                                    <li> <span class="ti-heart"></span>3 لایک</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-4 col-xl-4">
-                    <div class="single-home-blog">
-                        <div class="card">
-                            <img src="img/blog/blog_2.png" class="card-img-top" alt="blog">
-                            <div class="card-body">
-                                <a href="blog.html">سنسور</a> | <span> اردیبهشت ۶, ۱۳۹۸</span>
-                                <a href="blog.html">
-                                    <h5 class="card-title">نقد و بررسی سیستم سنسور های عقب استیم پارت</h5>
-                                </a>
-                                <ul>
-                                    <li> <span class="ti-comments"></span>8 کامنت</li>
-                                    <li> <span class="ti-heart"></span>19 لایک</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            }
         </div>
-    </section>*@
+    </div>
+</section>
 <section class="about_part our_partners_part padding_top">
     <div class="container">
         <div class="row align-items-center justify-content-end">
