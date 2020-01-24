@@ -1,7 +1,5 @@
-﻿@model VmProduct
-@inject NewKarma.Repository.UOW.IUnitOfWork unit
+﻿@inject NewKarma.Repository.UOW.IUnitOfWork unit
 @inject NewKarma.Tools.ConvertDate ConvertDate
-
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -65,60 +63,60 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form asp-controller="Home" asp-action="WorkWithUs" method="post" enctype="multipart/form-data">
-                                        <span asp-validation-for="All"></span>
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input class="form-control" asp-for="Title" placeholder="قطعه">
-                                                        <span asp-validation-for="Title" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <select asp-for="CarIDFK" asp-items="ViewBag.CarId" class="select2 js-states form-control" multiple="multiple">
-                                                            <option value="">خودرو</option>
-                                                        </select>
-                                                        <span asp-validation-for="CarIDFK" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <textarea asp-for="Description" class="form-control" rows="6" cols="3" placeholder="توضیحات"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="card">
-                                                    <div class="card-header bg-light">
-                                                        تصویر قطعه
-                                                    </div>
-                                                    <div class="card-body">
+                                    @*<form asp-controller="Home" asp-action="WorkWithUs" method="post" enctype="multipart/form-data">
+                                            <span asp-validation-for="@prod.All"></span>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <div class="text-center">
-                                                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                                    <div class="fileinput-new thumbnail" style="height: 200px;">
-                                                                        <img src="/img/No_Image_Available.jpg" class="card-img-top" />
-                                                                    </div>
-                                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
-                                                                    <div>
-                                                                        <span class="btn default btn-file">
-                                                                            <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
-                                                                            <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
-                                                                            <input type="file" name="image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
-                                                                        </span>
-                                                                        <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                                            <input class="form-control" asp-for="@prod.Title" placeholder="قطعه">
+                                                            <span asp-validation-for="@prod.Title" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <select asp-for="@prod.CarIDFK" asp-items="ViewBag.CarId" class="select2 js-states form-control" multiple="multiple">
+                                                                <option value="">خودرو</option>
+                                                            </select>
+                                                            <span asp-validation-for="@prod.CarIDFK" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <textarea asp-for="@prod.Description" class="form-control" rows="6" cols="3" placeholder="توضیحات"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="card">
+                                                        <div class="card-header bg-light">
+                                                            تصویر قطعه
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="form-group">
+                                                                <div class="text-center">
+                                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                        <div class="fileinput-new thumbnail" style="height: 200px;">
+                                                                            <img src="/img/No_Image_Available.jpg" class="card-img-top" />
+                                                                        </div>
+                                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                                                                        <div>
+                                                                            <span class="btn default btn-file">
+                                                                                <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                                                <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                                                <input type="file" name="image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                                                            </span>
+                                                                            <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>*@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn_3_5 btn-right">ارسال</button>
@@ -152,7 +150,7 @@
                     </div>
                 </div>
                 <div class="owl-carousel">
-                    @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category))
+                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category).Result.Take(5))
                     {
                         <div class="item">
                             <div class="single_service_part">

@@ -22,7 +22,6 @@ namespace NewKarma.Models.Domain
         public string UserIDFK { get; set; }
         [ForeignKey(nameof(UserIDFK)),NotMapped]
         public virtual  ApplicationUser ApplicationUser { get; set; }
-        [NotMapped]
         public virtual ICollection<Product> Products { get; set; }
     }
 }

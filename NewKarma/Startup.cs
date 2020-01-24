@@ -77,11 +77,9 @@ namespace NewKarma
                 options.AddPolicy(ConstantPolicies.DynamicPermission, policy => policy.Requirements.Add(new DynamicPermissionRequirement()));
             });
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ICatRepo, CatRepo>();
             services.AddTransient<IProductRepo, ProductRepo>();
             services.AddTransient<IConvertDate, ConvertDate>();
             services.AddTransient<ConvertDate>();
-            services.AddTransient<CatRepo>();
             services.AddTransient<UnitOfWork>();
             services.AddTransient<ProductRepo>();
             services.AddTransient<AppDbContext>();

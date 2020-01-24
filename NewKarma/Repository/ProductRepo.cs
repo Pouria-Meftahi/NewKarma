@@ -24,57 +24,12 @@ namespace NewKarma.Repository
         {
             _unit = unit;
         }
-
-
-      
-
-
-        public async Task<bool> CreateProductAsync(VmProduct model)
-        {
-            try
-            {
-                //Product product = new Product()
-                //{
-                //    ProductId = model.ProductId,
-                //    BrandIDFK = model.BrandIDFK,
-                //    CatIDFK = model.CatIDFK,
-                //    UserIDFK = model.UserIdFK,
-                //    Title = model.Title,
-                //    Description = model.Description,
-                //    CreatedDate = model.CreatedDate,
-                //    Brand = model.Brand,
-                //    Category = model.Category,
-                //    ApplicationUser = model.ApplicationUser,
-                //    Situation = true,
-                //    Img = model.Image.ToString(),//Hack: Are u shore!?
-                //};
-                //if (model.Image != null)
-                //{
-                //    var fileName = Path.GetFileName(model.Image.FileName);
-                //    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product", fileName);
-                //    //Hack:Using FileStream Or MemoryStream
-                //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                //    {
-                //        await model.Image.CopyToAsync(fileStream);
-                //    }
-                //}
-                //await _unit.BaseRepo<Product>().Create(product);
-                //await _unit.Commit();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public List<VmProductAdmin> GetAllProduct(string title, string Car, string Brand, string Category)
         {
             string CategoryName = "";
             string BrandName = "";
             string CarName = "";
             List<VmProductAdmin> ViewModelList = new List<VmProductAdmin>();
-            //ThenInclude(z => z.Brand).
             var Prod = (from row in _context.RlCarModelProducts.Include(a => a.Product).Include(x => x.Car)
 
                         join c in _context.Categories on row.Product.CatIDFK equals c.CatId into cg
@@ -132,7 +87,6 @@ namespace NewKarma.Repository
                     Brand = BrandName,
                     Title = item.ProductGroup.First().Title,
                     IsPublish = item.ProductGroup.First().Situation,
-                    
                 };
                 ViewModelList.Add(vm);
             }

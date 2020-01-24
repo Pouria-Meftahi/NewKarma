@@ -1,78 +1,159 @@
-﻿@inject IEnumerable<Category> cat
+﻿@using ChartJSCore.Models;
+@inject IEnumerable<Category> cat
 @inject IEnumerable<Product> prod
 @inject NewKarma.Repository.UOW.IUnitOfWork unit
-@inject CatRepo repoCat
 @inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> _UserManager
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+    Chart lineChart = (Chart)ViewData["LineChart"];
+    Chart polarChart = (Chart)ViewData["PolarChart"];
+    Chart pieChart = (Chart)ViewData["PieChart"];
 }
-<div class="container mt-5">
-    <div class="row tm-content-row">
-        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
-            <div class="tm-bg-primary-dark tm-block tm-block-productsAdmin">
-                <h2 class="tm-block-title">محصولات</h2>
-                <div class="tm-product-table-container">
-                    <table class="table table-hover tm-table-small tm-product-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">&nbsp;</th>
-                                <th scope="col">CATEGORY</th>
-                                <th scope="col">PRODUCT NAME</th>
-                                <th scope="col">Situation</th>
-                                <th scope="col">&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: a => a.OrderByDescending(b => b.CreatedDate), includes: a => a.Category))
-                            {
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td class="tm-product-name">
-                                        @item.Title
-                                    </td>
-                                    <td dir="rtl">
-                                        @{
-                                            string desc = item.Description.Length >= 200 ? item.Description.Substring(0, 200) + "..." : item.Description;
-                                        }
-                                        @desc
-                                    </td>
-                                    <td>@item.Situation</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        دسته بندی
+                    </div>
+                    <div class="card-body">
+                        <span><i class="icon icon-chart fa-2x"> @ViewData["CatCount"]</i></span>
+                        <span>@*@ViewData["LastCategoryAdded"] آخرین دسته بندی اضافه شده*@</span>
+                    </div>
                 </div>
-                <!-- table container -->
-                <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a>
+            </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    برند
+                </div>
+                <div class="card-body">
+                    <span><i class="icon icon-info fa-2x"> </i>@ViewData["LastBrandAdded"]</span>
+                    <span><i class="icon icon-basket-loaded fa-2x"> </i> @ViewData["BrandCount"]</span>
+                </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
-            <div class="tm-bg-primary-dark tm-block tm-block-product-categories">
-                <h2 class="tm-block-title">دسته بندی</h2>
-                <div class="tm-product-table-container">
-                    <table class="table tm-table-small tm-product-table">
-                        <tbody>
-                            @foreach (var item in unit.BaseRepo<Category>().FindAll())
-                            {
-                                <tr>
-                                    <td class="tm-product-name">@item.Title</td>
-                                    <td class="text-center">
-                                        <i class="CatImageAdmin">
-                                            <img src="~/img/imgUpload/Category/@item.Icon" />
-                                        </i>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    قطعات
                 </div>
-                <!-- table container -->
-                <a class="btn btn-primary btn-block text-uppercase mb-3" asp-area="Admin" asp-controller="Category" asp-action="Create">
-                    Add new category
-                </a>
+                <div class="card-body">
+                    <span><i class="icon icon-settings fa-2x"> @ViewData["ProductCount"]</i></span>
+                    @*<span>@ViewData["LastProductAdded"] آخرین قطعه اضافه شده</span>*@
+                </div>
+            </div>
+        </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        مقالات
+                    </div>
+                    <div class="card-body">
+                        <span> <i class="icon icon-book-open fa-2x"> 14</i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-md-6">
+            <div class="card-body">
+                <h5 class="card-title">محصولات بر اساس خودرو</h5>
+                <canvas id="polarChart"></canvas>
+            </div>
+        </div>
+        <div class="card col-md-6">
+            <div class="card-body">
+                <h5 class="card-title">محصولات بر اساس برند</h5>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-md-12">
+            <div class="card-body">
+                <h5 class="card-title">محصولات بر اساس دسته بندی</h5>
+                <canvas id="lineChart"></canvas>
             </div>
         </div>
     </div>
 </div>
-@*<p class="text-white mt-5 mb-5">Welcome back, <b>@_UserManager.GetUserName(User)</b></p>*@
+@section Scripts {
+    <script>
+        @Html.Raw(lineChart.CreateChartCode("lineChart"));
+    </script>
+    <script>
+        @Html.Raw(polarChart.CreateChartCode("polarChart"));
+    </script>
+    <script>
+        @Html.Raw(pieChart.CreateChartCode("pieChart"));
+    </script>
+}
+@*
+
+    <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-productsAdmin">
+            <h2 class="tm-block-title">محصولات</h2>
+            <div class="tm-product-table-container">
+                <table class="table table-hover tm-table-small tm-product-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">PRODUCT NAME</th>
+                            <th scope="col">Situation</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in await unit.BaseRepo<Product>().FindByConditionAsync(filter: null, orderBy: a => a.OrderByDescending(b => b.CreatedDate), includes: a => a.Category))
+                        {
+                            <tr>
+                                <th scope="row"></th>
+                                <td class="tm-product-name">
+                                    @item.Title
+                                </td>
+                                <td dir="rtl">
+                                    @{
+                                        string desc = item.Description.Length >= 200 ? item.Description.Substring(0, 200) + "..." : item.Description;
+                                    }
+                                    @desc
+                                </td>
+                                <td>@item.Situation</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-product-categories">
+            <h2 class="tm-block-title">دسته بندی</h2>
+            <div class="tm-product-table-container">
+                <table class="table tm-table-small tm-product-table">
+                    <tbody>
+                        @foreach (var item in unit.BaseRepo<Category>().FindAll())
+                        {
+                            <tr>
+                                <td class="tm-product-name">@item.Title</td>
+                                <td class="text-center">
+                                    <i class="CatImageAdmin">
+                                        <img src="~/img/imgUpload/Category/@item.Icon" />
+                                    </i>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <a class="btn btn-primary btn-block text-uppercase mb-3" asp-area="Admin" asp-controller="Category" asp-action="Create">
+                Add new category
+            </a>
+        </div>
+    </div>*@

@@ -19,8 +19,9 @@
   direction: ltr;
 }
 .fileinput {
-  display: inline-block;
-  margin-bottom: 9px;
+    display: inline-block;
+    background-color: gainsboro;
+    margin-bottom: 9px;
 }
 .fileinput .form-control {
   display: inline-block;
@@ -37,9 +38,10 @@
   text-align: center;
   vertical-align: middle;
 }
-.fileinput .thumbnail > img {
-  max-height: 100%;
-}
+    .fileinput .thumbnail > img {
+        margin-top: 50px;
+        max-height: 100%;
+    }
 .fileinput .btn {
   vertical-align: middle;
 }

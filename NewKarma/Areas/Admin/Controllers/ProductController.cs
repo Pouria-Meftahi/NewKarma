@@ -33,19 +33,6 @@ namespace NewKarma.Areas.Admin.Controllers
             _unit = unit;
             _mapper = mapper;
         }
-        public async Task<IActionResult> AdvancedSearch(VmProduct ViewModel)
-        {
-            //ViewModel.Title = String.IsNullOrEmpty(ViewModel.Title) ? "" : ViewModel.Title;
-            //ViewModel.ISBN = String.IsNullOrEmpty(ViewModel.ISBN) ? "" : ViewModel.ISBN;
-            //ViewModel.Publisher = String.IsNullOrEmpty(ViewModel.Publisher) ? "" : ViewModel.Publisher;
-            //ViewModel.Author = String.IsNullOrEmpty(ViewModel.Author) ? "" : ViewModel.Author;
-            //ViewModel.Translator = String.IsNullOrEmpty(ViewModel.Translator) ? "" : ViewModel.Translator;
-            //ViewModel.Category = String.IsNullOrEmpty(ViewModel.Category) ? "" : ViewModel.Category;
-            //ViewModel.Language = String.IsNullOrEmpty(ViewModel.Language) ? "" : ViewModel.Language;
-            //var Books = _UW.BooksRepository.GetAllBooks(ViewModel.Title, ViewModel.ISBN, ViewModel.Language, ViewModel.Publisher, ViewModel.Author, ViewModel.Translator, ViewModel.Category);
-            //return View(Books);
-            return null;
-        }
 
         [HttpGet, DisplayName("قطعات"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public async Task<IActionResult> Index(int page = 1, int row = 10, string sortExpression = "Title", string title = "")

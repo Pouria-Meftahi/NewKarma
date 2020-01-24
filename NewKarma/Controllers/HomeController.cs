@@ -76,32 +76,31 @@ namespace NewKarma.Controllers
             return View(prodById);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> WorkWithUs(VmProduct model, IFormFile image)
-        {
-            if (ModelState.IsValid)
-            {
-                if (image != null && image.Length > 0)
-                {
-                    var fileName = Path.GetFileName(image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\ourClient", fileName);
-                    using (var fileStream = new FileStream(filePath, mode: FileMode.Create))
-                    {
-                        await image.CopyToAsync(fileStream);
-                    }
-                    Product product = new Product()
-                    {
-                        Title = model.Title,
-                        Description = model.Description,
-                        Img = fileName,
-                        RlCarModelProduct = model.CarIDFK.Select(a => new RlCarModelProduct { CarId = a }).ToList(),
-                    };
-                }
-
-
-            }
-
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> WorkWithUs(VmProduct model, IFormFile image)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (image != null && image.Length > 0)
+        //        {
+        //            var fileName = Path.GetFileName(image.FileName);
+        //            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\ourClient", fileName);
+        //            using (var fileStream = new FileStream(filePath, mode: FileMode.Create))
+        //            {
+        //                await image.CopyToAsync(fileStream);
+        //            }
+        //            Product product = new Product()
+        //            {
+        //                Title = model.Title,
+        //                Description = model.Description,
+        //                Img = fileName,
+        //                RlCarModelProduct = model.CarIDFK.Select(a => new RlCarModelProduct { CarId = a }).ToList(),
+        //            };
+        //        }
+        //        ViewBag.Title = "";
+        //    }
+        //    return View();
+        //}
 
         public IActionResult About()
         {

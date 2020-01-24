@@ -10,7 +10,7 @@
             <div class="card-header bg-light">
                 @ViewData["Title"]
             </div>
-            <form asp-area="Admin" asp-controller="Category" asp-action="Create" enctype="multipart/form-data" method="post" onsubmit="return validationForm()">
+            <form asp-area="Admin" asp-controller="Brand" asp-action="Create" enctype="multipart/form-data" method="post" onsubmit="return validationForm()">
                 <input hidden asp-for="UserIDFK" value="@thisUserManagerk.GetUserId(User)" />
                 <div asp-validation-summary="All"></div>
                 <div class="row card-body mb-3">
