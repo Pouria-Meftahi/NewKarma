@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using NewKarma.Areas.Identity.Data;
 using NewKarma.Models.Domain;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewKarma.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class BrandController : Controller
+    public class BrandController : BaseController
     {
         private readonly IUnitOfWork _unit;
         public BrandController(IUnitOfWork unit)
@@ -26,7 +20,7 @@ namespace NewKarma.Areas.Admin.Controllers
             _unit = unit;
         }
 
-        [HttpGet, DisplayName("مدیریت برند"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("مدیریت برند"), Authorize]
         public async Task<IActionResult> Index(int page = 1, int row = 5)
         {
             var brand = _unit.BaseRepo<Brand>().FindAllAsync();
@@ -38,7 +32,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(PagingModel ?? null);
         }
 
-        [HttpGet, DisplayName("افزودن برند"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("افزودن برند"), Authorize]
         public IActionResult Create() { return View(); }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -56,7 +50,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet, DisplayName("ویرایش برند"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("ویرایش برند"), Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -101,7 +95,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet, DisplayName("حذف برند"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("حذف برند"), Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

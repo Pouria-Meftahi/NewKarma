@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using NewKarma.Areas.Identity.Data;
 using NewKarma.Models.Domain;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewKarma.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class CarsController : Controller
+    public class CarsController : BaseController
     {
         private readonly IUnitOfWork _unit;
         public CarsController(IUnitOfWork unit)
@@ -25,7 +20,7 @@ namespace NewKarma.Areas.Admin.Controllers
             _unit = unit;
         }
 
-        [HttpGet, DisplayName("مدیریت خوردو"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("مدیریت خوردو"), Authorize]
         public async Task<IActionResult> Index(int page = 1, int row = 5)
         {
             var car = _unit.BaseRepo<Car>().FindAllAsync();
@@ -37,7 +32,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(PagingModel ?? null);
         }
 
-        [HttpGet, DisplayName("افزودن خودرو"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("افزودن خودرو"), Authorize]
         public IActionResult Create() { return View(); }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -55,7 +50,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet, DisplayName("ویرایش خودرو"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("ویرایش خودرو"), Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -101,7 +96,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet, DisplayName("حذف خودرو"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("حذف خودرو"), Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

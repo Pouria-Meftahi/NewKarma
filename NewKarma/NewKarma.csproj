@@ -7,34 +7,18 @@
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\DynamicAccess\**" />
     <Compile Remove="Areas\Admin\Views\RolesManager\**" />
-    <Compile Remove="Areas\Admin\Views\UserManager\**" />
     <Content Remove="Areas\Admin\Views\DynamicAccess\**" />
     <Content Remove="Areas\Admin\Views\RolesManager\**" />
-    <Content Remove="Areas\Admin\Views\UserManager\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\DynamicAccess\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\RolesManager\**" />
-    <EmbeddedResource Remove="Areas\Admin\Views\UserManager\**" />
     <None Remove="Areas\Admin\Views\DynamicAccess\**" />
     <None Remove="Areas\Admin\Views\RolesManager\**" />
-    <None Remove="Areas\Admin\Views\UserManager\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190730144053_mig5_AddrelProdAndBrandAndCatFK.cs" />
-    <Compile Remove="Migrations\20190730145058_mig5EditRelTbl.cs" />
-    <Compile Remove="Migrations\20190730145557_mig5EditRelTbl.cs" />
-    <Compile Remove="Migrations\20190730145710_mig5EditRelTbl.cs" />
-    <Compile Remove="Migrations\20190730150609_mig5EditRelTbl.cs" />
-    <Compile Remove="Migrations\20190730150709_mig5EditRelTbl.cs" />
-    <Compile Remove="Migrations\20190730181125_mig5AddCatFK.cs" />
-    <Compile Remove="Migrations\20190730181400_mig6AddRelAgain.cs" />
-    <Compile Remove="Migrations\20190730181715_mig6AddRelAgain.cs" />
-    <Compile Remove="Migrations\20190730182015_mig6AddRelAgain.cs" />
-    <Compile Remove="Migrations\20190730183026_mig7AddRelAgain.cs" />
-    <Compile Remove="Migrations\20190730183225_mig7_5AddRelAgain.cs" />
-    <Compile Remove="Migrations\20190730183322_mig7_5AddRelAgain.cs" />
-    <Compile Remove="Migrations\20191009070029_mig14AddTripleManyToManyRelCar_Model_Prod.cs" />
-    <Compile Remove="Migrations\20191009070029_mig14AddTripleManyToManyRelCar_Model_Prod.Designer.cs" />
+    <Compile Remove="Areas\Identity\Data\ApplicationRole.cs" />
+    <Compile Remove="Areas\Identity\Data\ApplicationRoleClaim.cs" />
+    <Compile Remove="Areas\Identity\Data\ApplicationUserRole.cs" />
     <Compile Remove="Models\Domain\Blog.cs" />
     <Compile Remove="Models\Domain\Order.cs" />
     <Compile Remove="Models\Domain\OrderDetails.cs" />
@@ -50,6 +34,7 @@
     <PackageReference Include="MD.PersianDateTime.Standard" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -60,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="wwwroot\img\imgUpload\ourClient\" />
     <Folder Include="wwwroot\img\product\" />
   </ItemGroup>

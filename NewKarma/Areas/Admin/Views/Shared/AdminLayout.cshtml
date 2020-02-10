@@ -1,6 +1,6 @@
 ﻿@inject NewKarma.Tools.ConvertDate convertDate
-@inject NewKarma.Areas.Identity.Data.IApplicationUserManager myuserManager
-@inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> _UserManager
+@*@inject NewKarma.Areas.Identity.Data.ApplicationUser myuserManager*@
+@*@inject Microsoft.AspNetCore.Identity.UserManager<NewKarma.Areas.Identity.Data.ApplicationUser> _UserManager*@
 @inject Microsoft.AspNetCore.Identity.SignInManager<NewKarma.Areas.Identity.Data.ApplicationUser> signManager
 <!doctype html>
 <html lang="fa">
@@ -49,7 +49,8 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="/images/avatar-1.png" class="avatar avatar-sm" alt="logo">
                                 <span class="small ml-1 d-md-down-none">
-                                    @await myuserManager.GetFullName(User)
+                                    @*@myuserManager.UserName*@
+                                    @signManager.UserManager.GetUserName(User)
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">

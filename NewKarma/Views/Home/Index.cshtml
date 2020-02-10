@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
 <section class="banner_part">
     <div class="container">
         <div class="row align-items-center">
@@ -53,74 +52,30 @@
                         شروع همکاری
                     </button>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModalcontact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">همکاری با کارما یدک</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">پذیرش پخش قطعات</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    @*<form asp-controller="Home" asp-action="WorkWithUs" method="post" enctype="multipart/form-data">
-                                            <span asp-validation-for="@prod.All"></span>
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input class="form-control" asp-for="@prod.Title" placeholder="قطعه">
-                                                            <span asp-validation-for="@prod.Title" class="text-danger"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <select asp-for="@prod.CarIDFK" asp-items="ViewBag.CarId" class="select2 js-states form-control" multiple="multiple">
-                                                                <option value="">خودرو</option>
-                                                            </select>
-                                                            <span asp-validation-for="@prod.CarIDFK" class="text-danger"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <textarea asp-for="@prod.Description" class="form-control" rows="6" cols="3" placeholder="توضیحات"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="card">
-                                                        <div class="card-header bg-light">
-                                                            تصویر قطعه
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="form-group">
-                                                                <div class="text-center">
-                                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                                        <div class="fileinput-new thumbnail" style="height: 200px;">
-                                                                            <img src="/img/No_Image_Available.jpg" class="card-img-top" />
-                                                                        </div>
-                                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
-                                                                        <div>
-                                                                            <span class="btn default btn-file">
-                                                                                <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
-                                                                                <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
-                                                                                <input type="file" name="image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
-                                                                            </span>
-                                                                            <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </form>*@
+                                    <div class="card">
+                                        <span>
+                                            <img src="~/img/icon/WhatsApp.png" alt="Whats App"/>
+                                        </span>
+                                        <p>با تاببد قوانین و شرابط همکاری پیشنهاد خود را وارد کنید ما در کمترین زمان با شمام تماس می گیرند</p>
+                                        <p>Lorem Ipsum شرایط و قوانین همکاری</p>
+                                        <input type="checkbox"/>
+                                        <textarea placeholder="متن پیام خود را وارد کنید"></textarea>
+                                        
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn_3_5 btn-right">ارسال</button>
-                                    <button type="button" class="btn btn_3_5 " data-dismiss="modal">بستن</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">خروج</button>
+                                    <button type="button" class="btn btn-primary">ارسال</button>
                                 </div>
                             </div>
                         </div>
@@ -192,13 +147,16 @@
                         </blockquote>
                     </div>
                     <div class="card">
-                        <img src="img/gallery/gallery_item.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <a href="project_details.html">
-                                <h5 class="card-title">نصیر لوازم</h5>
-                            </a>
-                            <p class="card-text">کارما یدک در راستای ارائه قطعات با کیفیت بالا</p>
-                        </div>
+                        @*@foreach (var item in unit.BaseRepo<Brand>().FindByConditionAsync(filter:a=>a))
+                        {
+                            <img src="img/gallery/gallery_item.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a href="project_details.html">
+                                    <h5 class="card-title">نصیر لوازم</h5>
+                                </a>
+                                <p class="card-text">کارما یدک در راستای ارائه قطعات با کیفیت بالا</p>
+                            </div>
+                        }*@
                     </div>
                     <div class="card">
                         <img src="img/gallery/gallery_item_1.png" class="card-img-top" alt="...">
@@ -262,7 +220,9 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <div class="card">
+                                        <p>lorem ipsum</p>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -313,7 +273,6 @@
                         </div>
                     </div>
                 </div>
-
             }
         </div>
     </div>
@@ -331,7 +290,6 @@
                         هستند که ما از همکارکان خودمون انتظار داریم.
                     </p>
                     <a href="#" class="btn_2 btn-violet controls" data-toggle="modal" data-target="#exampleModalWork">شروع یک همراهی </a>
-
                     <div class="modal fade" id="exampleModalWork" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -351,7 +309,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-md-6 col-xl-5">

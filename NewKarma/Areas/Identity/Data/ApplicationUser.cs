@@ -12,6 +12,5 @@ namespace NewKarma.Areas.Identity.Data
         public string LastName { get; set; }
         public DateTime RegisterDate { get; set; }
         public bool Status { get; set; }
-        public virtual List<ApplicationUserRole> Roles { get; set; }
     }
 }

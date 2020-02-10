@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,13 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewKarma.Areas.Identity.Data;
-using NewKarma.Areas.Identity.Services;
 using NewKarma.Models;
-using NewKarma.Models.Domain;
 using NewKarma.Repository;
 using NewKarma.Repository.UOW;
 using NewKarma.Tools;
 using ReflectionIT.Mvc.Paging;
+using System;
 
 namespace NewKarma
 {
@@ -43,7 +37,7 @@ namespace NewKarma
             });
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/Admin/Account/Login";
+                options.LoginPath = "/Account/Login";
                 //options.AccessDeniedPath = "/Home/AccessDenied";
             });
 
@@ -51,40 +45,28 @@ namespace NewKarma
             services.AddTransient<AppDbContext>();
             services.AddTransient<ConvertDate>();
             services.AddScoped<IEmailSender, EmailSender>();
-            //Authentication
-            services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
-            services.AddTransient<ApplicationUserManager>();
-            services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
-            //Dynamic Policy
-            services.AddSingleton<IAuthorizationHandler, DynamicPermissionsAuthorizationHandler>();
-            services.AddSingleton<IMvcActionsDiscoveryService, MvcActionsDiscoveryService>();
-            services.AddSingleton<ISecurityTrimmingServices, SecurityTrimmingServices>();
+
 
             services.AddHttpContextAccessor();
             services.AddHttpClient();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.";
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
-            });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(ConstantPolicies.DynamicPermission, policy => policy.Requirements.Add(new DynamicPermissionRequirement()));
-            });
+            
+            services.AddTransient<AppDbContext>();//What The Fuck!
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProductRepo, ProductRepo>();
             services.AddTransient<IConvertDate, ConvertDate>();
             services.AddTransient<ConvertDate>();
             services.AddTransient<UnitOfWork>();
             services.AddTransient<ProductRepo>();
-            services.AddTransient<AppDbContext>();
+
+            services.AddAuthentication();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            //AutoMapper Config
+            //AutoMapper Config //Todo:Check This Replace With Di In Controller
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new Helper.Helper());
@@ -92,7 +74,8 @@ namespace NewKarma
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
             //ReflectionIT
-            services.AddPaging(options => {
+            services.AddPaging(options =>
+            {
                 options.ViewName = "Bootstrap4";
                 //options.PageParameterName = "pageindex";
                 //options.SortExpressionParameterName = "sort";

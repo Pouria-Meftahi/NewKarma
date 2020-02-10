@@ -1,84 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using NewKarma.Areas.Identity.Data;
 using NewKarma.Models;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using static NewKarma.Models.View.VmAccount;
 
 namespace NewKarma.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IApplicationRoleManager _roleManager;
-        private readonly IApplicationUserManager _userManger;
         private readonly IHostingEnvironment _env;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly AppDbContext _context;
-        public AccountController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IHostingEnvironment env, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, AppDbContext context)
+        public AccountController(UserManager<ApplicationUser> userManager, IHostingEnvironment env, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, AppDbContext context)
         {
-            _roleManager = roleManager;
-            _userManger = userManager;
+            _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _context = context;
             _env = env;
         }
-        #region Register
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    RegisterDate = DateTime.Now,
-                    Status = true
-                };
-                IdentityResult result = await _userManger.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var role = _roleManager.FindByNameAsync("کاربر");
-                    if (role == null)
-                        await _roleManager.CreateAsync(new ApplicationRole("کاربر"));
-                    result = await _userManger.AddToRoleAsync(user, "کاربر");
-                    if (result.Succeeded)
-                    {
-                        var code = await _userManger.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", values: new { userId = user.Id, code = code }, protocol: Request.Scheme);
+        //#region Register
+        //[HttpGet]
+        //public IActionResult Register()
+        //{
+        //    return View();
+        //}
+        //[HttpPost, ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Register(RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser
+        //        {
+        //            UserName = model.UserName,
+        //            Email = model.Email,
+        //            RegisterDate = DateTime.Now,
+        //            Status = true
+        //        };
+        //        IdentityResult result = await _userManger.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            var role = _roleManager.FindByNameAsync("کاربر");
+        //            if (role == null)
+        //                await _roleManager.CreateAsync(new ApplicationRole("کاربر"));
+        //            result = await _userManger.AddToRoleAsync(user, "کاربر");
+        //            if (result.Succeeded)
+        //            {
+        //                var code = await _userManger.GenerateEmailConfirmationTokenAsync(user);
+        //                var callbackUrl = Url.Action("ConfirmEmail", "Account", values: new { userId = user.Id, code = code }, protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(model.Email,
-                        "تایید ایمیل حساب کاربری - استودیو پویا نمایی نقطه",
-                           $"<div dir='rtl' style='font-family:tahoma;font-size:14px'>لطفا با کلیک روی لینک ایمیل خود را تایید کنید." +
-                          $"  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>کلیک کنید</a></div>");
-                        return RedirectToAction("Index", "Home", new { id = "ConfirmEmail" });
-                    }
-                }
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, item.Description);
-                }
-            }
-            return View();
-        }
-        #endregion
+        //                await _emailSender.SendEmailAsync(model.Email,
+        //                "تایید ایمیل حساب کاربری - استودیو پویا نمایی نقطه",
+        //                   $"<div dir='rtl' style='font-family:tahoma;font-size:14px'>لطفا با کلیک روی لینک ایمیل خود را تایید کنید." +
+        //                  $"  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>کلیک کنید</a></div>");
+        //                return RedirectToAction("Index", "Home", new { id = "ConfirmEmail" });
+        //            }
+        //        }
+        //        foreach (var item in result.Errors)
+        //        {
+        //            ModelState.AddModelError(string.Empty, item.Description);
+        //        }
+        //    }
+        //    return View();
+        //}
+        //#endregion
         #region Login
         [HttpGet]
         public IActionResult Login(string ReturnUrl = null)
@@ -90,7 +81,7 @@ namespace NewKarma.Controllers
         {
             if (ModelState.IsValid)
             {
-                var User = await _userManger.FindByNameAsync(model.UserName);
+                var User = await _userManager.FindByNameAsync(model.UserName);
                 if (User != null)
                 {
                     if (User.Status)
@@ -98,28 +89,9 @@ namespace NewKarma.Controllers
                         var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, true);
                         if (result.Succeeded)
                         {
-                            var userAdmin = await _userManger.IsInRoleAsync(User, "ادمین");
-                            var userAuthor = await _userManger.IsInRoleAsync(User, "نماینده");
-                            var userNormal = await _userManger.IsInRoleAsync(User, "کاربر");
-                            if (userAdmin)
-                            {
-                                //ViewBag.Success = true;
-                                return RedirectToAction("Index", "Dashbord", new { area = "Admin" });
-                            }
-                            else if (userAuthor)
-                            {
-                                return RedirectToAction("Index", "Product", new { area = "Admin" });
-                            }
-                            else if (userNormal)
-                            {
-                                return RedirectToAction("Index", "Product");
-                            }
-                            else
-                            {
-                                return RedirectToAction("Index", "Home");
-                            }
+                            return RedirectToAction("Index", "Dashbord", new { area = "Admin" });
                         }
-                        if (result.IsLockedOut)
+                        else if (result.IsLockedOut)
                         {
                             ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد.");
                             return View(model);
@@ -146,21 +118,6 @@ namespace NewKarma.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-                return RedirectToAction("Index", "Home");
-
-            var user = await _userManger.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound($"Unable to load user with ID '{userId}'");
-
-            var result = await _userManger.ConfirmEmailAsync(user, code);
-            if (!result.Succeeded)
-                throw new InvalidOperationException($"Error Confirming email for user with ID '{userId}'");
-
-            return View();
-        }
         #region ForgetPassword
         [HttpGet]
         public IActionResult ForgetPassword()
@@ -173,18 +130,18 @@ namespace NewKarma.Controllers
         {
             if (ModelState.IsValid)
             {
-                var User = await _userManger.FindByEmailAsync(ViewModel.Email);
+                var User = await _userManager.FindByEmailAsync(ViewModel.Email);
                 if (User == null)
                 {
                     ModelState.AddModelError(string.Empty, "ایمیل شما صحیح نمی باشد.");
                 }
 
-                if (!await _userManger.IsEmailConfirmedAsync(User))
+                if (!await _userManager.IsEmailConfirmedAsync(User))
                 {
                     ModelState.AddModelError(string.Empty, "لطفا با تایید ایمیل حساب کاربری خود را فعال کنید.");
                 }
 
-                var Code = await _userManger.GeneratePasswordResetTokenAsync(User);
+                var Code = await _userManager.GeneratePasswordResetTokenAsync(User);
                 var CallbackUrl = Url.Action("ResetPassword", "Account", values: new { Code }, protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(ViewModel.Email, "بازیابی کلمه عبور", $"<p style='font-family:tahoma;font-size:14px'>برای بازنشانی کلمه عبور خود <a href='{HtmlEncoder.Default.Encode(CallbackUrl)}'>اینجا کلیک کنید</a></p>");
 
@@ -222,13 +179,13 @@ namespace NewKarma.Controllers
             }
             else
             {
-                var User = await _userManger.FindByEmailAsync(ViewModel.Email);
+                var User = await _userManager.FindByEmailAsync(ViewModel.Email);
                 if (User == null)
                 {
                     ModelState.AddModelError(string.Empty, "ایمیل شما صحیح نمی باشد.");
                     return View();
                 }
-                var Result = await _userManger.ResetPasswordAsync(User, ViewModel.Code, ViewModel.Password);
+                var Result = await _userManager.ResetPasswordAsync(User, ViewModel.Code, ViewModel.Password);
                 if (Result.Succeeded)
                 {
                     return RedirectToAction("ResetPasswordConfirmation");

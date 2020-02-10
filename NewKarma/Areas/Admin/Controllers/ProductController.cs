@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using NewKarma.Areas.Identity.Data;
-using NewKarma.Models;
 using NewKarma.Models.Domain;
 using NewKarma.Models.View;
-using NewKarma.Repository;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewKarma.Areas.Admin.Controllers
 {
-    [Area("Admin"), DisplayName("مدیریت قطعات")]
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
-    
         private readonly IUnitOfWork _unit;
         private IMapper _mapper;
-
         public ProductController(IUnitOfWork unit, IMapper mapper)
         {
             _unit = unit;
             _mapper = mapper;
         }
 
-        [HttpGet, DisplayName("قطعات"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("قطعات"), Authorize]
         public async Task<IActionResult> Index(int page = 1, int row = 10, string sortExpression = "Title", string title = "")
         {
 
@@ -60,7 +54,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(PagingModel) ?? null;
         }
 
-        [HttpGet, DisplayName("جزئیات قطعات"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("جزئیات قطعات"), Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -75,7 +69,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(product);
         }
 
-        [HttpGet, DisplayName("افزودن قطعات"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("افزودن قطعات"), Authorize]
         public IActionResult Create()
         {
             ViewBag.BrandId = new SelectList(_unit.BaseRepo<Brand>().FindAll(), "BrandId", "Title");
@@ -124,7 +118,7 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
 
-        [HttpGet, DisplayName("ویرایش قطعات"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("ویرایش قطعات"), Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -143,7 +137,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     var viewModel = (from row in _unit._context.Products
                                      .Include(a => a.Category)
                                      .Include(a => a.Brand)
-                                     //.Include(a => a.RlCarModelProduct)
+                                         //.Include(a => a.RlCarModelProduct)
                                      where (row.ProductId == id)
                                      select new VmProduct
                                      {
@@ -157,11 +151,11 @@ namespace NewKarma.Areas.Admin.Controllers
                                          CatIDFK = row.CatIDFK,
                                          UserIdFK = row.UserIDFK,
                                      }).FirstAsync();
-             
+
                     int[] CarsArray = await _unit._context.RlCarModelProducts
                         .Where(a => a.ProductId == id)
                         .Select(a => a.CarId).ToArrayAsync();
-                   
+
                     viewModel.Result.CarIDFK = CarsArray;
                     ViewBag.CatId = new SelectList(_unit.BaseRepo<Category>().FindAll(), "CatId", "Title");
                     ViewBag.BrandId = new SelectList(_unit.BaseRepo<Brand>().FindAll(), "BrandId", "Title");
@@ -170,7 +164,7 @@ namespace NewKarma.Areas.Admin.Controllers
                 }
             }
         }
-        
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(VmProduct model, IFormFile image)
         {
@@ -251,7 +245,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet, DisplayName("حذف قطعات"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("حذف قطعات"), Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

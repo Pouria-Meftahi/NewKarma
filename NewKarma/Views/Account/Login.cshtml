@@ -1,7 +1,6 @@
 ﻿@model NewKarma.Models.View.VmAccount.LoginViewModel
 @{
     ViewData["Title"] = "Login";
-    //Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
     Layout = null;
 }
 <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.0.0/css/bootstrap.min.css" integrity="sha384-P4uhUIGk/q1gaD/NdgkBIl3a6QywJjlsFJFk7SPRdruoGddvRVSwv5qFnvZ73cpz" crossorigin="anonymous">
@@ -33,13 +32,13 @@
                                 <input asp-for="Password" type="password" class="form-control validate" id="password" />
                                 <span asp-validation-for="Password"></span>
                             </div>
-                            @*<div class="form-group">
+                            <div class="form-group">
                                 <div class="checkbox">
                                     <label>
                                         <input asp-for="RememberMe" /> &nbsp; &nbsp;  @Html.DisplayNameFor(model => model.RememberMe)
                                     </label>
                                 </div>
-                            </div>*@
+                            </div>
                             <div class="form-group mt-4">
                                 <button type="submit" class="btn btn-primary btn-block text-uppercase">
                                     ورود

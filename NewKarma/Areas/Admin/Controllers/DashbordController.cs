@@ -16,26 +16,25 @@ using NewKarma.Repository.UOW;
 
 namespace NewKarma.Areas.Admin.Controllers
 {
-    [Area("Admin"), DisplayName("پنل مدیریت ")]
-    public class DashbordController : Controller
+    public class DashbordController : BaseController
     {
-        private readonly AppDbContext _context;
         private readonly UnitOfWork _unit;
-        public DashbordController(AppDbContext context,UnitOfWork unit)
+        public DashbordController(UnitOfWork unit)
         {
-            _context = context;
             _unit = unit;
         }
-        [DisplayName("داشبرد"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [DisplayName("داشبرد"), Authorize]
         public IActionResult Index()
         {
             var catitem = _unit.BaseRepo<Category>().FindAll();
             var branditem = _unit.BaseRepo<Brand>().FindAll();
             var proditem = _unit.BaseRepo<Product>().FindAll();
             ViewData["CatCount"] = catitem.Count();
-            ViewData["BrandCount"] = branditem.Count().ToString("n",CultureInfo.GetCultureInfo("fa-IR"));
+            ViewData["BrandCount"] = branditem.Count();
             ViewData["ProductCount"] = proditem.Count();
-            ViewData["LastBrandAdded"]= branditem.OrderByDescending(a=>a.BrandId).Take(1).FirstOrDefault().Title;
+            ViewBag.LastBrandAdded = branditem.OrderByDescending(a=>a.BrandId).Take(3).Select(a=>a.Title);
+            ViewBag.LastCatAdded = catitem.OrderByDescending(a=>a.CatId).Take(3).Select(a=>a.Title);
+            ViewBag.LastProdAdded = proditem.OrderByDescending(a=>a.CreatedDate).Take(3).Select(a=>a.Title);
             Chart lineChart = GenerateLineChart();
             Chart polarChart = GeneratePolarChart();
             Chart pieChart = GeneratePieChart();
@@ -52,7 +51,7 @@ namespace NewKarma.Areas.Admin.Controllers
             };
             Data data = new Data()
             {
-                Labels = _context.Cars.Select(a => a.CarTitle + " " + (!string.IsNullOrEmpty(a.CarModel) ? a.CarModel : string.Empty)).ToList()
+                Labels = _unit._context.Cars.Select(a => a.CarTitle + " " + (!string.IsNullOrEmpty(a.CarModel) ? a.CarModel : string.Empty)).ToList()
             };
             PolarDataset dataset = new PolarDataset()
             {
@@ -64,7 +63,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     ChartColor.FromHexString("#E7E9ED"),
                     ChartColor.FromHexString("#36A2EB")
                 },
-                Data = _context.Cars.Select(a => (double)a.RlCarModelProduct.Count()).ToList()
+                Data = _unit._context.Cars.Select(a => (double)a.RlCarModelProduct.Count()).ToList()
             };
             data.Datasets = new List<Dataset>();
             data.Datasets.Add(dataset);
@@ -81,27 +80,31 @@ namespace NewKarma.Areas.Admin.Controllers
             };
             Data data = new Data()
             {
-                Labels = _context.Brands.Select(a => a.Title).ToList()
+                Labels = _unit._context.Brands.Select(a => a.Title).ToList()
             };
-
+            
             PieDataset dataset = new PieDataset()
             {
-
                 Label = "My dataset",
                 BackgroundColor = new List<ChartColor>()
                 {
                     ChartColor.FromHexString("#FF6384"),
                     ChartColor.FromHexString("#36A2EB"),
                     ChartColor.FromHexString("#FFCE56"),
-                    ChartColor.CreateRandomChartColor(true)
+                    ChartColor.FromHexString("#4a1984"),
+                    ChartColor.FromHexString("#5eb28d"),
+                    ChartColor.FromHexString("#377b42"),
+
                 },
                 HoverBackgroundColor = new List<ChartColor>() {
                     ChartColor.FromHexString("#FF6384"),
                     ChartColor.FromHexString("#36A2EB"),
                     ChartColor.FromHexString("#FFCE56"),
-                    ChartColor.CreateRandomChartColor(true)
+                    ChartColor.FromHexString("#4a1984"),
+                    ChartColor.FromHexString("#5eb28d"),
+                    ChartColor.FromHexString("#377b42"),
                 },
-                Data = _context.Brands.Include(s => s.Products).Select(a => (double)a.Products.Count()).ToList() 
+                Data = _unit._context.Brands.Include(s => s.Products).Select(a => (double)a.Products.Count()).ToList() 
             };
             data.Datasets = new List<Dataset>();
             data.Datasets.Add(dataset);
@@ -118,9 +121,9 @@ namespace NewKarma.Areas.Admin.Controllers
             };
             Data data = new Data
             {
-                Labels = _context.Categories.Select(a => a.Title).ToList()
+                Labels = _unit._context.Categories.Select(a => a.Title).ToList()
             };
-            List<double> dataList = _context.Categories.Include(c => c.Products).Select(a => (double)a.Products.Count()).ToList();
+            List<double> dataList = _unit._context.Categories.Include(c => c.Products).Select(a => (double)a.Products.Count()).ToList();
             LineDataset dataset = new LineDataset()
             {
                 Label = "تعداد قطعات موجود",

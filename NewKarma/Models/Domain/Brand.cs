@@ -16,6 +16,10 @@ namespace NewKarma.Models.Domain
         [Required,Display(Name ="عنوان")]
         public string Title { get; set; }
 
+        //Todo Add Migration & Update Database↓
+        //public string Description { get; set; }
+        //public string Image { get; set; }
+
         public string UserIDFK { get; set; }
         [ForeignKey(nameof(UserIDFK))]
         public virtual ApplicationUser ApplicationUser { get; set; }

@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
-using NewKarma.Areas.Identity.Data;
 using NewKarma.Models.Domain;
 using NewKarma.Models.View;
-using NewKarma.Repository;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace NewKarma.Areas.Admin.Controllers
 {
-    [Area("Admin"), DisplayName("مدیریت دسته بندی")]
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         private readonly IUnitOfWork _unit;
         public CategoryController(IUnitOfWork unit)
@@ -27,7 +22,7 @@ namespace NewKarma.Areas.Admin.Controllers
             _unit = unit;
         }
 
-        [HttpGet, DisplayName("مدیریت دسته بندی"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("مدیریت دسته بندی"), Authorize]
         public async Task<IActionResult> Index(int page = 1, int row = 5)
         {
             var category = _unit.BaseRepo<Category>().FindAllAsync();
@@ -39,7 +34,7 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(PagingModel ?? null);
         }
 
-        [HttpGet, DisplayName("افزودن دسته بندی"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("افزودن دسته بندی"), Authorize]
         public IActionResult Create() { return View(); }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -75,7 +70,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet, DisplayName("ویرایش دسته بندی"), Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [HttpGet, DisplayName("ویرایش دسته بندی"), Authorize]
         public async Task<IActionResult> Edit(int? catId, Category model)
         {
             if (catId == null)

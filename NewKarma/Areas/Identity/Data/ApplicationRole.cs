@@ -15,7 +15,7 @@ namespace NewKarma.Areas.Identity.Data
         {
         }
         public string Description { get; set; }
-        public ApplicationRole (string roleName,string roleDescription) : base(roleName)
+        public ApplicationRole(string roleName, string roleDescription) : base(roleName)
         {
             Description = roleDescription;
         }

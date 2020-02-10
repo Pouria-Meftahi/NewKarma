@@ -8,46 +8,49 @@
                     <i class="icon icon-speedometer"></i> داشبورد
                 </a>
             </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="RolesManager" asp-action="Index" class="nav-link">
+                    <i class="icon icon-login"></i> مدیریت نقش ها
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="UserManager" asp-action="Index" class="nav-link">
+                    <i class="icon icon-user"></i> مدیریت کاربران
+                </a>
+            </li>
+
             <li class="nav-item nav-dropdown">
                 <a href="#" class="nav-link nav-dropdown-toggle">
-                    <i class="icon icon-book-open"></i> مدیریت قطعات <i class="fa fa-caret-left"></i>
+                    <i class="icon icon-settings"></i> مدیریت قطعات <i class="fa fa-caret-left"></i>
                 </a>
                 <ul class="nav-dropdown-items">
-                    <security-trimming asp-area="Admin" asp-controller="Product" asp-action="Index">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
-                                <i class="icon icon-target"></i> مشاهده قطعات
-                            </a>
-                        </li>
-                    </security-trimming>
-                    <security-trimming asp-area="Admin" asp-controller="Product" asp-action="Create">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="nav-link">
-                                <i class="icon icon-target"></i> افزودن قطعه جدید
-                            </a>
-                        </li>
-                    </security-trimming>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
+                            <i class="icon icon-eye"></i> مشاهده قطعات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="nav-link">
+                            <i class="icon icon-magnifier-add"></i> افزودن قطعه جدید
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
                 <a href="#" class="nav-link nav-dropdown-toggle">
-                    <i class="icon icon-user"></i>مدیریت دسته بندی <i class="fa fa-caret-left"></i>
+                    <i class="icon icon-chart"></i>مدیریت دسته بندی <i class="fa fa-caret-left"></i>
                 </a>
                 <ul class="nav-dropdown-items">
-                    <security-trimming asp-area="Admin" asp-controller="Category" asp-action="Index">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
-                                <i class="icon icon-target"></i> مشاهده دسته بندی
-                            </a>
-                        </li>
-                    </security-trimming>
-                    <security-trimming asp-area="Admin" asp-controller="Category" asp-action="Create">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="nav-link">
-                                <i class="icon icon-target"></i> افزودن دسته بندی جدید
-                            </a>
-                        </li>
-                    </security-trimming>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
+                            <i class="icon icon-eye"></i> مشاهده دسته بندی
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="nav-link">
+                            <i class="icon icon-pie-chart"></i> افزودن دسته بندی جدید
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
@@ -55,42 +58,35 @@
                     <i class="icon icon-user"></i> مدیریت برند <i class="fa fa-caret-left"></i>
                 </a>
                 <ul class="nav-dropdown-items">
-                    <security-trimming asp-area="Admin" asp-controller="Brand" asp-action="Index">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="nav-link">
-                                <i class="icon icon-target"></i> مشاهده برند ها
-                            </a>
-                        </li>
-                    </security-trimming>
-                    <security-trimming asp-area="Admin" asp-controller="Brand" asp-action="Create">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="nav-link">
-                                <i class="icon icon-target"></i> افزودن برند جدید
-                            </a>
-                        </li>
-                    </security-trimming>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="nav-link">
+                            <i class="icon icon-pin"></i> مشاهده برند ها
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="nav-link">
+                            <i class="icon icon-location-pin"></i> افزودن برند جدید
+                        </a>
+                    </li>
                 </ul>
             </li>
 
+
             <li class="nav-item nav-dropdown">
                 <a href="#" class="nav-link nav-dropdown-toggle">
-                    <i class="icon icon-list"></i> مدیریت خودرو ها <i class="fa fa-caret-left"></i>
+                    <i class="icon icon-vector"></i> مدیریت خودرو ها <i class="fa fa-caret-left"></i>
                 </a>
                 <ul class="nav-dropdown-items">
-                    <security-trimming asp-area="Admin" asp-controller="Cars" asp-action="Index">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="nav-link">
-                                <i class="icon icon-target"></i> مدیریت خودرو ها
-                            </a>
-                        </li>
-                    </security-trimming>
-                    <security-trimming asp-area="Admin" asp-controller="Cars" asp-action="Create">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Cars" asp-action="Create" class="nav-link">
-                                <i class="icon icon-target"></i> افزودن خودرو ها
-                            </a>
-                        </li>
-                    </security-trimming>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="nav-link">
+                            <i class="icon icon-action-undo"></i> مدیریت خودرو ها
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Cars" asp-action="Create" class="nav-link">
+                            <i class="icon icon-action-redo"></i> افزودن خودرو ها
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>
