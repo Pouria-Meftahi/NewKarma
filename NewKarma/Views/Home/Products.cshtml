@@ -1,7 +1,6 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<Product>
 @using ReflectionIT.Mvc.Paging
 @addTagHelper*,ReflectionIT.Mvc.Paging
-@inject NewKarma.Repository.UOW.IUnitOfWork unit
 @{
     ViewData["Title"] = "Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,88 +37,12 @@
             </div>
             <div class="col-lg-4">
                 <div class="blog_right_sidebar">
-                    <aside class="single_sidebar_widget search_widget">
-                        <form asp-controller="Home" asp-action="Products">
-                            <div class="form-group">
-                                <div class="input-group mb-3">
-                                    @*onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'جسنجو با کلمات کلیدی'" data-cf-modified-6cf4986cd25099c523115474-=""*@
-                                    <input type="text" class="form-control" name="title" placeholder="جستجو با کلمات کلیدی">
-                                    <div class="input-group-append">
-                                        <button class="btn" type="button"><i class="ti-search"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            @{
-                                if (ViewBag.Search != "")
-                                {
-                                    <a class="button rounded-0 bg-success text-white w-100 " style="color:white !important;" href="/Home/Products">بازگشت به لیست قطعات</a>
-                                }
-                                else
-                                {
-                                    <button class="button rounded-0 primary-bg text-white w-100 btn_4" type="submit">بگرد</button>
-                                }
-                            }
-                        </form>
-                    </aside>
-                    <aside class="single_sidebar_widget post_category_widget">
-                        <h4 class="widget_title">دسته بندی</h4>
-                        <ul class="list cat-list">
-                            @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
-                            {
-                                <li>
-                                    <a asp-controller="Home" asp-action="ProductByCategory" asp-route-CatId="@item.CatId" class="d-flex blog_item_date rounded-0 primary-bg btn_4">
-                                        <p>@item.Title</p>
-                                    </a>
-                                    <img class="img-Admin" src="~/img/imgUpload/Category/@item.Icon" />
-                                </li>
-                            }
-                            <li>
-                        </ul>
-                    </aside>
-                    <aside class="single_sidebar_widget popular_post_widget" dir="ltr">
-                        <h3 class="widget_title">آخرین مطالب بلاگ</h3>
-                        <div class="media post_item">
-                            <img src="img/post/post_1.png" alt="post">
-                            <div class="media-body">
-                                <a href="#">
-                                    <h3>تست ایمنی سمند ال ایکس...</h3>
-                                </a>
-                                <p>خرداد ۱۲, ۱۳۹۷</p>
-                            </div>
-                        </div>
-                        <div class="media post_item">
-                            <img src="img/post/post_2.png" alt="post">
-                            <div class="media-body">
-                                <a href="#">
-                                    <h3>دنا توربو پلاس </h3>
-                                </a>
-                                <p>۲ ساعت پیش</p>
-                            </div>
-                        </div>
-
-                    </aside>
-                    <aside class="single_sidebar_widget tag_cloud_widget">
-                        <h4 class="widget_title">خودرو ها</h4>
-                        <ul class="list">
-                            @foreach (var item in await unit.BaseRepo<Car>().FindAllAsync())
-                            {
-                                <li>
-                                    <a asp-controller="Home" asp-action="ProductByCar" asp-route-CarId="@item.CarId">@item.CarTitle @item.CarModel</a>
-                                </li>
-                            }
-                        </ul>
-                    </aside>
+                    @await Html.PartialAsync("_Aside", ViewData["Search"])
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-
-
-
-
 @*<div class="modal fade" id="errorCatModal">
         <div class="container">
             <div class="row">

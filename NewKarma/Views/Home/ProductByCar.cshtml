@@ -1,7 +1,7 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<Product>
 @addTagHelper*,ReflectionIT.Mvc.Paging
 @{
-    ViewData["Title"] = "ProductByCategory";
+    ViewData["Title"] = "ProductByCar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section class="blog_area section_padding">
@@ -14,7 +14,7 @@
                         <a class="col-md-6 padding-0px" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
                             <article class="blog_item">
                                 <div id="prodimg" class="blog_item_img" style="background-image:url('/img/imgUpload/Product/@item.Img')">
-                                    <span class="blog_item_date btn_4" id="BrandBtn">@item.Brand.Title</span>
+                                    <span class="blog_item_date btn_4" id="BrandBtn">@item.Category.Title</span>
                                 </div>
                                 <div class="blog_details">
                                     <h2 class="d-inline-block">@item.Title</h2>
@@ -39,3 +39,4 @@
         </div>
     </div>
 </section>
+
