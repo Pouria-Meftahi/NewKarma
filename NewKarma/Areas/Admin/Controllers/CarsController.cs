@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using NewKarma.Models.Domain;
+using NewKarma.Models.View;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
 using System.ComponentModel;

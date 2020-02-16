@@ -21,7 +21,7 @@
                     @Html.DisplayFor(model => model.Title)
                 </dd>
             </dl>
-            <form asp-area="Admin" asp-action="Delete">
+            <form asp-area="Admin" asp-controller="Brand" asp-action="Delete">
                 <input type="hidden" asp-for="BrandId" />
                 <input type="submit" value="حذف" class="btn btn-danger" />
                 <a asp-action="Index" class="btn btn-primary ">انصراف</a>

@@ -1,8 +1,63 @@
-﻿
+﻿@model Car
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
+<div class="container-fluid">
+    <form asp-area="Admin" asp-controller="Cars" asp-action="Edit">
+        @if (ViewBag.MsgConfirm != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.MsgConfirm
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        @if (ViewBag.MsgFailed != null)
+        {
+            <div class="alert alert-danger alert-dismissable">
+                @ViewBag.MsgFailed
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        ویرایش اطلاعات خودرو
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <input type="hidden" asp-for="CarId" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" asp-for="CarTitle"></label>
+                                        <input asp-for="CarTitle" class="form-control" placeholder="عنوان خودرو">
+                                        <span asp-validation-for="CarTitle" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label" asp-for="CarModel"></label>
+                                        <input asp-for="CarModel" class="form-control" placeholder="مدل خودرو">
+                                        <span asp-validation-for="CarModel" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light text-right">
+                        <button type="submit" class="btn btn-success float-left">ذخیره تغییرات</button>
+                        <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="btn btn-info float-right">بازگشت</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
-<h2>Edit</h2>
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

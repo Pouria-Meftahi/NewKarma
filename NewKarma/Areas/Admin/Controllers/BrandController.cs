@@ -24,7 +24,7 @@ namespace NewKarma.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int page = 1, int row = 5)
         {
             var brand = _unit.BaseRepo<Brand>().FindAllAsync();
-            var PagingModel = PagingList.Create(await brand, row, page);
+            var PagingModel = PagingList.Create(await brand, row, page);    
             PagingModel.RouteValue = new RouteValueDictionary
             {
                 {"row",row},

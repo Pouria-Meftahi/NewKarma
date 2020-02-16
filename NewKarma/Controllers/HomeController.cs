@@ -30,27 +30,10 @@ namespace NewKarma.Controllers
             }
             return View();
         }
-
-        //public async PartialViewResult (string title ="")
-        //{
-        //    var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
-        //    var PagingModel = PagingList.Create(await Products, page);
-        //    PagingModel.RouteValue = new RouteValueDictionary
-        //    {
-        //        {"title",title }
-        //    };
-        //    ViewBag.Search = title;
-        //    if (Products.Result.Count() == 0)
-        //    {
-        //        ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
-        //    }
-        //    return PartialView(PagingModel ?? null);
-        //}
-
         [ActionName("Products")]
         public async Task<IActionResult> Products(int page = 1, int row = 6, string title = "")
         {
-            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
+            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation==true && s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
             var PagingModel = PagingList.Create(await Products, row, page);
             PagingModel.Action = "Products";
             PagingModel.RouteValue = new RouteValueDictionary
@@ -63,17 +46,12 @@ namespace NewKarma.Controllers
             {
                 ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
             }
-            //if (title != "")
-            //{
-            //    return ViewComponent(typeof(Search));
-            //}
-            //return title == string.IsNullOrEmpty ? ViewComponent(typeof(Search)) : View(PagingModel ?? null);
             return View(PagingModel ?? null);
         }
 
         public async Task<IActionResult> ProductByCategory(int? catId, int page = 1, int row = 4, string title = "")
         {
-            var prodByCat = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Title.Contains(title.TrimStart().TrimEnd()) && s.CatIDFK == catId, includes: b => b.Brand);
+            var prodByCat = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()) && s.CatIDFK == catId, includes: b => b.Brand);
             var PaginfModel = PagingList.Create(await prodByCat, row, page);
             PaginfModel.Action = "ProductByCategory";
             PaginfModel.RouteValue = new RouteValueDictionary
@@ -93,7 +71,7 @@ namespace NewKarma.Controllers
         
         public async Task<IActionResult> ProductByBrand(int? brandId, int page = 1, int row = 4,string title="")
         {
-            var productByBrand = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Title.Contains(title.TrimStart().TrimEnd())&&s.BrandIDFK == brandId, includes: b => b.Category);
+            var productByBrand = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd())&&s.BrandIDFK == brandId, includes: b => b.Category);
             var PaginModel = PagingList.Create(await productByBrand, row, page);
             PaginModel.Action = "ProductByBrand";
             PaginModel.RouteValue = new RouteValueDictionary
@@ -114,7 +92,7 @@ namespace NewKarma.Controllers
         {
             var cars = _unit.BaseRepo<RlCarModelProduct>().FindAllAsync().Result.Select(a=>a.CarId).ToList();
             
-            var productByCar = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Title.Contains(title.TrimStart().TrimEnd()) && s.RlCarModelProduct.Select(a=> a.CarId).First() == carId, includes: b => b.Category);
+            var productByCar = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()) && s.RlCarModelProduct.Select(a=> a.CarId).First() == carId, includes: b => b.Category);
             var PaginModel = PagingList.Create(await productByCar, row, page);
             PaginModel.Action = "ProductByCar";
             PaginModel.RouteValue = new RouteValueDictionary
@@ -132,13 +110,13 @@ namespace NewKarma.Controllers
         
         public IActionResult ProductById(int? ProductId)
         {
-            var prodById = _unit.BaseRepo<Product>().FindByConditionAsync(a => a.ProductId == ProductId, includes: b => b.Brand).Result.FirstOrDefault();
+            var prodById = _unit.BaseRepo<Product>().FindByConditionAsync(a => a.ProductId == ProductId && a.Situation ==true, includes: b => b.Brand).Result.FirstOrDefault();
             var carId = _context.RlCarModelProducts.Where(a => a.ProductId == prodById.ProductId).Select(a => a.CarId);
             ViewBag.cars = _context.Cars.Where(a => carId.Contains(a.CarId));
             ViewBag.Brand = _context.Brands.Where(b => b.BrandId == prodById.BrandIDFK).SingleOrDefault().Title;
             return View(prodById);
         }
-
+     
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,11 @@ using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NewKarma.Areas.Admin.Controllers
@@ -17,9 +22,11 @@ namespace NewKarma.Areas.Admin.Controllers
     public class CategoryController : BaseController
     {
         private readonly IUnitOfWork _unit;
-        public CategoryController(IUnitOfWork unit)
+        private readonly IHostingEnvironment _env;
+        public CategoryController(IUnitOfWork unit,IHostingEnvironment env)
         {
             _unit = unit;
+            _env = env;
         }
 
         [HttpGet, DisplayName("مدیریت دسته بندی"), Authorize]
@@ -47,11 +54,29 @@ namespace NewKarma.Areas.Admin.Controllers
 
                     //Todo:Manage Size Image
                     var fileName = Path.GetFileName(image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", fileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category",fileName);
+                    //using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    //{
+                    //    await image.CopyToAsync(fileStream);
+                    //}
+
+                    //< init >
+                        //string sImage_Folder = "User_Images";
+                        //string sTarget_Filename = "User_Image_" + IDUser + ".jpg";
+                    //</ init >
+                    //< get Path >
+                    string sPath_WebRoot = _env.WebRootPath;
+                    string sPath_of_Target_Folder = sPath_WebRoot + "\\img\\imgUpload\\Category";
+                    string sFile_Target_Original = sPath_of_Target_Folder + "\\Original\\" + fileName;
+                    //string sImage_Filename_Original = sPath_of_Target_Folder + uploaded_File.FileName;
+                    //</ get Path >
+                    //< Copy File to Target >
+                    using (var stream = new FileStream(sFile_Target_Original, FileMode.Create))
                     {
-                        await image.CopyToAsync(fileStream);
+                        await image.CopyToAsync(stream);
                     }
+                    //
+                    Image_resize(sFile_Target_Original, sPath_of_Target_Folder + fileName, 50);
                     Category category = new Category
                     {
                         Description = model.Description,
@@ -152,14 +177,14 @@ namespace NewKarma.Areas.Admin.Controllers
                 return View(model);
             }
         }
-        [HttpGet]
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet, Authorize]
+        public async Task<IActionResult> Delete(int? catId)
         {
-            if (id == null)
+            if (catId == null)
             {
                 return NotFound();
             }
-            var category = await _unit.BaseRepo<Category>().FindByIdAsync(id);
+            var category = await _unit.BaseRepo<Category>().FindByIdAsync(catId);
             if (category == null)
             {
                 return NotFound();
@@ -167,10 +192,11 @@ namespace NewKarma.Areas.Admin.Controllers
             return View(category);
         }
 
+
         [HttpPost, ValidateAntiForgeryToken, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmred(int id)
+        public async Task<IActionResult> DeleteConfirmred(int catId)
         {
-            var category = await _unit.BaseRepo<Category>().FindByIdAsync(id);
+            var category = await _unit.BaseRepo<Category>().FindByIdAsync(catId);
             if (category == null)
             {
                 return NotFound();
@@ -182,6 +208,123 @@ namespace NewKarma.Areas.Admin.Controllers
                 await _unit.Commit();
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+
+
+
+        private void Image_resize(string inputImagePath, string outputImagePath, int newWidth)
+
+        {
+
+            //---------------< Image_resize() >---------------
+
+            //*Resizes an Image in Asp.Net MVC Core 2
+
+            //*Using Nuget CoreCompat.System.Drawing
+
+            //using System.IO
+
+            //using System.Drawing;             //CoreCompat
+
+            //using System.Drawing.Drawing2D;   //CoreCompat
+
+            //using System.Drawing.Imaging;     //CoreCompat
+
+
+
+            const long quality = 50L;
+
+            Bitmap source_Bitmap = new Bitmap(inputImagePath);
+
+
+
+            double dblWidth_origial = source_Bitmap.Width;
+
+            double dblHeigth_origial = source_Bitmap.Height;
+
+            double relation_heigth_width = dblHeigth_origial / dblWidth_origial;
+
+            int new_Height = (int)(newWidth * relation_heigth_width);
+
+
+
+            //< create Empty Drawarea >
+
+            var new_DrawArea = new Bitmap(newWidth, new_Height);
+
+            //</ create Empty Drawarea >
+
+
+
+            using (var graphic_of_DrawArea = Graphics.FromImage(new_DrawArea))
+
+            {
+
+                //< setup >
+
+                graphic_of_DrawArea.CompositingQuality = CompositingQuality.HighSpeed;
+
+                graphic_of_DrawArea.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                graphic_of_DrawArea.CompositingMode = CompositingMode.SourceCopy;
+
+                //</ setup >
+
+
+
+                //< draw into placeholder >
+
+                //*imports the image into the drawarea
+
+                graphic_of_DrawArea.DrawImage(source_Bitmap, 0, 0, newWidth, new_Height);
+
+                //</ draw into placeholder >
+
+
+
+                //--< Output as .Jpg >--
+
+                using (var output = System.IO.File.Open(outputImagePath, FileMode.Create))
+
+                {
+
+                    //< setup jpg >
+
+                    var qualityParamId = Encoder.Quality;
+
+                    var encoderParameters = new EncoderParameters(1);
+
+                    encoderParameters.Param[0] = new EncoderParameter(qualityParamId, quality);
+
+                    //</ setup jpg >
+
+
+
+                    //< save Bitmap as Jpg >
+
+                    var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+
+                    new_DrawArea.Save(output, codec, encoderParameters);
+
+                    //resized_Bitmap.Dispose();
+
+                    output.Close();
+
+                    //</ save Bitmap as Jpg >
+
+                }
+
+                //--</ Output as .Jpg >--
+
+                graphic_of_DrawArea.Dispose();
+
+            }
+
+            source_Bitmap.Dispose();
+
+            //---------------</ Image_resize() >---------------
+
         }
     }
 }

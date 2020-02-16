@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using ChartJSCore.Helpers;
+﻿using ChartJSCore.Helpers;
 using ChartJSCore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NewKarma.Areas.Identity.Data;
-using NewKarma.Models;
 using NewKarma.Models.Domain;
 using NewKarma.Repository.UOW;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace NewKarma.Areas.Admin.Controllers
 {
@@ -32,9 +27,9 @@ namespace NewKarma.Areas.Admin.Controllers
             ViewData["CatCount"] = catitem.Count();
             ViewData["BrandCount"] = branditem.Count();
             ViewData["ProductCount"] = proditem.Count();
-            ViewBag.LastBrandAdded = branditem.OrderByDescending(a=>a.BrandId).Take(3).Select(a=>a.Title);
-            ViewBag.LastCatAdded = catitem.OrderByDescending(a=>a.CatId).Take(3).Select(a=>a.Title);
-            ViewBag.LastProdAdded = proditem.OrderByDescending(a=>a.CreatedDate).Take(3).Select(a=>a.Title);
+            ViewBag.LastBrandAdded = branditem.OrderByDescending(a => a.BrandId).Take(3).Select(a => a.Title);
+            ViewBag.LastCatAdded = catitem.OrderByDescending(a => a.CatId).Take(3).Select(a => a.Title);
+            ViewBag.LastProdAdded = proditem.OrderByDescending(a => a.CreatedDate).Take(3).Select(a => a.Title);
             Chart lineChart = GenerateLineChart();
             Chart polarChart = GeneratePolarChart();
             Chart pieChart = GeneratePieChart();
@@ -82,7 +77,7 @@ namespace NewKarma.Areas.Admin.Controllers
             {
                 Labels = _unit._context.Brands.Select(a => a.Title).ToList()
             };
-            
+
             PieDataset dataset = new PieDataset()
             {
                 Label = "My dataset",
@@ -104,7 +99,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     ChartColor.FromHexString("#5eb28d"),
                     ChartColor.FromHexString("#377b42"),
                 },
-                Data = _unit._context.Brands.Include(s => s.Products).Select(a => (double)a.Products.Count()).ToList() 
+                Data = _unit._context.Brands.Include(s => s.Products).Select(a => (double)a.Products.Count()).ToList()
             };
             data.Datasets = new List<Dataset>();
             data.Datasets.Add(dataset);

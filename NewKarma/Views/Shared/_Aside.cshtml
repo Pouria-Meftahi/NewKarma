@@ -66,7 +66,7 @@
             @foreach (var item in await unit.BaseRepo<Car>().FindAllAsync())
             {
                 <li>
-                    <a asp-controller="Home" asp-action="ProductByCar" asp-route-CarId="@item.CarId">@item.CarTitle @item.CarModel</a>
+                    <a asp-controller="Home" asp-action="ProductByCar" asp-route-carId="@item.CarId">@item.CarTitle @item.CarModel</a>
                 </li>
             }
         </ul>

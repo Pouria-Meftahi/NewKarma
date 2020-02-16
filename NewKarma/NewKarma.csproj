@@ -42,9 +42,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="3.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\img\imgUpload\Category\50\" />
+    <Folder Include="wwwroot\img\imgUpload\Category\Original\" />
     <Folder Include="wwwroot\img\imgUpload\ourClient\" />
     <Folder Include="wwwroot\img\product\" />
   </ItemGroup>
