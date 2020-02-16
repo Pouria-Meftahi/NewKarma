@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="owl-carousel">
-                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category).Result.Take(5))
+                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter:a=>a.Situation==true, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category).Result.Take(5))
                     {
                         <div class="item">
                             <div class="single_service_part">
@@ -208,7 +208,7 @@
             </div>
         </div>
         <div class="row">
-            @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(orderBy: a => a.OrderBy(b => b.CreatedDate)).Result.Take(3))
+            @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter:a=>a.Situation ==true,orderBy: a => a.OrderBy(b => b.CreatedDate)).Result.Take(3))
             {
                 <div class="col-sm-6 col-lg-4 col-xl-4 ">
                     <div class="single-home-blog">

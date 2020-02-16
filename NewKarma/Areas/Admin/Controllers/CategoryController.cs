@@ -53,30 +53,21 @@ namespace NewKarma.Areas.Admin.Controllers
                 {
 
                     //Todo:Manage Size Image
-                    var fileName = Path.GetFileName(image.FileName);
+                    //var fileName = Path.GetFileName(image.FileName);
                     //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category",fileName);
-                    //using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    //{
-                    //    await image.CopyToAsync(fileStream);
-                    //}
-
-                    //< init >
-                        //string sImage_Folder = "User_Images";
-                        //string sTarget_Filename = "User_Image_" + IDUser + ".jpg";
-                    //</ init >
-                    //< get Path >
-                    string sPath_WebRoot = _env.WebRootPath;
-                    string sPath_of_Target_Folder = sPath_WebRoot + "\\img\\imgUpload\\Category";
-                    string sFile_Target_Original = sPath_of_Target_Folder + "\\Original\\" + fileName;
-                    //string sImage_Filename_Original = sPath_of_Target_Folder + uploaded_File.FileName;
-                    //</ get Path >
-                    //< Copy File to Target >
-                    using (var stream = new FileStream(sFile_Target_Original, FileMode.Create))
+                    var fileName = Path.GetFileName(image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
+                    string sFile_Target_Original = filePath + "Original\\" + fileName;
+                    using (var fileStream = new FileStream(sFile_Target_Original, FileMode.Create))
                     {
-                        await image.CopyToAsync(stream);
+                        await image.CopyToAsync(fileStream);
                     }
-                    //
-                    Image_resize(sFile_Target_Original, sPath_of_Target_Folder + fileName, 50);
+                    Image_resize(sFile_Target_Original, filePath + fileName, 50);
+                    string destination = filePath + "_" + fileName;
+                    System.IO.File.Move(sFile_Target_Original, destination);
+                    if (System.IO.File.Exists(destination))
+                        System.IO.File.Delete(destination);
+
                     Category category = new Category
                     {
                         Description = model.Description,
@@ -221,48 +212,19 @@ namespace NewKarma.Areas.Admin.Controllers
 
             //*Resizes an Image in Asp.Net MVC Core 2
 
-            //*Using Nuget CoreCompat.System.Drawing
-
-            //using System.IO
-
-            //using System.Drawing;             //CoreCompat
-
-            //using System.Drawing.Drawing2D;   //CoreCompat
-
-            //using System.Drawing.Imaging;     //CoreCompat
-
-
-
             const long quality = 50L;
-
             Bitmap source_Bitmap = new Bitmap(inputImagePath);
-
-
-
             double dblWidth_origial = source_Bitmap.Width;
-
             double dblHeigth_origial = source_Bitmap.Height;
-
-            double relation_heigth_width = dblHeigth_origial / dblWidth_origial;
-
-            int new_Height = (int)(newWidth * relation_heigth_width);
-
-
-
+            int new_Height = newWidth;
+            //double relation_heigth_width = dblHeigth_origial / dblWidth_origial;
+            //int new_Height = (int)(newWidth * relation_heigth_width);
             //< create Empty Drawarea >
-
             var new_DrawArea = new Bitmap(newWidth, new_Height);
-
             //</ create Empty Drawarea >
-
-
-
             using (var graphic_of_DrawArea = Graphics.FromImage(new_DrawArea))
-
             {
-
                 //< setup >
-
                 graphic_of_DrawArea.CompositingQuality = CompositingQuality.HighSpeed;
 
                 graphic_of_DrawArea.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -270,8 +232,6 @@ namespace NewKarma.Areas.Admin.Controllers
                 graphic_of_DrawArea.CompositingMode = CompositingMode.SourceCopy;
 
                 //</ setup >
-
-
 
                 //< draw into placeholder >
 
@@ -306,7 +266,6 @@ namespace NewKarma.Areas.Admin.Controllers
                     var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
 
                     new_DrawArea.Save(output, codec, encoderParameters);
-
                     //resized_Bitmap.Dispose();
 
                     output.Close();
