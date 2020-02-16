@@ -22,11 +22,9 @@ namespace NewKarma.Areas.Admin.Controllers
     public class CategoryController : BaseController
     {
         private readonly IUnitOfWork _unit;
-        private readonly IHostingEnvironment _env;
-        public CategoryController(IUnitOfWork unit,IHostingEnvironment env)
+        public CategoryController(IUnitOfWork unit)
         {
             _unit = unit;
-            _env = env;
         }
 
         [HttpGet, DisplayName("مدیریت دسته بندی"), Authorize]
@@ -54,14 +52,14 @@ namespace NewKarma.Areas.Admin.Controllers
 
                     var fileName = Path.GetFileName(image.FileName);
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
-                    string sFile_Target_Original = filePath + "Original\\" + fileName;
-                    using (var fileStream = new FileStream(sFile_Target_Original, FileMode.Create))
+                    string TempImage = filePath + "Original\\" + fileName;
+                    using (var fileStream = new FileStream(TempImage, FileMode.Create))
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    Image_resize(sFile_Target_Original, filePath + fileName, 50);
+                    Image_resize(TempImage, filePath + fileName, 50);
                     string destination = filePath + "_" + fileName;
-                    System.IO.File.Move(sFile_Target_Original, destination);
+                    System.IO.File.Move(TempImage, destination);
                     if (System.IO.File.Exists(destination))
                         System.IO.File.Delete(destination);
 

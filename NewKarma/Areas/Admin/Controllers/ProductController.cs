@@ -12,6 +12,9 @@ using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,11 +89,19 @@ namespace NewKarma.Areas.Admin.Controllers
                 if (image != null && image.Length > 0)
                 {
                     var fileName = Path.GetFileName(image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product", fileName);
-                    using (var fileStrem = new FileStream(filePath, FileMode.Create))
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product");
+                    string sFile_Target_Original = filePath + "Original\\" + fileName;
+                    using (var fileStream = new FileStream(sFile_Target_Original, FileMode.Create))
                     {
-                        await image.CopyToAsync(fileStrem);
+                        await image.CopyToAsync(fileStream);
                     }
+                    Image_resize(sFile_Target_Original, filePath + fileName, 360,203);
+                    string destination = filePath + "_" + fileName;
+                    System.IO.File.Move(sFile_Target_Original, destination);
+                    if (System.IO.File.Exists(destination))
+                        System.IO.File.Delete(destination);
+
+
                     Product product = new Product
                     {
                         Title = model.Title,
@@ -192,27 +203,39 @@ namespace NewKarma.Areas.Admin.Controllers
                             System.IO.File.Delete(oldPath);
                             if (image != null && image.Length > 0)
                             {
-                                //Todo:Resize Image
-                                var newImage = Path.GetFileName(image.FileName);
-                                var newPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\imgUpload\\Product", newImage);
-                                using (var fileStream = new FileStream(newPath, FileMode.Create))
+                                var fileName = Path.GetFileName(image.FileName);
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product");
+                                string TempImage = filePath + "Original\\" + fileName;
+                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
-                                productOld.Img = newImage;
+                                Image_resize(TempImage, TempImage + fileName, 360, 203);
+                                string destination = filePath + "_" + fileName;
+                                System.IO.File.Move(TempImage, destination);
+                                if (System.IO.File.Exists(destination))
+                                    System.IO.File.Delete(destination);
+
+                                productOld.Img = fileName;
                             }
                         }
                         else
                         {
                             if (image != null && image.Length > 0)
                             {
-                                //Todo:Resize Image
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\imgUpload\\Product", fileName);
-                                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product");
+                                string TempImage = filePath + "Original\\" + fileName;
+                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
+                                Image_resize(TempImage, TempImage + fileName, 360, 203);
+                                string destination = filePath + "_" + fileName;
+                                System.IO.File.Move(TempImage, destination);
+                                if (System.IO.File.Exists(destination))
+                                    System.IO.File.Delete(destination);
+
                                 productOld.Img = fileName;
                             }
                         }
@@ -275,5 +298,33 @@ namespace NewKarma.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        private void Image_resize(string inputImagePath, string outputImagePath, int newWidth,int newHeight)
+        {
+            const long quality = 50L;
+            Bitmap source_Bitmap = new Bitmap(inputImagePath);
+            double dblWidth_origial = source_Bitmap.Width;
+            double dblHeigth_origial = source_Bitmap.Height;
+            var new_DrawArea = new Bitmap(newWidth, newHeight);
+            using (var graphic_of_DrawArea = Graphics.FromImage(new_DrawArea))
+            {
+                graphic_of_DrawArea.CompositingQuality = CompositingQuality.HighSpeed;
+                graphic_of_DrawArea.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphic_of_DrawArea.CompositingMode = CompositingMode.SourceCopy;
+                graphic_of_DrawArea.DrawImage(source_Bitmap, 0, 0, newWidth, newHeight);
+                using (var output = System.IO.File.Open(outputImagePath, FileMode.Create))
+                {
+                    var qualityParamId = Encoder.Quality;
+                    var encoderParameters = new EncoderParameters(1);
+                    encoderParameters.Param[0] = new EncoderParameter(qualityParamId, quality);
+                    var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                    new_DrawArea.Save(output, codec, encoderParameters);
+                    output.Close();
+                }
+                graphic_of_DrawArea.Dispose();
+            }
+            source_Bitmap.Dispose();
+        }
+
     }
 }

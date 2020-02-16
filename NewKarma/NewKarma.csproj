@@ -7,12 +7,16 @@
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\DynamicAccess\**" />
     <Compile Remove="Areas\Admin\Views\RolesManager\**" />
+    <Compile Remove="wwwroot\img\imgUpload\Category\50\**" />
     <Content Remove="Areas\Admin\Views\DynamicAccess\**" />
     <Content Remove="Areas\Admin\Views\RolesManager\**" />
+    <Content Remove="wwwroot\img\imgUpload\Category\50\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\DynamicAccess\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\RolesManager\**" />
+    <EmbeddedResource Remove="wwwroot\img\imgUpload\Category\50\**" />
     <None Remove="Areas\Admin\Views\DynamicAccess\**" />
     <None Remove="Areas\Admin\Views\RolesManager\**" />
+    <None Remove="wwwroot\img\imgUpload\Category\50\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,9 +50,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\imgUpload\Category\50\" />
     <Folder Include="wwwroot\img\imgUpload\Category\Original\" />
     <Folder Include="wwwroot\img\imgUpload\ourClient\" />
+    <Folder Include="wwwroot\img\imgUpload\Product\Original\" />
     <Folder Include="wwwroot\img\product\" />
   </ItemGroup>
 
