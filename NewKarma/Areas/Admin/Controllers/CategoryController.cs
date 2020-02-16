@@ -52,9 +52,6 @@ namespace NewKarma.Areas.Admin.Controllers
                 if (image != null && image.Length > 0)
                 {
 
-                    //Todo:Manage Size Image
-                    //var fileName = Path.GetFileName(image.FileName);
-                    //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category",fileName);
                     var fileName = Path.GetFileName(image.FileName);
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
                     string sFile_Target_Original = filePath + "Original\\" + fileName;
@@ -126,28 +123,40 @@ namespace NewKarma.Areas.Admin.Controllers
                             if (image != null && image.Length > 0)
                             {
                                 System.IO.File.Delete(oldPath);
-                                //Todo:Resize Image And Even Set 
-                                var newImage = Path.GetFileName(image.FileName);
-                                var newPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", newImage);
-                                using (var fileStream = new FileStream(newPath, FileMode.Create))
+                                
+                                var fileName = Path.GetFileName(image.FileName);
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
+                                string TempImage = filePath + "Original\\" + fileName;
+                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
-                                categoryOld.Icon = newImage;
+                                categoryOld.Icon = TempImage;
+                                Image_resize(TempImage, filePath + fileName, 50);
+                                string destination = filePath + "_" + fileName;
+                                System.IO.File.Move(TempImage, destination);
+                                if (System.IO.File.Exists(destination))
+                                    System.IO.File.Delete(destination);
                             }
                         }
                         else
                         {
                             if (image != null && image.Length > 0)
                             {
-                                //Todo:Resize Image
+
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", fileName);
-                                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
+                                string TempImage = filePath + "Original\\" + fileName;
+                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
                                 categoryOld.Icon = fileName;
+                                Image_resize(TempImage, filePath + fileName, 50);
+                                string destination = filePath + "_" + fileName;
+                                System.IO.File.Move(TempImage, destination);
+                                if (System.IO.File.Exists(destination))
+                                    System.IO.File.Delete(destination);
                             }
                         }
                     }
@@ -205,13 +214,7 @@ namespace NewKarma.Areas.Admin.Controllers
 
 
         private void Image_resize(string inputImagePath, string outputImagePath, int newWidth)
-
         {
-
-            //---------------< Image_resize() >---------------
-
-            //*Resizes an Image in Asp.Net MVC Core 2
-
             const long quality = 50L;
             Bitmap source_Bitmap = new Bitmap(inputImagePath);
             double dblWidth_origial = source_Bitmap.Width;
@@ -219,71 +222,25 @@ namespace NewKarma.Areas.Admin.Controllers
             int new_Height = newWidth;
             //double relation_heigth_width = dblHeigth_origial / dblWidth_origial;
             //int new_Height = (int)(newWidth * relation_heigth_width);
-            //< create Empty Drawarea >
             var new_DrawArea = new Bitmap(newWidth, new_Height);
-            //</ create Empty Drawarea >
             using (var graphic_of_DrawArea = Graphics.FromImage(new_DrawArea))
             {
-                //< setup >
                 graphic_of_DrawArea.CompositingQuality = CompositingQuality.HighSpeed;
-
                 graphic_of_DrawArea.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
                 graphic_of_DrawArea.CompositingMode = CompositingMode.SourceCopy;
-
-                //</ setup >
-
-                //< draw into placeholder >
-
-                //*imports the image into the drawarea
-
                 graphic_of_DrawArea.DrawImage(source_Bitmap, 0, 0, newWidth, new_Height);
-
-                //</ draw into placeholder >
-
-
-
-                //--< Output as .Jpg >--
-
                 using (var output = System.IO.File.Open(outputImagePath, FileMode.Create))
-
                 {
-
-                    //< setup jpg >
-
                     var qualityParamId = Encoder.Quality;
-
                     var encoderParameters = new EncoderParameters(1);
-
                     encoderParameters.Param[0] = new EncoderParameter(qualityParamId, quality);
-
-                    //</ setup jpg >
-
-
-
-                    //< save Bitmap as Jpg >
-
                     var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
-
                     new_DrawArea.Save(output, codec, encoderParameters);
-                    //resized_Bitmap.Dispose();
-
                     output.Close();
-
-                    //</ save Bitmap as Jpg >
-
                 }
-
-                //--</ Output as .Jpg >--
-
                 graphic_of_DrawArea.Dispose();
-
             }
-
             source_Bitmap.Dispose();
-
-            //---------------</ Image_resize() >---------------
-
         }
     }
 }
