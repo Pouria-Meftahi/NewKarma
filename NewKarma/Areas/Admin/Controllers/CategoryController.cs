@@ -121,7 +121,7 @@ namespace NewKarma.Areas.Admin.Controllers
                             if (image != null && image.Length > 0)
                             {
                                 System.IO.File.Delete(oldPath);
-                                
+                                ///http://localhost:5000/img/imgUpload/Category/C:/Users/Pouria%20Meftahi/Documents/Visual%20Studio%202017/Projects/WEB/2019/Julay/NewKarma/NewKarma/wwwroot/img/imgUpload/Category/Original/Pouria.jpg
                                 var fileName = Path.GetFileName(image.FileName);
                                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
                                 string TempImage = filePath + "Original\\" + fileName;
@@ -201,7 +201,8 @@ namespace NewKarma.Areas.Admin.Controllers
             }
             else
             {
-                //Todo:Delete Image Of This Category From DataBase Of File Server
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\", category.Icon);
+                System.IO.File.Delete(filePath);
                 _unit.BaseRepo<Category>().Delete(category);
                 await _unit.Commit();
                 return RedirectToAction(nameof(Index));

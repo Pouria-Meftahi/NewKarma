@@ -89,18 +89,17 @@ namespace NewKarma.Areas.Admin.Controllers
                 if (image != null && image.Length > 0)
                 {
                     var fileName = Path.GetFileName(image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product");
-                    string sFile_Target_Original = filePath + "Original\\" + fileName;
-                    using (var fileStream = new FileStream(sFile_Target_Original, FileMode.Create))
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product\\");
+                    string Temp = filePath + "Original\\" + fileName;
+                    using (var fileStream = new FileStream(Temp, FileMode.Create))
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    Image_resize(sFile_Target_Original, filePath + fileName, 360,203);
+                    Image_resize(Temp, filePath + fileName, 360,203);
                     string destination = filePath + "_" + fileName;
-                    System.IO.File.Move(sFile_Target_Original, destination);
+                    System.IO.File.Move(Temp, destination);
                     if (System.IO.File.Exists(destination))
                         System.IO.File.Delete(destination);
-
 
                     Product product = new Product
                     {
@@ -127,7 +126,6 @@ namespace NewKarma.Areas.Admin.Controllers
                 return View(model);
             }
         }
-
 
         [HttpGet, DisplayName("ویرایش قطعات"), Authorize]
         public async Task<IActionResult> Edit(int? id)
@@ -204,7 +202,7 @@ namespace NewKarma.Areas.Admin.Controllers
                             if (image != null && image.Length > 0)
                             {
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product");
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product\\");
                                 string TempImage = filePath + "Original\\" + fileName;
                                 using (var fileStream = new FileStream(TempImage, FileMode.Create))
                                 {
@@ -224,7 +222,7 @@ namespace NewKarma.Areas.Admin.Controllers
                             if (image != null && image.Length > 0)
                             {
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product");
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product\\");
                                 string TempImage = filePath + "Original\\" + fileName;
                                 using (var fileStream = new FileStream(TempImage, FileMode.Create))
                                 {
@@ -293,6 +291,8 @@ namespace NewKarma.Areas.Admin.Controllers
             }
             else
             {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product\\", product.Img);
+                System.IO.File.Delete(filePath);
                 _unit.BaseRepo<Product>().Delete(product);
                 await _unit.Commit();
                 return RedirectToAction(nameof(Index));
