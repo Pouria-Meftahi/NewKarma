@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,13 +23,10 @@ namespace NewKarma.Areas.Admin.Controllers
     public class ProductController : BaseController
     {
         private readonly IUnitOfWork _unit;
-        private IMapper _mapper;
-        public ProductController(IUnitOfWork unit, IMapper mapper)
+        public ProductController(IUnitOfWork unit)
         {
             _unit = unit;
-            _mapper = mapper;
         }
-
         [HttpGet, DisplayName("قطعات"), Authorize]
         public async Task<IActionResult> Index(int page = 1, int row = 10, string sortExpression = "Title", string title = "")
         {
@@ -95,18 +91,17 @@ namespace NewKarma.Areas.Admin.Controllers
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    Image_resize(Temp, filePath + fileName, 360,203);
+                    Image_resize(Temp, filePath + fileName, 360, 203);
                     string destination = filePath + "_" + fileName;
                     System.IO.File.Move(Temp, destination);
                     if (System.IO.File.Exists(destination))
                         System.IO.File.Delete(destination);
-
                     Product product = new Product
                     {
                         Title = model.Title,
                         Description = model.Description,
                         Img = fileName,
-                        CreatedDate = model.CreatedDate,
+                        CreatedDate = DateTime.Now,
                         Situation = model.Situation,
                         UserIDFK = model.UserIdFK,
                         BrandIDFK = model.BrandIDFK,
@@ -202,18 +197,17 @@ namespace NewKarma.Areas.Admin.Controllers
                             if (image != null && image.Length > 0)
                             {
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product\\");
-                                string TempImage = filePath + "Original\\" + fileName;
-                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product", fileName);
+                                //string TempImage = filePath + "Original\\" + fileName;
+                                using (var fileStream = new FileStream(filePath, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
-                                Image_resize(TempImage, TempImage + fileName, 360, 203);
-                                string destination = filePath + "_" + fileName;
-                                System.IO.File.Move(TempImage, destination);
-                                if (System.IO.File.Exists(destination))
-                                    System.IO.File.Delete(destination);
-
+                                //Image_resize(TempImage, TempImage + fileName, 360, 203);
+                                //string destination = filePath + "_" + fileName;
+                                //System.IO.File.Move(TempImage, destination);
+                                //if (System.IO.File.Exists(destination))
+                                //    System.IO.File.Delete(destination);
                                 productOld.Img = fileName;
                             }
                         }
@@ -222,17 +216,17 @@ namespace NewKarma.Areas.Admin.Controllers
                             if (image != null && image.Length > 0)
                             {
                                 var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product\\");
-                                string TempImage = filePath + "Original\\" + fileName;
-                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Product", fileName);
+                                //string TempImage = filePath + "Original\\" + fileName;
+                                using (var fileStream = new FileStream(filePath, FileMode.Create))
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
-                                Image_resize(TempImage, TempImage + fileName, 360, 203);
-                                string destination = filePath + "_" + fileName;
-                                System.IO.File.Move(TempImage, destination);
-                                if (System.IO.File.Exists(destination))
-                                    System.IO.File.Delete(destination);
+                                //Image_resize(TempImage, TempImage + fileName, 360, 203);
+                                //string destination = filePath + "_" + fileName;
+                                //System.IO.File.Move(TempImage, destination);
+                                //if (System.IO.File.Exists(destination))
+                                //    System.IO.File.Delete(destination);
 
                                 productOld.Img = fileName;
                             }
@@ -299,7 +293,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
         }
 
-        private void Image_resize(string inputImagePath, string outputImagePath, int newWidth,int newHeight)
+        private void Image_resize(string inputImagePath, string outputImagePath, int newWidth, int newHeight)
         {
             const long quality = 50L;
             Bitmap source_Bitmap = new Bitmap(inputImagePath);

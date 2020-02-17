@@ -1,5 +1,6 @@
 ﻿@model ReflectionIT.Mvc.Paging.PagingList<VmProductAdmin>
 @using ReflectionIT.Mvc.Paging
+@inject NewKarma.Tools.ConvertDate dconvert;
 @addTagHelper*,ReflectionIT.Mvc.Paging
 @{
     ViewData["Title"] = "Index";
@@ -118,8 +119,7 @@
                                 <th>@Html.SortableHeaderFor(model => model.Category, "Category")</th>
                                 <th>@Html.SortableHeaderFor(model => model.Brand, "Brand")</th>
                                 <th>@Html.SortableHeaderFor(model => model.IsPublish, "IsPublish")</th>
-                                @*<th class="text-center">@Html.SortableHeaderFor(model => model.PublishDate, "PublishDate")</th>
-                                <th style="width:25px;">@Html.SortableHeaderFor(model => model.IsPublish, "IsPublish")</th>*@
+                                <th class="text-center">@Html.SortableHeaderFor(model => model.CreatedDate, "CreatedDate")</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -127,41 +127,40 @@
                             @{int i = ViewBag.NumOfRow;}
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td class="text-center">@i</td>
-                                    <td class="text-nowrap">@item.Title</td>
-                                    <td>@item.Car</td>
-                                    <td>@item.Category</td>
-                                    <td>@item.Brand</td>
-                                    @*<td class="text-center">
-                                        @if (item.PublishDate != null)
-                                        {
-                                            @convertDate.ConvertMiladiToShamsi((DateTime)item.PublishDate, "yyyy/MM/dd")
-                                        }
-                                        else
-                                        {
-                                            <span>-</span>
-                                        }
-                                    </td>
-                                        //Todo:Check Here And Remove Comments
-                                        *@
-                                    <td class="text-center">
-                                        @if (item.IsPublish == true)
-                                        {
-                                            <label class="badge badge-success btn-block">منتشر شده</label>
-                                        }
+                            <tr>
+                                <td class="text-center">@i</td>
+                                <td class="text-nowrap">@item.Title</td>
+                                <td>@item.Car</td>
+                                <td>@item.Category</td>
+                                <td>@item.Brand</td>
+                                <td class="text-center">
+                                    @if (item.IsPublish == true)
+                                    {
+                                        <label class="badge badge-success btn-block">منتشر شده</label>
+                                    }
 
-                                        else
-                                        {
-                                            <label class="badge badge-info btn-block">پیش نویس</label>
-                                        }
-                                    </td>
-                                    <td class="text-center">
-                                        <a asp-action="Detials" asp-route-id="@item.ProductId"  class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
-                                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
-                                        <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
-                                    </td>
-                                </tr>
+                                    else
+                                    {
+                                        <label class="badge badge-info btn-block">پیش نویس</label>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (item.CreatedDate != null)
+                                    {
+                                        @dconvert.ConvertMiladiToShamsi((DateTime)item.CreatedDate, "yyyy/MM/dd")
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+
+                                <td class="text-center">
+                                    <a asp-action="Detials" asp-route-id="@item.ProductId" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
+                                </td>
+                            </tr>
                                 i++;
                             }
                         </tbody>

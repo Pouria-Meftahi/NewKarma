@@ -63,7 +63,7 @@ namespace NewKarma.Models.View
 
         [Display(Name = "توضیحات")]
         public string Description { get; set; }
-        [Display(Name = "تاریخ ویرایش")]
+        [Display(Name = "تاریخ")]
         public DateTime CreatedDate { get; set; }
         [Display(Name = "تصویر")]
         public string Image { get; set; }

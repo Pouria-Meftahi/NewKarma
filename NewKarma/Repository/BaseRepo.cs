@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using NewKarma.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +22,7 @@ namespace NewKarma.Repository
         //TODO:Impelement Eger Loding 4 Murtual Product↓
         //Using Expression for Using Linq
         //Func==Delegate00
-        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> filter = null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = dbSet;
             foreach (var item in includes)

@@ -1,19 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NewKarma.Areas.Identity.Data;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NewKarma.Models.Domain
 {
     public class Brand
     {
-        [Key,Required]
+        [Key, Required]
         public int BrandId { get; set; }
-        [Required,Display(Name ="عنوان")]
+        [Required, Display(Name = "عنوان")]
         public string Title { get; set; }
 
         //Todo Add Migration & Update Database↓
