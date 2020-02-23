@@ -1,42 +1,39 @@
 :root {
-    --blue:#42a5f5;
-    --indigo:#3f51b5;
-    --purple:#9c27b0;
-    --pink:#e91e63;
-    --red:#ef5350;
-    --orange:#fdb244;
-    --yellow:#ffca28;
-    --green:#9ccc65;
-    --teal:#009688;
-    --cyan:#26c6da;
-    --white:#fff;
-    --gray:#999;
-    --gray-dark:#4d4d4d;
-    --primary:#42a5f5;
-    --secondary:#aaa;
-    --success:#9ccc65;
-    --info:#26c6da;
-    --warning:#ffca28;
-    --danger:#ef5350;
-    --light:#f8f9fa;
-    --dark:#444;
-    --breakpoint-xs:0;
-    --breakpoint-sm:576px;
-    --breakpoint-md:768px;
-    --breakpoint-lg:992px;
-    --breakpoint-xl:1200px;
-    --font-family-sans-serif:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    --font-family-monospace:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    --blue: #42a5f5;
+    --indigo: #3f51b5;
+    --purple: #9c27b0;
+    --pink: #e91e63;
+    --red: #ef5350;
+    --orange: #fdb244;
+    --yellow: #ffca28;
+    --green: #9ccc65;
+    --teal: #009688;
+    --cyan: #26c6da;
+    --white: #fff;
+    --gray: #999;
+    --gray-dark: #4d4d4d;
+    --primary: #42a5f5;
+    --secondary: #aaa;
+    --success: #9ccc65;
+    --info: #26c6da;
+    --warning: #ffca28;
+    --danger: #ef5350;
+    --light: #f8f9fa;
+    --dark: #444;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: Calibri,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    --font-family-monospace: Calibri, SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
 
 @font-face {
-    font-family: yekan;
-    src: url(fonts/Yekan.eot);
-    src: url(fonts/Yekan.eot?#iefix) format("embedded-opentype"), url(fonts/Yekan.woff) format("woff"), url(fonts/Yekan.ttf) format("truetype"), url(fonts/Yekan.svg#BYekan) format("svg");
+    font-family: Calibri;
     font-weight: normal;
     font-style: normal
 }
-
 @media print {
     *, :after, :before {
         text-shadow: none !important;

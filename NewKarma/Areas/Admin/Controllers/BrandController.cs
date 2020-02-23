@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NewKarma.Models.Domain;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,14 @@ namespace NewKarma.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int page = 1, int row = 5)
         {
             var brand = _unit.BaseRepo<Brand>().FindAllAsync();
-            var PagingModel = PagingList.Create(await brand, row, page);    
+            var PagingModel = PagingList.Create(await brand, row, page);
+            List<int> Rows = new List<int>
+            {
+                5,10,15,20,50,100
+            };
+
+            ViewBag.RowID = new SelectList(Rows, row);
+            ViewBag.NumOfRow = (page - 1) * row + 1;
             PagingModel.RouteValue = new RouteValueDictionary
             {
                 {"row",row},

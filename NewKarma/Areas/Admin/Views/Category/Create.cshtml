@@ -10,7 +10,7 @@
             <div class="card-header bg-light">
                 @ViewData["Title"]
             </div>
-            <form asp-area="Admin" asp-controller="Category" asp-action="Create" enctype="multipart/form-data" method="post"  onsubmit="return validationForm()">
+            <form asp-area="Admin" asp-controller="Category" asp-action="Create" method="post" onsubmit="return validationForm()">
                 <input hidden asp-for="UserIDFK" value="@thisUserManagerk.GetUserId(User)" />
                 <div asp-validation-summary="All"></div>
                 <div class="row card-body mb-3">
@@ -22,38 +22,6 @@
                                     <label>عنوان</label>
                                     <input asp-for="Title" type="text" id="title" class="form-control validate">
                                     <span asp-validation-for="Title"></span>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>توضیحات</label>
-                                    <textarea asp-for="Description" id="desc" class="form-control validate" rows="3"></textarea>
-                                    <span asp-validation-for="Description"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mx-auto">
-                                    <div class="custom-file mt-3">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <div class="col-md-12 text-center">
-                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                        <div class="fileinput-new thumbnail" style="height: 200px;">
-                                                            <img src="/img/No_Image_Available.jpg" class="card-img-top" />
-                                                        </div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
-                                                        <div>
-                                                            <span class="btn default btn-file mb-3">
-                                                                <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
-                                                                <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
-                                                                <input type="file" name="image" id="upload" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
-                                                            </span>
-                                                            <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
-                                                        </div>
-                                                        <span asp-validation-for="Icon" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -69,10 +37,7 @@
 <script>
     function validationForm() {
         var title = $('#title').val();
-        var uploadImg = $('#upload').val();
-        var desc = $('#desc').val();
-
-        if (title=="") {
+        if (title == "") {
             $('#title').focus();
             $.confirm({
                 icon: 'fa fa-warning',
@@ -92,47 +57,6 @@
             });
             return false;
         }
-
-        if (desc == "") {
-            $('#desc').focus();
-            $.confirm({
-                icon: 'fa fa-warning',
-                title: 'خطا!',
-                content: "لطفا توضیحات دسته بندی را وارد کنید",
-                rtl: true,
-                type: 'red',
-                animation: 'opacity',
-                theme: 'dark',
-                buttons: {
-                    confirm: {
-                        text: 'تایید',
-                        btnClass: 'btn-red',
-                    }
-                },
-            });
-            return false;
-        }
-
-        if (uploadImg=="") {
-            $('#upload').focus();
-            $.confirm({
-                icon: 'fa fa-warning',
-                title: 'خطا!',
-                content: "لطفا آیکن دسته بندی را وارد کنید",
-                rtl: true,
-                type: 'red',
-                animation: 'opacity',
-                theme: 'dark',
-                buttons: {
-                    confirm: {
-                        text: 'تایید',
-                        btnClass: 'btn-red',
-                    }
-                },
-            });
-            return false;
-        }
-        
     }
 </script>
 @section Scripts {

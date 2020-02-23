@@ -1,11 +1,10 @@
 ﻿@inject NewKarma.Repository.UOW.IUnitOfWork unit
 
 <div class="blog_right_sidebar">
-    <aside class="single_sidebar_widget search_widget">
+    @*<aside class="single_sidebar_widget search_widget">
         <form asp-controller="Home" asp-action="Products">
             <div class="form-group">
                 <div class="input-group mb-3">
-                    @*onfocus="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = ''" onblur="if (!window.__cfRLUnblockHandlers) return false; this.placeholder = 'جسنجو با کلمات کلیدی'" data-cf-modified-6cf4986cd25099c523115474-=""*@
                     <input type="text" class="form-control" name="title" placeholder="جستجو با کلمات کلیدی">
                     <div class="input-group-append">
                         <button class="btn" type="button"><i class="ti-search"></i></button>
@@ -23,8 +22,8 @@
                 }
             }
         </form>
-    </aside>
-    <aside class="single_sidebar_widget post_category_widget">
+    </aside>*@
+    @*<aside class="single_sidebar_widget post_category_widget">
         <h4 class="widget_title">دسته بندی</h4>
         <ul class="list cat-list">
             @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
@@ -38,7 +37,7 @@
             }
             <li>
         </ul>
-    </aside>
+    </aside>*@
     @*<aside class="single_sidebar_widget popular_post_widget" dir="ltr">
             <h3 class="widget_title">آخرین مطالب بلاگ</h3>
             <div class="media post_item">

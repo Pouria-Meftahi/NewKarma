@@ -57,8 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Admin\css\fonts\Yekan.svg" />
-    <None Include="wwwroot\Admin\fonts\Yekan.svg" />
     <None Include="wwwroot\Admin\images\banner1.svg" />
     <None Include="wwwroot\Admin\images\banner2.svg" />
     <None Include="wwwroot\Admin\images\banner3.svg" />
