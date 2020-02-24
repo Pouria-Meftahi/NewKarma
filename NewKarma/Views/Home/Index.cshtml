@@ -68,15 +68,24 @@
                     </div>
                 </div>
                 <div class="owl-carousel">
-                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter:a=>a.Situation==true, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Category).Result.Take(5))
+                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter:a=>a.Situation==true, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Brand).Result.Take(5))
                     {
                         <div class="item">
                             <div class="single_service_part">
-                                @*<span style="width:250px; height:140px; background-size:cover; background-position:center; background-image:url('/img/imgUpload/Product/@item.Img')">
-                                    <i>
-                                        <img src="~/img/imgUpload/Category/@item.Category.Icon" />
-                                    </i>
-                                </span>*@
+                                <span style="width:250px; height:140px; background-size:cover; background-position:center; background-image:url('/img/imgUpload/Product/@item.Img')">
+                                    @if (item.Brand.Logo != null)
+                                    {
+                                        <i>
+                                            <img src="~/img/imgUpload/Brand/@item.Brand.Logo" />
+                                        </i>
+                                    }
+                                    else
+                                    {
+                                        <i>
+                                            <img src="~/img/logo.png"/>
+                                        </i>
+                                    }
+                                </span>
                                 <h4>@item.Title</h4>
                                 <p dir="rtl">
                                     @{

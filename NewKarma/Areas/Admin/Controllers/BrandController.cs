@@ -54,9 +54,8 @@ namespace NewKarma.Areas.Admin.Controllers
             {
                 if (image != null && image.Length > 0)
                 {
-
                     var fileName = Path.GetFileName(image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Brand\\");
                     string TempImage = filePath + "Original\\" + fileName;
                     using (var fileStream = new FileStream(TempImage, FileMode.Create))
                     {
@@ -75,6 +74,11 @@ namespace NewKarma.Areas.Admin.Controllers
                         UserIDFK = model.UserIDFK,
                     };
                     await _unit.BaseRepo<Brand>().Create(brand);
+                    await _unit.Commit();
+                }
+                else
+                {
+                    await _unit.BaseRepo<Brand>().Create(model);
                     await _unit.Commit();
                 }
                 return RedirectToAction(nameof(Index));//Hack:Is It Working I Mean Redirect to aciton
@@ -117,12 +121,10 @@ namespace NewKarma.Areas.Admin.Controllers
                         brandOld.Title = model.Title;
                         brandOld.UserIDFK = model.UserIDFK;
                         var oldImage = _unit.BaseRepo<Brand>().FindByIdAsync(model.BrandId).Result.Logo;
-                        var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Brand", oldImage);
-                        if (System.IO.File.Exists(oldPath))
+                        if (oldImage==null)
                         {
                             if (image != null && image.Length > 0)
                             {
-                                System.IO.File.Delete(oldPath);
                                 var fileName = Path.GetFileName(image.FileName);
                                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Brand\\");
                                 string TempImage = filePath + "Original\\" + fileName;
@@ -140,21 +142,26 @@ namespace NewKarma.Areas.Admin.Controllers
                         }
                         else
                         {
-                            if (image != null && image.Length > 0)
+                            var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Brand", oldImage);
+                            if (System.IO.File.Exists(oldPath))
                             {
-                                var fileName = Path.GetFileName(image.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Brand\\");
-                                string TempImage = filePath + "Original\\" + fileName;
-                                using (var fileStream = new FileStream(TempImage, FileMode.Create))
+                                if (image != null && image.Length > 0)
                                 {
-                                    await image.CopyToAsync(fileStream);
+                                    System.IO.File.Delete(oldPath);
+                                    var fileName = Path.GetFileName(image.FileName);
+                                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Brand\\");
+                                    string TempImage = filePath + "Original\\" + fileName;
+                                    using (var fileStream = new FileStream(TempImage, FileMode.Create))
+                                    {
+                                        await image.CopyToAsync(fileStream);
+                                    }
+                                    brandOld.Logo = TempImage;
+                                    Image_resize(TempImage, filePath + fileName, 50);
+                                    string destination = filePath + "_" + fileName;
+                                    System.IO.File.Move(TempImage, destination);
+                                    if (System.IO.File.Exists(destination))
+                                        System.IO.File.Delete(destination);
                                 }
-                                brandOld.Logo = fileName;
-                                Image_resize(TempImage, filePath + fileName, 50);
-                                string destination = filePath + "_" + fileName;
-                                System.IO.File.Move(TempImage, destination);
-                                if (System.IO.File.Exists(destination))
-                                    System.IO.File.Delete(destination);
                             }
                         }
                     }
@@ -162,7 +169,6 @@ namespace NewKarma.Areas.Admin.Controllers
                     await _unit.Commit();
                     ViewBag.MsgConfirm = "ذخیره تغییرات با موفقیت انجام شد";
                     return View(model);
-
                 }
                 catch (DbUpdateConcurrencyException)
                 {

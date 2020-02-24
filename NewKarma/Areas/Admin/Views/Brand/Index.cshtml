@@ -40,6 +40,7 @@
                             <th>
                                 @Html.SortableHeaderFor(model => model.Title)
                             </th>
+                            <th class="text-center">تصویر</th>
                             <th class="text-center">عملیات</th>
                         </tr>
                     </thead>
@@ -49,6 +50,16 @@
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Title)
+                                </td> 
+                                <td class="text-center">
+                                    @if (item.Logo != null)
+                                    {
+                                        <img src="~/img/imgUpload/Brand/@item.Logo" />
+                                    }
+                                    else
+                                    {
+                                        <img height="50" src="~/img/logo.png"/>
+                                    }
                                 </td>
                                 <td class="text-center">
                                     <a asp-area="Admin" asp-controller="Brand" asp-action="Edit" asp-route-id="@item.BrandId" class="btn btn-success btn-icon">

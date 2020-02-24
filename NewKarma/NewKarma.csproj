@@ -50,7 +50,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\imgUpload\Category\Original\" />
+    <Folder Include="wwwroot\img\imgUpload\Brand\Original\" />
+    <Folder Include="wwwroot\img\imgUpload\Brand\" />
     <Folder Include="wwwroot\img\imgUpload\ourClient\" />
     <Folder Include="wwwroot\img\imgUpload\Product\Original\" />
     <Folder Include="wwwroot\img\product\" />
