@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Routing;
 using NewKarma.Models;
 using NewKarma.Models.Domain;
 using NewKarma.Repository.UOW;
-using NewKarma.Views.Shared.Components;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Diagnostics;
@@ -23,7 +22,7 @@ namespace NewKarma.Controllers
             _context = context;
             _unit = unit;
         }
-        public async Task<IActionResult> Index(int page = 1, int row = 10, string title = "")
+        public async Task<IActionResult> Index(int page = 1, int row = 5, string title = "")
         {
             if (title == string.Empty)
             {
@@ -31,7 +30,6 @@ namespace NewKarma.Controllers
             }
             else
             {
-                //return RedirectToAction(nameof(Products),"Home", (1,10, title));
                 var Products =  _unit.BaseRepo<Product>().FindByConditionAsync(
                     filter: s => s.Situation == true 
                     && s.Title.Contains(title.TrimStart().TrimEnd()) 
@@ -89,8 +87,6 @@ namespace NewKarma.Controllers
                 ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
             }
             return View(PaginfModel ?? null);
-            //return title != "" ? ViewComponent(typeof(Search)) : View(PagingModel ?? null);
-
         }
 
         public async Task<IActionResult> ProductByBrand(int? brandId, int page = 1, int row = 4, string title = "")
@@ -109,7 +105,6 @@ namespace NewKarma.Controllers
                 ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
             }
             return View(PaginModel ?? null);
-            //return title != "" ? ViewComponent(typeof(Search)) : View(PagingModel ?? null);
         }
 
         public async Task<IActionResult> ProductByCar(int? carId, int row = 4, int page = 1, string title = "")

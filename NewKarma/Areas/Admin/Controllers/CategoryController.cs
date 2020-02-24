@@ -118,56 +118,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     await _unit.Commit();
                     ViewBag.MsgConfirm = "ذخیره تغییرات با موفقیت انجام شد";
                     return View(model);
-                    //if (categoryOld != null)
-                    //{
-                    //    categoryOld.Title = model.Title;
-                    //    categoryOld.Description = model.Description;
-                    //    categoryOld.UserIDFK = model.UserIDFK;
-                    //    var oldImage = _unit.BaseRepo<Category>().FindByIdAsync(model.CatId).Result.Icon;
-                    //    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category", oldImage);
-                    //    if (System.IO.File.Exists(oldPath))
-                    //    {
-                    //        if (image != null && image.Length > 0)
-                    //        {
-                    //            System.IO.File.Delete(oldPath);
-                    //            var fileName = Path.GetFileName(image.FileName);
-                    //            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
-                    //            string TempImage = filePath + "Original\\" + fileName;
-                    //            using (var fileStream = new FileStream(TempImage, FileMode.Create))
-                    //            {
-                    //                await image.CopyToAsync(fileStream);
-                    //            }
-                    //            categoryOld.Icon = TempImage;
-                    //            Image_resize(TempImage, filePath + fileName, 50);
-                    //            string destination = filePath + "_" + fileName;
-                    //            System.IO.File.Move(TempImage, destination);
-                    //            if (System.IO.File.Exists(destination))
-                    //                System.IO.File.Delete(destination);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        if (image != null && image.Length > 0)
-                    //        {
-
-                    //            var fileName = Path.GetFileName(image.FileName);
-                    //            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\");
-                    //            string TempImage = filePath + "Original\\" + fileName;
-                    //            using (var fileStream = new FileStream(TempImage, FileMode.Create))
-                    //            {
-                    //                await image.CopyToAsync(fileStream);
-                    //            }
-                    //            categoryOld.Icon = fileName;
-                    //            Image_resize(TempImage, filePath + fileName, 50);
-                    //            string destination = filePath + "_" + fileName;
-                    //            System.IO.File.Move(TempImage, destination);
-                    //            if (System.IO.File.Exists(destination))
-                    //                System.IO.File.Delete(destination);
-                    //        }
-                    //    }
-                    //}
-
-                }
+                }     
                 catch (Exception ex)
                 {
                     ViewBag.MsgFailed = "در ذخیره تغییرات خطایی رخ داده است.";
@@ -205,46 +156,13 @@ namespace NewKarma.Areas.Admin.Controllers
                 return NotFound();
             }
             else
-            {
-                //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\Category\\", category.Icon);
-                //System.IO.File.Delete(filePath);
+
                 _unit.BaseRepo<Category>().Delete(category);
-                await _unit.Commit();
-                return RedirectToAction(nameof(Index));
-            }
+            await _unit.Commit();
+            return RedirectToAction(nameof(Index));
         }
 
 
 
-
-        //private void Image_resize(string inputImagePath, string outputImagePath, int newWidth)
-        //{
-        //    const long quality = 50L;
-        //    Bitmap source_Bitmap = new Bitmap(inputImagePath);
-        //    double dblWidth_origial = source_Bitmap.Width;
-        //    double dblHeigth_origial = source_Bitmap.Height;
-        //    int new_Height = newWidth;
-        //    //double relation_heigth_width = dblHeigth_origial / dblWidth_origial;
-        //    //int new_Height = (int)(newWidth * relation_heigth_width);
-        //    var new_DrawArea = new Bitmap(newWidth, new_Height);
-        //    using (var graphic_of_DrawArea = Graphics.FromImage(new_DrawArea))
-        //    {
-        //        graphic_of_DrawArea.CompositingQuality = CompositingQuality.HighSpeed;
-        //        graphic_of_DrawArea.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        //        graphic_of_DrawArea.CompositingMode = CompositingMode.SourceCopy;
-        //        graphic_of_DrawArea.DrawImage(source_Bitmap, 0, 0, newWidth, new_Height);
-        //        using (var output = System.IO.File.Open(outputImagePath, FileMode.Create))
-        //        {
-        //            var qualityParamId = Encoder.Quality;
-        //            var encoderParameters = new EncoderParameters(1);
-        //            encoderParameters.Param[0] = new EncoderParameter(qualityParamId, quality);
-        //            var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
-        //            new_DrawArea.Save(output, codec, encoderParameters);
-        //            output.Close();
-        //        }
-        //        graphic_of_DrawArea.Dispose();
-        //    }
-        //    source_Bitmap.Dispose();
-        //}
     }
 }
