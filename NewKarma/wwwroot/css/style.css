@@ -2744,8 +2744,10 @@ ul {
 .our_service_part {
     background-image: url(../img/service_bg_2.png);
     background-repeat: no-repeat;
-    background-position: left;
-    background-size: 29% 86%
+    background-position: right;
+    background-size: 29% 86%;
+    background-position-x:right;
+    
 }
 
 .our_partners_part {

@@ -57,6 +57,34 @@
     <div class="hero-app-6 custom-animation3"><img src="img/animate_icon/icon_7.png" alt=""></div>
 </section>
 
+<section class="about_part our_service_part padding_top">
+    <div class="container">
+        <div class="row align-items-center justify-content-end">
+            <div class="col-md-6 offset-xl-1 col-xl-6">
+                <div class="about_text">
+                    <h2 class="green-text">همکاری با ما</h2>
+                    <h3 class="green-text">اگر توزیع کننده هستید ما همکار می پذریم</h3>
+                    <p>
+                        اگر در شهرستان ها مشغول پخش قطعات خودرویی هستید یا می خواید این کار رو شروع کنید ما حاظریم با شما همکاری کنیم.
+                        داشتن تعهد اخلاقی و حرفه ای خوشرویی و صبر حوصله ویژگی هایی هستند که ما از همکارکان خودمون انتظار داریم.
+                    </p>
+                    <span>
+                        <img src="~/img/icon/WhatsApp.png" />
+                        <a href="https://api.whatsapp.com/send?phone=989386173737&text=سلام%20میخواستم%20شرایط%20همکاری%20برای%20پخش%20قطعات%20رو%20بدونم%20&lang=fa">شروع یک همکاری!</a>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-5">
+                <div class="about_img">
+                    <img src="img/about_img_2.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-app-1 custom-animation"><img src="img/animate_icon/icon_1.png" alt=""></div>
+    <div class="hero-app-4 custom-animation2"><img src="img/animate_icon/icon_8.png" alt=""></div>
+    <div class="hero-app-8 custom-animation3"><img src="img/animate_icon/icon_9.png" alt=""></div>
+</section>
 <section class="service_part gray_bg" dir="ltr">
     <div class="container">
         <div class="row">
@@ -147,94 +175,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<section class="about_part our_service_part padding_top">
-    <div class="container">
-        <div class="row align-items-center justify-content-end">
-            <div class="col-md-6 col-xl-5">
-                <div class="about_img">
-                    <img src="img/about_img_2.png" alt="">
-                </div>
-            </div>
-            <div class="col-md-6 offset-xl-1 col-xl-6">
-                <div class="about_text">
-                    <h2 class="green-text">همکاری با ما</h2>
-                    <h3 class="green-text">اگر توزیع کننده هستید ما همکار می پذریم</h3>
-                    <p>
-                        اگر در شهرستان ها مشغول پخش قطعات خودرویی هستید یا می خواید این کار رو شروع کنید ما حاظریم با شما همکاری کنیم.
-                        داشتن تعهد اخلاقی و حرفه ای خوشرویی و صبر حوصله ویژگی هایی هستند که ما از همکارکان خودمون انتظار داریم.
-
-
-                    </p>
-                    <a href="#" class="btn_2 btn-green controls" data-target="#exampleModalcontact" data-toggle="modal">در تماس باشید</a>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalcontact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card">
-                                        <p>lorem ipsum</p>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hero-app-1 custom-animation"><img src="img/animate_icon/icon_1.png" alt=""></div>
-    <div class="hero-app-4 custom-animation2"><img src="img/animate_icon/icon_8.png" alt=""></div>
-    <div class="hero-app-8 custom-animation3"><img src="img/animate_icon/icon_9.png" alt=""></div>
-</section>
-<section class="blog_part section_padding" dir="ltr">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-6">
-                <div class="section_tittle text-center">
-                    <h2>آخرین مطالب بلاگ</h2>
-                    <p>مطالبی جذاب از سراسر جهان درباره قطعات یدکی خودرو</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter:a=>a.Situation ==true,orderBy: a => a.OrderBy(b => b.CreatedDate)).Result.Take(3))
-            {
-                <div class="col-sm-6 col-lg-4 col-xl-4 ">
-                    <div class="single-home-blog">
-                        <div class="card">
-                            <img src="~/img/imgUpload/Product/@item.Img" height="200" class="card-img-top">
-                            <div class="card-body">
-                                <a href="blog.html">@item.Title</a> | <span> @ConvertDate.ConvertMiladiToShamsi((DateTime)item.CreatedDate, "yyyy/MM/dd")</span>
-                                <a href="blog.html">
-                                    <h5 class="card-title">
-                                        @{ var desc = item.Description.Length > 500 ? item.Description.Substring(0, 500) + "..." : item.Description; }
-                                        @desc
-                                    </h5>
-                                </a>
-                                <ul>
-                                    <li> <span class="ti-comments"></span>4 کامنت</li>
-                                    <li> <span class="ti-heart"></span>6 لایک</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
         </div>
     </div>
 </section>
