@@ -11,11 +11,6 @@ namespace NewKarma.Models.Domain
         public int CatId { get; set; }
         [Required, Display(Name = "Title")]
         public string Title { get; set; }
-        //[Display(Name = "Icon")]
-        //public string Icon { get; set; }
-        //[Required, Display(Name = "Description")]
-        //public string Description { get; set; }
-
         public string UserIDFK { get; set; }
         [ForeignKey(nameof(UserIDFK)), NotMapped]
         public virtual ApplicationUser ApplicationUser { get; set; }

@@ -16,6 +16,7 @@ namespace NewKarma.Models
         {
             base.OnModelCreating(modelBuilder);//Hack:Whats Hapening There
             modelBuilder.ApplyConfiguration(new Car_CarModel_ProductMap());
+            modelBuilder.Entity<Product>().Property(a => a.CreatedDate).HasDefaultValueSql("CONVERT(datetime,GetDate())");
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }

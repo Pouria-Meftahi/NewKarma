@@ -24,12 +24,12 @@ namespace NewKarma.Repository
         {
             _unit = unit;
         }
-        public List<VmProductAdmin> GetAllProduct(string title, string Car, string Brand, string Category)
+        public List<VmProduct> GetAllProduct(string title, string Car, string Brand, string Category)
         {
             string CategoryName = "";
             string BrandName = "";
             string CarName = "";
-            List<VmProductAdmin> ViewModelList = new List<VmProductAdmin>();
+            List<VmProduct> ViewModelList = new List<VmProduct>();
             var Prod = (from row in _context.RlCarModelProducts.Include(a => a.Product).Include(x => x.Car)
 
                         join c in _context.Categories on row.Product.CatIDFK equals c.CatId into cg
@@ -45,6 +45,7 @@ namespace NewKarma.Repository
                             row.Product.Title,
                             row.Product.Situation,
                             row.Product.CreatedDate,
+
                             row.Product.Description,
                             Car = row.Car.CarTitle + " " + row.Car.CarModel,
                             Category = cog != null ? cog.Title : " ",
@@ -52,7 +53,7 @@ namespace NewKarma.Repository
                         }).Where(a => a.Car.Contains(Car.TrimStart().TrimEnd())
                         && a.Category.Contains(Category.TrimStart().TrimEnd())
                         && a.Brand.Contains(Brand.TrimStart().TrimEnd())
-                        ).GroupBy(b => b.ProductId).Select(s => new { ProductId = s.Key, ProductGroup = s }).ToList(); ;
+                        ).OrderBy(d => d.CreatedDate).GroupBy(b => b.ProductId).Select(s => new { ProductId = s.Key, ProductGroup = s }).ToList(); ;
             foreach (var item in Prod)
             {
                 CategoryName = "";
@@ -79,14 +80,15 @@ namespace NewKarma.Repository
                     else
                         BrandName = BrandName + " - " + a;
                 }
-                VmProductAdmin vm = new VmProductAdmin()
+                VmProduct vm = new VmProduct()
                 {
-                    Car = CarName,
+                    CreatedDate = item.ProductGroup.First().CreatedDate,
+                    CarName = CarName,
                     ProductId = item.ProductId,
-                    Category = CategoryName,
-                    Brand = BrandName,
+                    CategoryName = CategoryName,
+                    BrandName = BrandName,
                     Title = item.ProductGroup.First().Title,
-                    IsPublish = item.ProductGroup.First().Situation,
+                    Situation = item.ProductGroup.First().Situation,
                 };
                 ViewModelList.Add(vm);
             }

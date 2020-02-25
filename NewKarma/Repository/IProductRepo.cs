@@ -8,6 +8,6 @@ namespace NewKarma.Repository
 {
     public interface IProductRepo
     {
-        List<VmProductAdmin> GetAllProduct(string title,string Car, string Brand, string Category);
+        List<VmProduct> GetAllProduct(string title,string Car, string Brand, string Category);
     }
 }

@@ -31,38 +31,54 @@
                     </div>
                 </div>
             </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    برند
-                </div>
-                <div class="card-body">
-                    <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
-                       @foreach (var item in ViewBag.LastBrandAdded)
-                       {
-                           <li>@item</li>
-                       }
-                    </ul>
-                    <i class="icon icon-basket-loaded fa-2x float-left"> <span style="font-family:'B Titr'">@ViewData["BrandCount"]</span></i> 
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    قطعات
-                </div>
-                <div class="card-body">
-                    <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
-                        @foreach (var item in ViewBag.LastProdAdded)
-                        {
-                            <li>@item</li>
-                        }
-                    </ul>
-                    <i class="icon icon-settings fa-2x float-left "> <span style="font-family:'B Titr'">@ViewData["ProductCount"]</span> </i>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        برند
+                    </div>
+                    <div class="card-body">
+                        <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
+                            @foreach (var item in ViewBag.LastBrandAdded)
+                            {
+                                <li>@item</li>
+                            }
+                        </ul>
+                        <i class="icon icon-basket-loaded fa-2x float-left"> <span style="font-family:'B Titr'">@ViewData["BrandCount"]</span></i>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        قطعات
+                    </div>
+                    <div class="card-body">
+                        <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
+                            @foreach (var item in ViewBag.LastProdAdded)
+                            {
+                                <li>@item</li>
+                            }
+                        </ul>
+                        <i class="icon icon-settings fa-2x float-left "> <span style="font-family:'B Titr'">@ViewData["ProductCount"]</span> </i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        خودرو ها
+                    </div>
+                    <div class="card-body">
+                        <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
+                            @foreach (var item in ViewBag.LastCarAdded)
+                            {
+                                <li>@item</li>
+                            }
+                        </ul>
+                        <i class="icon icon-settings fa-2x float-left "> <span style="font-family:'B Titr'">@ViewData["CarCount"]</span> </i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">

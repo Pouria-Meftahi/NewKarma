@@ -24,12 +24,15 @@ namespace NewKarma.Areas.Admin.Controllers
             var catitem = _unit.BaseRepo<Category>().FindAll();
             var branditem = _unit.BaseRepo<Brand>().FindAll();
             var proditem = _unit.BaseRepo<Product>().FindAll();
+            var caritem = _unit.BaseRepo<Car>().FindAll();
             ViewData["CatCount"] = catitem.Count();
             ViewData["BrandCount"] = branditem.Count();
             ViewData["ProductCount"] = proditem.Count();
+            ViewData["CarCount"] = caritem.Count();
             ViewBag.LastBrandAdded = branditem.OrderByDescending(a => a.BrandId).Take(3).Select(a => a.Title);
             ViewBag.LastCatAdded = catitem.OrderByDescending(a => a.CatId).Take(3).Select(a => a.Title);
             ViewBag.LastProdAdded = proditem.OrderByDescending(a => a.CreatedDate).Take(3).Select(a => a.Title);
+            ViewBag.LastCarAdded = caritem.OrderByDescending(a => a.CarId).Take(3).Select(a => a.CarTitle + " " + (!string.IsNullOrEmpty(a.CarModel) ? a.CarModel : string.Empty));
             Chart lineChart = GenerateLineChart();
             Chart polarChart = GeneratePolarChart();
             Chart pieChart = GeneratePieChart();

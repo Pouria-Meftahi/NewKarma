@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewKarma.Models;
 
 namespace NewKarma.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200225203654_migNullableCreateDateTimeProduct")]
+    partial class migNullableCreateDateTimeProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,7 +248,7 @@ namespace NewKarma.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BrandIDFK");
+                    b.Property<int>("BrandIDFK");
 
                     b.Property<int>("CatIDFK");
 
@@ -348,7 +350,8 @@ namespace NewKarma.Migrations
                 {
                     b.HasOne("NewKarma.Models.Domain.Brand", "Brand")
                         .WithMany("Products")
-                        .HasForeignKey("BrandIDFK");
+                        .HasForeignKey("BrandIDFK")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("NewKarma.Models.Domain.Category", "Category")
                         .WithMany("Products")

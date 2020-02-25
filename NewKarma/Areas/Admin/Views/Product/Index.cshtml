@@ -1,4 +1,4 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<VmProductAdmin>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<VmProduct>
 @using ReflectionIT.Mvc.Paging
 @inject NewKarma.Tools.ConvertDate dconvert;
 @addTagHelper*,ReflectionIT.Mvc.Paging
@@ -44,13 +44,13 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>ردیف</th>
                                 <th>@Html.SortableHeaderFor(model => model.Title, "Title")</th>
-                                <th>@Html.SortableHeaderFor(model => model.Car, "Car")</th>
-                                <th>@Html.SortableHeaderFor(model => model.Category, "Category")</th>
-                                <th>@Html.SortableHeaderFor(model => model.Brand, "Brand")</th>
-                                <th>@Html.SortableHeaderFor(model => model.IsPublish, "IsPublish")</th>
+                                <th>@Html.SortableHeaderFor(model => model.CarName, "CarName")</th>
+                                <th>@Html.SortableHeaderFor(model => model.CategoryName, "CategoryName")</th>
+                                <th>@Html.SortableHeaderFor(model => model.BrandName, "BrandName")</th>
+                                <th>@Html.SortableHeaderFor(model => model.Situation, "Situation")</th>
                                 <th class="text-center">@Html.SortableHeaderFor(model => model.CreatedDate, "CreatedDate")</th>
                                 <th>عملیات</th>
                             </tr>
@@ -59,14 +59,14 @@
                             @{int i = ViewBag.NumOfRow;}
                             @foreach (var item in Model)
                             {
-                            <tr>
+                            <tr class="text-center">
                                 <td class="text-center">@i</td>
                                 <td class="text-nowrap">@item.Title</td>
-                                <td>@item.Car</td>
-                                <td>@item.Category</td>
-                                <td>@item.Brand</td>
+                                <td>@item.CarName</td>
+                                <td>@item.CategoryName</td>
+                                <td>@item.BrandName</td>
                                 <td class="text-center">
-                                    @if (item.IsPublish == true)
+                                    @if (item.Situation == true)
                                     {
                                         <label class="badge badge-success btn-block">منتشر شده</label>
                                     }
@@ -79,7 +79,7 @@
                                 <td class="text-center">
                                     @if (item.CreatedDate != null)
                                     {
-                                        @dconvert.ConvertMiladiToShamsi((DateTime)item.CreatedDate, "yyyy/MM/dd")
+                                        @dconvert.ConvertMiladiToShamsi((DateTime)item.CreatedDate, "yyyy/MM/dd HH:mm:ss")
                                     }
                                     else
                                     {
@@ -88,7 +88,6 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <a asp-action="Detials" asp-route-id="@item.ProductId" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
                                     <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
                                     <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
                                 </td>

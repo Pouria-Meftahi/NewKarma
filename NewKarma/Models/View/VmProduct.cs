@@ -17,9 +17,17 @@ namespace NewKarma.Models.View
         [Display(Name = "دسته بندی")]
         public int CatIDFK { get; set; }
         [Display(Name = "برند")]
-        public int BrandIDFK { get; set; }
+        public int? BrandIDFK { get; set; }
         [Display(Name = "خودرو")]
-        public int[] CarIDFK { get; set; }   
+        public int[] CarIDFK { get; set; }
+
+        [Display(Name = "خودرو")]
+        public string CarName { get; set; }
+        [Display(Name = "دسته")]
+        public string CategoryName { get; set; }
+        [Display(Name = "برند")]
+        public string BrandName { get; set; }
+
         public string UserIdFK { get; set; }
         [Display(Name = "نام قطعه")]
         public string Title { get; set; }
@@ -27,7 +35,8 @@ namespace NewKarma.Models.View
         public string Description { get; set; }
         [Display(Name = "وضعیت")]
         public bool Situation { get; set; }
-        public DateTime CreatedDate { get; set; }
+        [Display(Name = "تاریخ ثبت")]
+        public DateTime? CreatedDate { get; set; }
         [Display(Name = "تصویر")]
         public string Image { get; set; }
 
@@ -39,7 +48,6 @@ namespace NewKarma.Models.View
     {
         public int CarId { get; set; }
         public string CarTitleModel { get; set; }
-
     }
 
     public class VmProductAdmin

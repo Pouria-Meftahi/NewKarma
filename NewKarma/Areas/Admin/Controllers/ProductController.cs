@@ -101,7 +101,7 @@ namespace NewKarma.Areas.Admin.Controllers
                         Title = model.Title,
                         Description = model.Description,
                         Img = fileName,
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = model.CreatedDate,
                         Situation = model.Situation,
                         UserIDFK = model.UserIdFK,
                         BrandIDFK = model.BrandIDFK,
@@ -141,7 +141,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     var viewModel = (from row in _unit._context.Products
                                      .Include(a => a.Category)
                                      .Include(a => a.Brand)
-                                         //.Include(a => a.RlCarModelProduct)
+                                     //.Include(a => a.RlCarModelProduct)
                                      where (row.ProductId == id)
                                      select new VmProduct
                                      {
