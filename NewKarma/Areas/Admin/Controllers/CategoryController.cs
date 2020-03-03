@@ -29,10 +29,9 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpGet, DisplayName("مدیریت دسته بندی"), Authorize]
-        public async Task<IActionResult> Index(int page = 1, int row = 5)
+        public async Task<IActionResult> Index(int page = 1, int row = 30)
         {
             var category = _unit.BaseRepo<Category>().FindAllAsync();
-            var PagingModel = PagingList.Create(await category, row, page);
             List<int> Rows = new List<int>
             {
                 5,10,15,20,50,100
@@ -40,6 +39,7 @@ namespace NewKarma.Areas.Admin.Controllers
 
             ViewBag.RowID = new SelectList(Rows, row);
             ViewBag.NumOfRow = (page - 1) * row + 1;
+            var PagingModel = PagingList.Create(await category, row, page);
             PagingModel.RouteValue = new RouteValueDictionary
             {
                 {"row",row},

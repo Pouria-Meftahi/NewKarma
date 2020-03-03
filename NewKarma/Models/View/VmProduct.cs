@@ -33,7 +33,7 @@ namespace NewKarma.Models.View
         public string Title { get; set; }
         [Display(Name = "توضیحات")]
         public string Description { get; set; }
-        [Display(Name = "وضعیت")]
+        [Display(Name = "انتشار")]
         public bool Situation { get; set; }
         [Display(Name = "تاریخ ثبت")]
         public DateTime? CreatedDate { get; set; }
@@ -48,32 +48,5 @@ namespace NewKarma.Models.View
     {
         public int CarId { get; set; }
         public string CarTitleModel { get; set; }
-    }
-
-    public class VmProductAdmin
-    {
-        public int ProductId { get; set; }
-        
-        [Display(Name = "نام قطعه")]
-        public string Title { get; set; }
-        
-        [Display(Name = "وضعیت")]
-        public bool IsPublish { get; set; }
-        
-        [Display(Name = "دسته بندی")]
-        public string Category { get; set; }
-        
-        [Display(Name = "برند")]
-        public string Brand { get; set; }
-        
-        [Display(Name = "خودرو")]
-        public string Car { get; set; }
-
-        [Display(Name = "توضیحات")]
-        public string Description { get; set; }
-        [Display(Name = "تاریخ")]
-        public DateTime CreatedDate { get; set; }
-        [Display(Name = "تصویر")]
-        public string Image { get; set; }
     }
 }

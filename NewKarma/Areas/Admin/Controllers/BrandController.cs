@@ -27,7 +27,7 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpGet, DisplayName("مدیریت برند"), Authorize]
-        public async Task<IActionResult> Index(int page = 1, int row = 5)
+        public async Task<IActionResult> Index(int page = 1, int row = 15)
         {
             var brand = _unit.BaseRepo<Brand>().FindAllAsync();
             var PagingModel = PagingList.Create(await brand, row, page);

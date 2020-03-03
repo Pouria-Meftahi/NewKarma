@@ -28,9 +28,8 @@ namespace NewKarma.Areas.Admin.Controllers
             _unit = unit;
         }
         [HttpGet, DisplayName("قطعات"), Authorize]
-        public async Task<IActionResult> Index(int page = 1, int row = 10, string sortExpression = "Title", string title = "")
+        public async Task<IActionResult> Index(int page = 1, int row = 30, string sortExpression = "-CreatedDate", string title = "")
         {
-
             title = String.IsNullOrEmpty(title) ? "" : title;
             List<int> Rows = new List<int>
             {
@@ -96,6 +95,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     System.IO.File.Move(Temp, destination);
                     if (System.IO.File.Exists(destination))
                         System.IO.File.Delete(destination);
+                    
                     Product product = new Product
                     {
                         Title = model.Title,

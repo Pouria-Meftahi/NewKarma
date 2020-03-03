@@ -8,7 +8,6 @@
 <section class="blog_area section_padding">
     <div class="container">
         <div class="row">
-            @*single_sidebar_widget post_category_widget*@
             <section class="col-lg-12 list-group form-horizontal">
                 <h4 class="text-center widget_title">دسته بندی</h4>
                 <ul class="list form-horizontal" style="overflow-x:scroll; text-align:center; display: flex;">
@@ -18,7 +17,6 @@
                             <a asp-controller="Home" asp-action="ProductByCategory" asp-route-CatId="@item.CatId" class="btn btn_4 p-3 m-1">
                                 @item.Title
                             </a>
-                            @*<img class="img-Admin" src="~/img/imgUpload/Category/@item.Icon" />*@
                         </li>
                     }
                     <li>
@@ -30,7 +28,7 @@
                     <h3>@ViewBag.Message</h3>
                     @foreach (var item in Model)
                     {
-                        <a class="col-md-3" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
+                        <a class="col-md-4" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
                             <article class="blog_item">
                                 <div id="prodimg" class="blog_item_img" style="background-image:url('/img/imgUpload/Product/@item.Img')">
                                     <span href="/Home/ProductByBrand?brandId=@item.BrandIDFK" class="blog_item_date btn_4" id="BrandBtn">@item.Brand.Title</span>
@@ -53,10 +51,10 @@
                 </nav>
             </div>
             @*<div class="col-lg-3">
-                <div class="blog_right_sidebar">
-                    @await Html.PartialAsync("_Aside", ViewData["Search"])
-                </div>
-            </div>*@
+                    <div class="blog_right_sidebar">
+                        @await Html.PartialAsync("_Aside", ViewData["Search"])
+                    </div>
+                </div>*@
         </div>
     </div>
 </section>

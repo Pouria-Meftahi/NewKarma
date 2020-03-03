@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NewKarma.Models;
-using NewKarma.Models.Domain;
 using NewKarma.Models.View;
 using NewKarma.Repository.UOW;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NewKarma.Repository
 {
@@ -53,7 +49,7 @@ namespace NewKarma.Repository
                         }).Where(a => a.Car.Contains(Car.TrimStart().TrimEnd())
                         && a.Category.Contains(Category.TrimStart().TrimEnd())
                         && a.Brand.Contains(Brand.TrimStart().TrimEnd())
-                        ).OrderBy(d => d.CreatedDate).GroupBy(b => b.ProductId).Select(s => new { ProductId = s.Key, ProductGroup = s }).ToList(); ;
+                        ).GroupBy(b => b.ProductId).Select(s => new { ProductId = s.Key, ProductGroup = s }).ToList();
             foreach (var item in Prod)
             {
                 CategoryName = "";

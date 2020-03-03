@@ -8,6 +8,7 @@ using NewKarma.Models.Domain;
 using NewKarma.Models.View;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,10 +24,18 @@ namespace NewKarma.Areas.Admin.Controllers
         }
 
         [HttpGet, DisplayName("مدیریت خوردو"), Authorize]
-        public async Task<IActionResult> Index(int page = 1, int row = 5)
+        public async Task<IActionResult> Index(int page = 1, int row = 15)
         {
             var car = _unit.BaseRepo<Car>().FindAllAsync();
+            List<int> Rows = new List<int>
+            {
+                5,10,15,20,50,100
+            };
+
+            ViewBag.RowID = new SelectList(Rows, row);
+            ViewBag.NumOfRow = (page - 1) * row + 1;
             var PagingModel = PagingList.Create(await car, row, page);
+
             PagingModel.RouteValue = new RouteValueDictionary
             {
                 {"row",row},
