@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 <div class="container-fluid">
-    <form asp-area="Admin" asp-controller="Brand" asp-action="Edit" method="post" onsubmit="return validationForm()">
+    <form asp-area="Admin" asp-controller="Brand" asp-action="Edit" enctype="multipart/form-data" method="post" onsubmit="return validationForm()">
         @if (ViewBag.MsgConfirm != null)
         {
             <div class="alert alert-success alert-dismissable">
@@ -29,7 +29,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header bg-light">
-                            ویرایش آیکن دسته بندی
+                            ویرایش آیکن برند
                         </div>
                         <div class="card-body">
                             <div class="form-group">
@@ -77,6 +77,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">عنوان</label>
                                     <input asp-for="Title" id="title" class="form-control" placeholder="عنوان برند">
+                                    <span asp-validation-for="Title"></span>
                                 </div>
                             </div>
                         </div>

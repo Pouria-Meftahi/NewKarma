@@ -7,6 +7,52 @@
 .modal-backdrop{
     z-index:0;
 }
+.custom-button li a{
+    display: inline-block;
+    border: 1px solid #eee;
+    background: #fff;
+    padding: 4px 20px;
+    margin-bottom: 8px;
+    margin-right: 3px;
+    transition: all .3s ease 0s;
+    color: #888;
+    font-size: 13px;
+    white-space: nowrap;
+}
+    .custom-button li a:hover {
+        background: #ff7e5f;
+        color: #fff !important;
+        -webkit-text-fill-color: #fff;
+        text-decoration: none;
+        -webkit-transition: .5s;
+        transition: .5s;
+    }
+
+.scrollbar {
+    display:flex;
+    width: 100%;
+    margin-bottom: 25px;
+    overflow-x: scroll;
+}
+/**  STYLE 2 */
+#style-2::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+    height: 10px;
+}
+#style-2::-webkit-scrollbar-thumb {
+    width:100px;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #ff7e5f;
+}
+
+#style-2::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #999;
+}
+
 .modal-content{
     margin-top:100px ;
 }
@@ -757,7 +803,6 @@ ul {
     overflow: hidden;
     transform-origin: top center;
     transform: scale(1, 0);
-    display: block;
     text-align: right;
     margin-top: 28px
 }
@@ -765,6 +810,34 @@ ul {
 .dropdown:hover .dropdown-menu {
     transform: scale(1)
 }
+
+
+
+
+/* rows */
+div.dropdown-multicol {
+    width: 30em;
+    background-color:red;
+
+}
+
+div.dropdown-row > a.dropdown-item {
+    display: inline-block;
+    width: 32%;
+    background-color:green;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .btn-right{
     position:absolute !important;
     right:0 !important;
@@ -2306,12 +2379,10 @@ ul {
 
     .dropdown .dropdown-menu {
         transform: scale(1, 0);
-        display: none
     }
 
     .dropdown:hover .dropdown-menu {
         transform: scale(1);
-        display: block
     }
 
     .main_menu .main-menu-item {
@@ -2344,12 +2415,10 @@ ul {
 
     .dropdown .dropdown-menu {
         transform: scale(1, 0);
-        display: none
     }
 
     .dropdown:hover .dropdown-menu {
         transform: scale(1);
-        display: block
     }
 
     .main_menu .main-menu-item {
@@ -2382,12 +2451,10 @@ ul {
 
     .dropdown .dropdown-menu {
         transform: scale(1, 0);
-        display: none
     }
 
     .dropdown:hover .dropdown-menu {
         transform: scale(1);
-        display: block
     }
 
     .main_menu .main-menu-item {
@@ -2408,9 +2475,9 @@ ul {
     background-color: #fafafa
 }
 
-.dropdown:hover .dropdown-menu {
+/*.dropdown:hover .dropdown-menu {
     display: block
-}
+}*/
 
 .banner_part {
     

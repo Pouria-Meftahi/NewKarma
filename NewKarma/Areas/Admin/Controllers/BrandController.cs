@@ -132,7 +132,7 @@ namespace NewKarma.Areas.Admin.Controllers
                                 {
                                     await image.CopyToAsync(fileStream);
                                 }
-                                brandOld.Logo = TempImage;
+                                brandOld.Logo = fileName;
                                 Image_resize(TempImage, filePath + fileName, 50);
                                 string destination = filePath + "_" + fileName;
                                 System.IO.File.Move(TempImage, destination);
@@ -155,7 +155,7 @@ namespace NewKarma.Areas.Admin.Controllers
                                     {
                                         await image.CopyToAsync(fileStream);
                                     }
-                                    brandOld.Logo = TempImage;
+                                    brandOld.Logo = fileName;
                                     Image_resize(TempImage, filePath + fileName, 50);
                                     string destination = filePath + "_" + fileName;
                                     System.IO.File.Move(TempImage, destination);
@@ -252,7 +252,7 @@ namespace NewKarma.Areas.Admin.Controllers
                     var qualityParamId = Encoder.Quality;
                     var encoderParameters = new EncoderParameters(1);
                     encoderParameters.Param[0] = new EncoderParameter(qualityParamId, quality);
-                    var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                    var codec = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.FormatID == ImageFormat.Png.Guid);
                     new_DrawArea.Save(output, codec, encoderParameters);
                     output.Close();
                 }
