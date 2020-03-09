@@ -42,15 +42,15 @@
                                         دسته بندی
                                     </a>
                                     @*dropdown-multicol*@
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        @*<div class="dropdown-row">*@
+                                    <div class="dropdown-menu dropdown-multicol" aria-labelledby="navbarDropdown">
+                                        <div class="dropdown-row">
                                             @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
                                             {
                                                 <a class="dropdown-item" asp-controller="Home" asp-action="ProductByCategory" asp-route-catId="@item.CatId">
                                                     @item.Title
                                                 </a>
                                             }
-                                        @*</div>*@
+                                        </div>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
