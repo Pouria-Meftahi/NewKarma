@@ -19,11 +19,11 @@
                             </a>
                         </li>
                     }*@
-                    @foreach (var item in await unit.BaseRepo<Car>().FindAllAsync())
+                    @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
                     {
                         <li>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="ProductByCar" asp-route-carId="@item.CarId">
-                                @item.CarTitle @item.CarModel
+                            <a class="dropdown-item" asp-controller="Home" asp-action="ProductByCar" asp-route-carId="@item.CatId">
+                                @item.Title 
                             </a>
                         </li>
                     }
@@ -39,8 +39,8 @@
                     <h3>@ViewBag.Message</h3>
                     @foreach (var item in Model)
                     {
-                        <a class="col-md-4" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
-                            <article class="blog_item">
+                        <a class="col-md-4 " asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
+                            <article class="blog_item box">
                                 <div id="prodimg" class="blog_item_img" style="background-image:url('/img/imgUpload/Product/@item.Img')">
                                     <span data-toggle="tooltip" data-placement="top" title="مشاهده قطعات @item.Brand.Title" href="/Home/ProductByBrand?brandId=@item.BrandIDFK" class="blog_item_date btn btn_2" id="BrandBtn">
                                         <img src="~/img/imgUpload/Brand/@item.Brand.Logo" />
@@ -51,11 +51,10 @@
                                     <h2 class="d-inline-block">@item.Title</h2>
                                     <p>
                                         @{
-                                            var desc = item.Description.Length > 100 ? item.Description.Substring(0, 100) + " ..." : item.Description;
+                                            var desc = item.Description.Length >=100 ? item.Description.Substring(0, 99) + " ..." : item.Description;
                                         }
                                         @desc
                                     </p>
-                                    <span class="btn btn-danger btn-block">جزییات</span>
                                 </div>
                             </article>
                         </a>
@@ -116,3 +115,17 @@
             </div>
         </div>
     </div>*@
+<script type='text/javascript' src='~/js/scroll.js'></script>
+<script>
+    $(function () {
+
+        $("scrollbar").mousewheel(function (event, delta) {
+
+            this.scrollLeft -= (delta * 1);
+
+            event.preventDefault();
+
+        });
+
+    });
+</script>

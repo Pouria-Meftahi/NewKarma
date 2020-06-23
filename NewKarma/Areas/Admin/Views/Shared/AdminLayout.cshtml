@@ -40,12 +40,8 @@
                     <span>@convertDate.ConvertMiladiToShamsi(DateTime.Now, "dddd d MMMM yyyy")</span>
                 </li>
                 <li class="nav-item dropdown">
-
-                    @{
-                        if (signManager.IsSignedIn(User))
-                        {
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="/images/avatar-1.png" class="avatar avatar-sm" alt="logo">
+                                <img src="~/Admin/images/avatar-1.png" class="avatar avatar-sm" alt="logo">
                                 <span class="small ml-1 d-md-down-none">
                                     @signManager.UserManager.GetUserName(User)
                                 </span>
@@ -54,6 +50,9 @@
                                 <div class="dropdown-header">حساب کاربری</div>
                                 <a href="#" class="dropdown-item">
                                     <i class="fa fa-user"></i> پروفایل
+                                </a> 
+                                <a href="#" class="dropdown-item">
+                                    <i class="fa fa-gem"></i> تنظیمات
                                 </a>
                                 <form asp-area="" asp-controller="Account" asp-action="Logout">
                                     <button type="submit" value="Logout" class="dropdown-item">
@@ -61,10 +60,7 @@
                                     </button>
                                 </form>
                             </div>
-                        }
-                    }
                 </li>
-
             </ul>
         </nav>
         <div class="main-container">
@@ -76,9 +72,10 @@
     </div>
     <script src="~/Admin/vendor/chart.js/chart.js"></script>
     <script src="~/Admin/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Admin/vendor/popper.js/popper.min.js"></script>
     <script src="~/Admin/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Admin/js/jquery-confirm.min.js"></script>
-    <script src="~/Admin/vendor/popper.js/popper.min.js"></script>
+
 
 
     <script src="~/Admin/js/carbon.js"></script>
