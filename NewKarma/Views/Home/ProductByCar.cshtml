@@ -1,42 +1,100 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<Product>
-@addTagHelper*,ReflectionIT.Mvc.Paging
+﻿@model VmCar
 @{
-    ViewData["Title"] = "ProductByCar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<section class="blog_area section_padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mb-5 mb-lg-0">
-                <div class="row blog_left_sidebar">
-                    @foreach (var item in Model)
-                    {
-                        <a class="col-md-6 padding-0px" asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
-                            <article class="blog_item">
-                                <div id="prodimg" class="blog_item_img" style="background-image:url('/img/imgUpload/Product/@item.Img')">
-                                    <span class="blog_item_date btn_4" id="BrandBtn">@item.Category.Title</span>
-                                </div>
-                                <div class="blog_details">
-                                    <h2 class="d-inline-block">@item.Title</h2>
-                                    <p>
-                                        @{
-                                            var desc = item.Description.Length > 100 ? item.Description.Substring(0, 100) + " ..." : item.Description;
-                                        }
-                                        @desc
-                                    </p>
-                                </div>
-                            </article>
-                        </a>
-                    }
-                </div>
-                <nav class="blog-pagination justify-content-center d-flex">
-                    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
-                </nav>
-            </div>
-            <div class="col-lg-4">
-                @await Html.PartialAsync("_Aside", ViewData["Search"])
+<style>
+    .header-paralax {
+        width: 100%;
+        position: fixed;
+        padding-top: 100px;
+        height: 600px;
+        }
+
+    main {
+        background: #f5f5f5;
+        position: relative;
+        top: 200px;
+        color: #111111;
+    }
+</style>
+
+<div class="header-paralax">
+    <div class="col-md-12 mb-5 mb-lg-0">
+        <div class="row blog_left_sidebar">
+            <div class="col-md-12 padding-0px">
+                <article class="blog_item text-center">
+                    <div>
+                        <h3>
+                            @Model.CarTitle
+                        </h3>
+                        <h2 class="d-inline-block">@Model.CarModel</h2>
+                    </div>
+                </article>
             </div>
         </div>
     </div>
-</section>
+</div>
+<main>
+    <section class="blog_area section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-light ts-gutter-30">
+                    <div class="row" id="content">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="load-more-btn text-center pt-5">
+                        <div id="progress" class="text-center">
+                            <p>در حال بارگزاری اطلاعات ...</p>
+                            <div class="loadingCricle m-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
 
+@section Scripts{
+    <script>
+        var offset = 0;
+        GetData();
+        $(window).scroll(function () {
+            if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height()) {
+                GetData();
+            }
+         });
+    function GetData() {
+        $.ajax({
+            type: 'get',
+            url: '/Home/GetProductCar',
+            data: { 'offset': offset, 'carId':@(Model.CarId)},
+            dataType: 'json',
+            success: function (data) {
+                if (data != null) {
+                    $.each(data, function (i) {
+                        $("#content").append(
+                            "<a class='col-md-4'>" +
+                            "<article class= 'blog_item box'>" +
+                            "<div id='prodimg' class='blog_item_img' style='background-image:url(/img/imgUpload/Product/" + data[i].image + ")';>" +
+
+                            "</div > " +
+                            "<div class='blog_details'><h2 class='d-inline-block'>" + data[i].title + "</h2><p>" + data[i].description + "</p></div>" +
+                            "</article ></a > ")
+                    });
+                    offset++;
+                }
+            },
+            beforeSend: function () {
+                $("#progress").show();
+            },
+            complete: function () {
+                $("#progress").hide();
+            },
+            error: function () {
+                alert("خطا!");
+            }
+        });
+    }
+    </script>
+}

@@ -1,0 +1,28 @@
+﻿@model VmProduct
+    <section class="col-lg-12 list-group form-horizontal">
+        <h4 class="text-center widget_title">جستجوی پیشرفته</h4>
+        <form asp-controller="Home" asp-action="AdvancedSearch" method="post">
+            <div class="form-group">
+                <label>نام برند </label>
+                <input type="text" name="brand" />
+                @*<span asp-validation-for=""></span>*@
+            </div>
+            <div>
+                <input type="text" name="car" />
+            </div>
+            <div>
+                <input type="text" name="product" />
+            </div>
+        </form>
+
+        @*<ul class="scrollbar list form-horizontal custom-button" id="style-2">
+            @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
+            {
+                <li>
+                    <a class="dropdown-item" asp-controller="Home" asp-action="ProductByCar" asp-route-carId="@item.CatId">
+                        @item.Title
+                    </a>
+                </li>
+            }
+        </ul>*@
+    </section>

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using NewKarma.Models;
 using NewKarma.Models.Domain;
+using NewKarma.Models.View;
 using NewKarma.Repository.UOW;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -30,12 +32,12 @@ namespace NewKarma.Controllers
             }
             else
             {
-                var Products =  _unit.BaseRepo<Product>().FindByConditionAsync(
-                    filter: s => s.Situation == true 
-                    && s.Title.Contains(title.TrimStart().TrimEnd()) 
-                    || s.Category.Title.Contains(title.TrimStart().TrimEnd()) 
-                    || s.Brand.Title.Contains(title.TrimStart().TrimEnd()) 
-                    || s.RlCarModelProduct.FirstOrDefault().Car.CarModel.Contains(title.TrimStart().TrimEnd()) 
+                var Products = _unit.BaseRepo<Product>().FindByConditionAsync(
+                    filter: s => s.Situation == true
+                    && s.Title.Contains(title.TrimStart().TrimEnd())
+                    || s.Category.Title.Contains(title.TrimStart().TrimEnd())
+                    || s.Brand.Title.Contains(title.TrimStart().TrimEnd())
+                    || s.RlCarModelProduct.FirstOrDefault().Car.CarModel.Contains(title.TrimStart().TrimEnd())
                     || s.RlCarModelProduct.FirstOrDefault().Car.CarTitle.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
                 var PagingModel = PagingList.Create(await Products, row, page);
                 PagingModel.Action = "Index";
@@ -52,109 +54,91 @@ namespace NewKarma.Controllers
                 return PartialView("_SearchResult", PagingModel);
             }
         }
-        [ActionName("Products")]
-        public async Task<IActionResult> Products(int page = 1, int row = 10, string title = "")
+
+        public async Task<ActionResult> GetLatestProd(int Offset, int LimitInList)
         {
-            var Products = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()), includes: a => a.Brand);
-            var PagingModel = PagingList.Create(await Products, row, page);
-            PagingModel.Action = "Products";
-            PagingModel.RouteValue = new RouteValueDictionary
-            {
-                {"row",row },
-                {"title",title }
-            };
-            ViewData["Search"] = title;
-            if (Products.Result.Count() == 0)
-            {
-                ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
-            }
-            return View(PagingModel ?? null);
-        }
+            return Json(await _unit.ProductRepo.LatestProduct(Offset, LimitInList));
 
-        public async Task<IActionResult> ProductByCategory(int? catId, int page = 1, int row = 4, string title = "")
+        }
+   
+        #region Category
+        public async Task<IActionResult> GetProductCategory(int catId, int offset) =>
+        Json(await _unit.ProductRepo.GetProdByCategory(catId, offset));
+        public async Task<ActionResult> ProductByCategory(int catId)
         {
-            var prodByCat = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()) && s.CatIDFK == catId, includes: b => b.Brand);
-            var PaginfModel = PagingList.Create(await prodByCat, row, page);
-            PaginfModel.Action = "ProductByCategory";
-            PaginfModel.RouteValue = new RouteValueDictionary
-            {
-                {"row",row },
-                {"title",title }
-            };
-            ViewData["Search"] = title;
-            if (prodByCat.Result.Count() == 0)
-            {
-                ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
-            }
-            return View(PaginfModel ?? null);
+            VmCategory category = _context.Categories.Where(a => a.CatId == catId)
+                .Select(s => new VmCategory {CatID = s.CatId, Title = s.Title, Description = s.Description }).FirstOrDefault();
+            return View(category);
         }
+        #endregion
 
-        public async Task<IActionResult> ProductByBrand(int? brandId, int page = 1, int row = 4, string title = "")
+        #region Brand
+        public async Task<ActionResult> GetProductBrand(int offset, int brandId) =>
+        Json(await _unit.ProductRepo.GetProdByBrand(offset, brandId));
+        public async Task<IActionResult> ProductByBrand(int brandId)
         {
-            var productByBrand = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()) && s.BrandIDFK == brandId, includes: b => b.Category);
-            var PaginModel = PagingList.Create(await productByBrand, row, page);
-            PaginModel.Action = "ProductByBrand";
-            PaginModel.RouteValue = new RouteValueDictionary
-            {
-                {"row",row },
-                {"title",title }
-            };
-            ViewData["Search"] = title;
-            if (productByBrand.Result.Count() == 0)
-            {
-                ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
-            }
-            return View(PaginModel ?? null);
+            VmBrand vmBrand = _context.Brands.Where(a => a.BrandId == brandId)
+            .Select(a => new VmBrand {brandId = a.BrandId, Title = a.Title, Description = a.Description, Logo = a.Logo }).FirstOrDefault();
+            return View(vmBrand);
         }
+        #endregion
 
-        public async Task<IActionResult> ProductByCar(int? carId, int row = 4, int page = 1, string title = "")
+        #region Car
+        public async Task<IActionResult> GetProductCar(int carId, int offset) =>
+        Json(await _unit.ProductRepo.GetProdByCar(carId, offset));
+
+        public async Task<ActionResult> ProductByCar(int carId)
         {
-            var cars = _unit.BaseRepo<RlCarModelProduct>().FindAllAsync().Result.Select(a => a.CarId).ToList();
-
-            var productByCar = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()) && s.RlCarModelProduct.Select(a => a.CarId).First() == carId, includes: b => b.Category);
-            var PaginModel = PagingList.Create(await productByCar, row, page);
-            PaginModel.Action = "ProductByCar";
-            PaginModel.RouteValue = new RouteValueDictionary
-            {
-                {"row",row },
-                {"title",title }
-            };
-            ViewData["Search"] = title;
-            if (productByCar.Result.Count() == 0)
-            {
-                ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
-            }
-            return View(PaginModel ?? null);
+            VmCar vmCar = _context.Cars.Where(a => a.CarId == carId)
+                .Select(s => new VmCar {CarId = s.CarId, CarTitle = s.CarTitle, CarModel = s.CarModel }).AsNoTracking().FirstOrDefault();
+            return View(vmCar);
+            //var cars = _unit.BaseRepo<RlCarModelProduct>().FindAllAsync().Result.Select(a => a.CarId).ToList();
+            //var productByCar = _unit.BaseRepo<Product>().FindByConditionAsync(filter: s => s.Situation == true && s.Title.Contains(title.TrimStart().TrimEnd()) && s.RlCarModelProduct.Select(a => a.CarId).First() == carId, includes: b => b.Category);
+            //var PaginModel = PagingList.Create(await productByCar, row, page);
+            //PaginModel.Action = "ProductByCar";
+            //PaginModel.RouteValue = new RouteValueDictionary
+            //{
+            //    {"row",row },
+            //    {"title",title }
+            //};
+            //ViewData["Search"] = title;
+            //if (productByCar.Result.Count() == 0)
+            //{
+            //    ViewBag.Message = "نتیجه ای برای جستجوی شما پیدا نشد";
+            //}
+            //return View(PaginModel ?? null);
         }
-
-        public IActionResult ProductById(int? ProductId)
-        {
-            var prodById = _unit.BaseRepo<Product>().FindByConditionAsync(a => a.ProductId == ProductId && a.Situation == true, includes: b => b.Brand).Result.FirstOrDefault();
-            var carId = _context.RlCarModelProducts.Where(a => a.ProductId == prodById.ProductId).Select(a => a.CarId);
-            ViewBag.cars = _context.Cars.Where(a => carId.Contains(a.CarId));
-            ViewBag.Brand = _context.Brands.Where(b => b.BrandId == prodById.BrandIDFK).SingleOrDefault().Title;
-            return View(prodById);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
+        #endregion
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        //public IActionResult ProductById(int? ProductId)
+        //{
+        //    var prodById = _unit.BaseRepo<Product>().FindByConditionAsync(a => a.ProductId == ProductId && a.Situation == true, includes: b => b.Brand).Result.FirstOrDefault();
+        //    var carId = _context.RlCarModelProducts.Where(a => a.ProductId == prodById.ProductId).Select(a => a.CarId);
+        //    ViewBag.cars = _context.Cars.Where(a => carId.Contains(a.CarId));
+        //    ViewBag.Brand = _context.Brands.Where(b => b.BrandId == prodById.BrandIDFK).SingleOrDefault().Title;
+        //    return View(prodById);
+        //}
+
+        //public IActionResult About()
+        //{
+        //    ViewData["Message"] = "Your application description page.";
+
+        //    return View();
+        //}
+
+        //public IActionResult Contact()
+        //{
+        //    ViewData["Message"] = "Your contact page.";
+
+        //    return View();
+        //}
+
+
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
 
         public IActionResult NullProduct()
         {

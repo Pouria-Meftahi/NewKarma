@@ -24,6 +24,13 @@
                                     <span asp-validation-for="Title"></span>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>توضیحات</label>
+                                    <input asp-for="Description" type="text" id="description" class="form-control validate">
+                                    <span asp-validation-for="Description"></span>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -38,8 +45,29 @@
 <script>
     function validationForm() {
         var title = $('#title').val();
+        var desc = $('#description').val();
         if (title == "") {
             $('#title').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا  عنوان را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+        if (desc =='#description') {
+            $('#description').focus();
             $.confirm({
                 icon: 'fa fa-warning',
                 title: 'خطا!',

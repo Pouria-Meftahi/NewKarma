@@ -19,9 +19,6 @@ namespace NewKarma.Repository
         public async Task<IEnumerable<T>> FindAllAsync() => await dbSet.ToListAsync();
         public IEnumerable<T> FindAll() => dbSet.ToList();
         public async Task<T> FindByIdAsync(object id) => await dbSet.FindAsync(id);
-        //TODO:Impelement Eger Loding 4 Murtual Product↓
-        //Using Expression for Using Linq
-        //Func==Delegate00
         public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = dbSet;

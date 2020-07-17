@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewKarma.Areas.Identity.Data;
@@ -40,7 +41,7 @@ namespace NewKarma
                 options.LoginPath = "/Account/Login";
                 //options.AccessDeniedPath = "/Home/AccessDenied";
             });
-
+            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("NewsKarmaDatabase")));
 
             services.AddTransient<AppDbContext>();
             services.AddTransient<ConvertDate>();
@@ -54,7 +55,7 @@ namespace NewKarma
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
             
-            services.AddTransient<AppDbContext>();//What The Fuck!
+            //services.AddTransient<AppDbContext>();//What The Fuck!
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProductRepo, ProductRepo>();

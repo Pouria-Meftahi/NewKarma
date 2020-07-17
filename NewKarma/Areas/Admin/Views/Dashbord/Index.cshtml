@@ -16,10 +16,10 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center bg-primary">
                         دسته بندی
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pt-4 mt-4">
                         <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
                             @foreach (var item in @ViewBag.LastCatAdded)
                             {
@@ -33,10 +33,10 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center bg-primary">
                         برند
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pt-4 mt-4">
                         <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
                             @foreach (var item in ViewBag.LastBrandAdded)
                             {
@@ -49,10 +49,10 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center bg-primary">
                         قطعات
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pt-4 mt-4">
                         <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
                             @foreach (var item in ViewBag.LastProdAdded)
                             {
@@ -65,10 +65,10 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center bg-primary">
                         خودرو ها
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pt-4 mt-4">
                         <ul style="position: absolute; bottom: 0;right: 0;list-style: arabic-indic;">
                             @foreach (var item in ViewBag.LastCarAdded)
                             {
@@ -84,13 +84,11 @@
     <div class="row">
         <div class="card col-md-6">
             <div class="card-body">
-                <h5 class="card-title">محصولات بر اساس خودرو</h5>
                 <canvas id="polarChart"></canvas>
             </div>
         </div>
         <div class="card col-md-6">
             <div class="card-body">
-                <h5 class="card-title">محصولات بر اساس برند</h5>
                 <canvas id="pieChart"></canvas>
             </div>
         </div>
@@ -98,7 +96,6 @@
     <div class="row">
         <div class="card col-md-12">
             <div class="card-body">
-                <h5 class="card-title">محصولات بر اساس دسته بندی</h5>
                 <canvas id="lineChart"></canvas>
             </div>
         </div>

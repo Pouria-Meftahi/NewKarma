@@ -9,8 +9,10 @@ namespace NewKarma.Models.Domain
     {
         [Key, Required]
         public int CatId { get; set; }
-        [Required, Display(Name = "Title")]
+        [Required, Display(Name = "عنوان")]
         public string Title { get; set; }
+        [Required, Display(Name = "توضیحات")]
+        public string Description { get; set; }
         public string UserIDFK { get; set; }
         [ForeignKey(nameof(UserIDFK)), NotMapped]
         public virtual ApplicationUser ApplicationUser { get; set; }

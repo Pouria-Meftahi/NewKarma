@@ -216,6 +216,7 @@ namespace NewKarma.Areas.Admin.Controllers
             }
             else
             {
+                //cannot remove logo becase is null when the image was not uploaded and i think in brand model logo is null becase that upload with default image
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgUpload\\brand\\", brand.Logo);
                 System.IO.File.Delete(filePath);
                 _unit.BaseRepo<Brand>().Delete(brand);

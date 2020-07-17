@@ -89,14 +89,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="col-sm-12 col-lg-12">
-                    <div class="single_service_text">
-                        <h2>آخرین قطعات</h2>
-                        <a asp-controller="Home" asp-action="Products" class="btn_2 mb-4 center">قطعات</a>
-                    </div>
-                </div>
                 <div class="owl-carousel">
-                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter:a=>a.Situation==true, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Brand).Result.Take(5))
+                    @foreach (var item in unit.BaseRepo<Product>().FindByConditionAsync(filter: a => a.Situation == true, orderBy: d => d.OrderBy(date => date.CreatedDate), includes: i => i.Brand).Result.Take(5))
                     {
                         <div class="item">
                             <div class="single_service_part">
@@ -110,7 +104,7 @@
                                     else
                                     {
                                         <i>
-                                            <img src="~/img/logo.png"/>
+                                            <img src="~/img/logo.png" />
                                         </i>
                                     }
                                 </span>
@@ -121,7 +115,6 @@
                                     }
                                     @desc
                                 </p>
-                                <a asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId" class="btn_3">مشاهده قطعه <i class="ti-arrow-right"></i></a>
                             </div>
                         </div>
                     }
@@ -178,4 +171,3 @@
         </div>
     </div>
 </section>
-

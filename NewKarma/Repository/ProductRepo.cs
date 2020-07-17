@@ -1,25 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using NewKarma.Models;
+using NewKarma.Models.Domain;
 using NewKarma.Models.View;
 using NewKarma.Repository.UOW;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace NewKarma.Repository
 {
     public class ProductRepo : IProductRepo
     {
         private readonly AppDbContext _context;
+
         public ProductRepo(AppDbContext context)
         {
             _context = context;
         }
 
-        private readonly IUnitOfWork _unit;
-        public ProductRepo(IUnitOfWork unit)
-        {
-            _unit = unit;
-        }
         public List<VmProduct> GetAllProduct(string title, string Car, string Brand, string Category)
         {
             string CategoryName = "";
@@ -85,6 +85,85 @@ namespace NewKarma.Repository
                     BrandName = BrandName,
                     Title = item.ProductGroup.First().Title,
                     Situation = item.ProductGroup.First().Situation,
+                };
+                ViewModelList.Add(vm);
+            }
+            return ViewModelList;
+        }
+        public async Task<List<VmProduct>> GetProdByCar(int carId, int offset)
+        {
+            //var icarId = await _context.RlCarModelProducts.FindAsync(carId);
+            var prodByCar = await _context.Products.Where(a => a.Situation == true && a.RlCarModelProduct.FirstOrDefault().CarId == carId)
+                .Select(s => new VmProduct
+                {
+                    Title = s.Title,
+                    Description = s.Description,
+                    Image =s.Img,
+                }).Skip(offset*3).Take(3).AsNoTracking().ToListAsync();
+            return prodByCar;
+        }
+
+        public async Task<List<VmProduct>> GetProdByBrand(int offset, int brandId)
+        {
+            var prodByBrand = await _context.Products.Where(a => a.Situation == true && a.BrandIDFK == brandId)
+                .Include(b => b.Brand)
+                //Hack:Using ProjectTo or Mapper
+                .Select(s => new VmProduct
+                {
+                    Title = s.Title,
+                    Description = s.Description,
+                    Image = s.Img,
+                    BrandLogo = s.Brand.Logo,
+                    BrandName = s.Brand.Title
+                }).Skip(offset * 3).Take(3).AsNoTracking().ToListAsync();
+            return prodByBrand;
+        }
+
+
+        public async Task<List<VmProduct>> GetProdByCategory(int catId, int offset)
+        {
+            var prodbyCategory = await _context.Products.Where(a => a.Situation == true && a.CatIDFK == catId)
+                .Include(b => b.Category)
+                .Select(s => new VmProduct
+                {
+                    Title = s.Title,
+                    Description = s.Description,
+                    Image = s.Img,
+                }).Skip(offset * 3).Take(3).AsNoTracking().ToListAsync();
+            return prodbyCategory;
+        }
+
+        public async Task<List<VmProduct>> LatestProduct(int offset, int limit)
+        {
+            List<VmProduct> ViewModelList = new List<VmProduct>();
+            var Prod = await (from row in _context.Products
+                              join b in _context.Brands on row.BrandIDFK equals b.BrandId into br
+                              from brn in br.DefaultIfEmpty()
+
+                              where (row.Situation == true)
+                              select new
+                              {
+                                  row.ProductId,
+                                  row.Title,
+                                  row.Situation,
+                                  row.CreatedDate,
+                                  row.Description,
+                                  row.Img,
+                                  Brand = brn != null ? brn.Title : " ",
+                                  BramdImage = brn != null ? brn.Logo : " ",
+                              }).GroupBy(b => b.ProductId).Skip(offset * limit).Take(limit)
+                        .Select(s => new { ProductId = s.Key, ProductGroup = s }).AsNoTracking().ToListAsync();
+            foreach (var item in Prod)
+            {
+                VmProduct vm = new VmProduct()
+                {
+                    CreatedDate = item.ProductGroup.First().CreatedDate,
+                    ProductId = item.ProductId,
+                    BrandName = item.ProductGroup.First().Brand,
+                    BrandLogo = item.ProductGroup.First().BramdImage,
+                    Title = item.ProductGroup.First().Title,
+                    Description = item.ProductGroup.First().Description,
+                    Image = item.ProductGroup.First().Img
                 };
                 ViewModelList.Add(vm);
             }

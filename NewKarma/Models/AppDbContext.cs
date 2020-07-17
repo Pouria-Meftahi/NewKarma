@@ -7,11 +7,15 @@ namespace NewKarma.Models
 {
     public partial class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDbContext(DbContextOptions options) : base(options)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=NewKarma;Trusted_Connection=True;");
-            //optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER2016;Database=KarmaDB;User ID=KarmayadaDB;Password=#vw8T9o2;");
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //   optionsBuilder.UseSqlServer("Server=.;Database=NewKarma;Trusted_Connection=True;");
+        //    //optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER2016;Database=KarmaDB;User ID=KarmayadaDB;Password=#vw8T9o2;");
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);//Hack:Whats Hapening There

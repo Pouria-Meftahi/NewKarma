@@ -21,17 +21,18 @@ namespace NewKarma.Models.View
         [Display(Name = "خودرو")]
         public int[] CarIDFK { get; set; }
 
-        [Display(Name = "خودرو")]
+        [Display(Name = "خودرو"),Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string CarName { get; set; }
-        [Display(Name = "دسته")]
+        [Display(Name = "دسته"), Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string CategoryName { get; set; }
-        [Display(Name = "برند")]
+        [Display(Name = "برند"), Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string BrandName { get; set; }
+        public string BrandLogo { get; set; }
 
         public string UserIdFK { get; set; }
-        [Display(Name = "نام قطعه")]
+        [Display(Name = "نام قطعه"),Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Title { get; set; }
-        [Display(Name = "توضیحات")]
+        [Display(Name = "توضیحات"), Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Description { get; set; }
         [Display(Name = "انتشار")]
         public bool Situation { get; set; }

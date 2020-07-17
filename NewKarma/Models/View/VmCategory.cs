@@ -11,6 +11,7 @@ namespace NewKarma.Models.View
     {
         public int CatID { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public string UserIDFK { get; set; }
 
     }

@@ -1,77 +1,77 @@
-﻿@inject NewKarma.Repository.UOW.IUnitOfWork unit
-@model ReflectionIT.Mvc.Paging.PagingList<Product>
-@addTagHelper*,ReflectionIT.Mvc.Paging
-@{
+﻿@{
     ViewData["Title"] = "Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section class="section_padding">
     <div class="container">
         <div class="row">
-            <section class="col-lg-12 list-group form-horizontal">
-                <h4 class="text-center widget_title">خودرو ها</h4>
-                <ul class="scrollbar list form-horizontal custom-button" id="style-2">
-                    @*@foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
-                    {
-                        <li style="float:left; ">
-                            <a asp-controller="Home" asp-action="ProductByCategory" asp-route-CatId="@item.CatId">
-                                @item.Title
-                            </a>
-                        </li>
-                    }*@
-                    @foreach (var item in await unit.BaseRepo<Category>().FindAllAsync())
-                    {
-                        <li>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="ProductByCar" asp-route-carId="@item.CatId">
-                                @item.Title 
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </section>
-
             <div class="" id="style-1">
                 <div class="force-overflow"></div>
             </div>
-
-            <div class="col-lg-12 mt-3 mb-5 mb-lg-0">
+            <div class="col-md-12 mt-3 mb-5 mb-lg-0">
                 <div class="row blog_left_sidebar">
                     <h3>@ViewBag.Message</h3>
-                    @foreach (var item in Model)
-                    {
-                        <a class="col-md-4 " asp-controller="Home" asp-action="ProductById" asp-route-ProductId="@item.ProductId">
-                            <article class="blog_item box">
-                                <div id="prodimg" class="blog_item_img" style="background-image:url('/img/imgUpload/Product/@item.Img')">
-                                    <span data-toggle="tooltip" data-placement="top" title="مشاهده قطعات @item.Brand.Title" href="/Home/ProductByBrand?brandId=@item.BrandIDFK" class="blog_item_date btn btn_2" id="BrandBtn">
-                                        <img src="~/img/imgUpload/Brand/@item.Brand.Logo" />
-                                        <span style="font-size:14px; justify-content :center; display:flex;">@item.Brand.Title</span>
-                                    </span>
-                                </div>
-                                <div class="blog_details">
-                                    <h2 class="d-inline-block">@item.Title</h2>
-                                    <p>
-                                        @{
-                                            var desc = item.Description.Length >=100 ? item.Description.Substring(0, 99) + " ..." : item.Description;
-                                        }
-                                        @desc
-                                    </p>
-                                </div>
-                            </article>
-                        </a>
-                    }
-                </div>
-                <nav class="blog-pagination justify-content-center d-flex">
-                    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
-                </nav>
-            </div>
-            @*<div class="col-lg-3">
-                    <div class="blog_right_sidebar">
-                        @await Html.PartialAsync("_Aside", ViewData["Search"])
+
+
+
+                    <div class="row text-light ts-gutter-30" id="content">
                     </div>
-                </div>*@
+                    <div class="col-md-12">
+                        <div class="load-more-btn text-center pt-5">
+                            <div id="progress" class="text-center">
+                                <p>در حال بارگزاری اطلاعات ...</p>
+                                <div class="loadingCricle m-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+@section Scripts{
+    <script>
+        var Offset = 0;
+        var LimitInList = 3;
+        console.log("Limit", LimitInList);
+        GetData();
+        $(window).scroll(function () {
+            if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height()) {
+                GetData();
+            }
+        });
+
+
+        function GetData() {
+            $.ajax({
+                type: 'GET',
+                url: '/Home/Products',
+                data: { "offset": Offset, "limitinlist": LimitInList },
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    if (data != null) {
+                        $.each(data, function (i) {
+                            $("#content").append("<a class='col-md-4'><article class= 'blog_item box' > <div id='prodimg' class='blog_item_img' style='background-image:url(/img/imgUpload/Product/" + data[i].image + ");><span data-toggle='tooltip' data-placement='top' title='مشاهده قطعات" + data[i].brandName + " href='/Home/ProductByBrand?brandId='" + data[i].brandIDFK + " class='blog_item_date btn btn_2' id='BrandBtn'><img src='/img/imgUpload/Brand/" + data[i].brandLogo + "'/><span style='font-size:14px; justify-content:center; display:flex;'>" + data[i].brandName + "</span></span></div><div class='blog_details'><h2 class='d-inline-block'>" + data[i].title + "</h2><p>" + data[i].description + "</p></div></a>")
+                        });
+                        Offset++;
+                    }
+                },
+                beforeSend: function () {
+                    $("#progress").show();
+                },
+                complete: function () {
+                    $("#progress").hide();
+                },
+                error: function () {
+                    alert("Error");
+                    //ShowSweetErrorAlert();
+                }
+            });
+        }
+    </script>
+}
+
 @*<div class="modal fade" id="errorCatModal">
         <div class="container">
             <div class="row">
@@ -115,17 +115,3 @@
             </div>
         </div>
     </div>*@
-<script type='text/javascript' src='~/js/scroll.js'></script>
-<script>
-    $(function () {
-
-        $("scrollbar").mousewheel(function (event, delta) {
-
-            this.scrollLeft -= (delta * 1);
-
-            event.preventDefault();
-
-        });
-
-    });
-</script>

@@ -12,6 +12,8 @@ namespace NewKarma.Models.Domain
         public int BrandId { get; set; }
         [Required, Display(Name = "عنوان")]
         public string Title { get; set; }
+        [Required, Display(Name = "توضیحات")]
+        public string Description { get; set; }
         public string Logo { get; set; }
 
         #region Rel

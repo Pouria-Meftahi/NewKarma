@@ -25,6 +25,13 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>توضیحات</label>
+                                    <input asp-for="Description" type="text" id="brandDescription" class="form-control validate">
+                                    <span asp-validation-for="Title"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="mx-auto">
                                     <div class="custom-file mt-3">
                                         <div class="col-md-12">
@@ -64,6 +71,7 @@
 <script>
     function validationForm() {
         var brandTitle = $('#brandTitle').val();
+        var brandDesc = $('#brandDescription').val();
         if (brandTitle == "") {
             $('#brandTitle').focus();
             $.confirm({
@@ -84,6 +92,27 @@
             });
             return false;
         }
+        if (brandDesc == "") {
+            $('#brandDescription').focus();
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'خطا!',
+                content: 'لطفا توضیحات برند را وارد کنی',
+                rtl: true,
+                closeIcon: true,
+                type: 'red',
+                animation: 'opacity',
+                theme: 'dark',
+                buttons: {
+                    confirm: {
+                        text: 'تایید',
+                        btnClass: 'btn-red',
+                    }
+                },
+            });
+            return false;
+        }
+
     }
 </script>
 @section Scripts {
